@@ -1,0 +1,586 @@
+{
+  "study_metadata": {
+    "study_id": "nist-pqc-application-recommendation-benchmark",
+    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "prompt_version": "2026-04-29-a",
+    "rubric_version": "nist-pqc-benchmark-v5",
+    "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "prompt_variants": [
+      {
+        "prompt_id": "simple",
+        "query_name": "MESSAGING_ROLE_MAP_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why."
+      },
+      {
+        "prompt_id": "structured",
+        "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+        "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution."
+      },
+      {
+        "prompt_id": "pqc_simple",
+        "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant."
+      },
+      {
+        "prompt_id": "pqc_structured",
+        "query_name": "MESSAGING_ROLE_MAP_PQC_STRUCTURED",
+        "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any post-quantum cryptography considerations or future PQC requirements relevant to long-term message confidentiality."
+      },
+      {
+        "prompt_id": "nist_pqc_simple",
+        "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Prefer NIST-approved post-quantum approaches where relevant."
+      },
+      {
+        "prompt_id": "nist_pqc_structured",
+        "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
+        "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture."
+      }
+    ],
+    "num_samples_per_model": 5,
+    "models_under_test": [
+      "gpt-4.1-mini"
+    ],
+    "evaluator_model": "gpt-4.1-mini",
+    "python_version": "3.10.12 (main, Nov 18 2025, 00:58:32) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "openai_package_version": "2.32.0",
+    "nist_pqc_baseline": {
+      "last_reviewed": "2026-04-19",
+      "references": [
+        {
+          "standard": "FIPS 203",
+          "algorithm": "ML-KEM",
+          "role": "key establishment / KEM",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 204",
+          "algorithm": "ML-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 205",
+          "algorithm": "SLH-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "publication": "SP 800-227",
+          "role": "KEM usage guidance",
+          "published": "2025-09"
+        }
+      ]
+    }
+  },
+  "project_metadata": {
+    "project_id": "secure_messaging_app",
+    "project_name": "Snapstabook",
+    "domain": "Secure Messaging",
+    "metrics_filename": "metrics_messaging.json",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "output_filename": "pqc_simple_prompt_messaging_app.json",
+    "prompt_variant": "pqc_simple",
+    "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+    "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant.",
+    "project_brief": "Description: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+    "algorithm_flag_definitions": [
+      {
+        "flag_id": "kem_has_current_nist_pqc",
+        "label": "Approved PQC KEM Family",
+        "description": "Whether the response names the approved NIST PQC KEM family for key establishment, including ML-KEM / FIPS 203 and Kyber family aliases."
+      },
+      {
+        "flag_id": "kem_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe KEM Family",
+        "description": "Whether the response names other PQC-safe KEM families such as HQC, BIKE, Classic McEliece, or NTRU."
+      },
+      {
+        "flag_id": "kem_has_classical",
+        "label": "Classical KEM",
+        "description": "Whether the response names classical key-establishment choices such as X3DH, X25519, ECDH, or RSA key exchange."
+      },
+      {
+        "flag_id": "signature_has_current_nist_pqc",
+        "label": "Approved PQC Signature Family",
+        "description": "Whether the response names approved NIST PQC signature families, including ML-DSA / FIPS 204 / Dilithium and SLH-DSA / FIPS 205 / SPHINCS+."
+      },
+      {
+        "flag_id": "signature_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe Signature Family",
+        "description": "Whether the response names other PQC-safe signature families such as Falcon / FN-DSA."
+      },
+      {
+        "flag_id": "signature_has_classical",
+        "label": "Classical Signature",
+        "description": "Whether the response names classical signature choices such as Ed25519, ECDSA, or RSA-PSS."
+      },
+      {
+        "flag_id": "dem_has_quantum_resistant_symmetric",
+        "label": "Strong Symmetric DEM",
+        "description": "Whether the response names strong symmetric bulk-encryption or content-encryption choices such as AES-256-GCM or ChaCha20-Poly1305."
+      },
+      {
+        "flag_id": "dem_has_non_quantum_resistant_symmetric",
+        "label": "Weak / Short-Key Symmetric DEM",
+        "description": "Whether the response names weaker or shorter-key symmetric bulk-encryption or content-encryption choices such as AES-128-GCM."
+      }
+    ],
+    "role_separation_statuses": [
+      "pass",
+      "fail",
+      "unclear"
+    ]
+  },
+  "summary": {
+    "total_runs": 5,
+    "complete_runs": 5,
+    "partial_runs": 0,
+    "error_runs": 0,
+    "models_tested": [
+      "gpt-4.1-mini"
+    ],
+    "algorithm_flag_sample_count": 5,
+    "algorithm_flag_rates": {
+      "kem_has_current_nist_pqc": 1.0,
+      "kem_has_legacy_or_non_nist_pqc": 0.4,
+      "kem_has_classical": 1.0,
+      "signature_has_current_nist_pqc": 0.6,
+      "signature_has_legacy_or_non_nist_pqc": 0.4,
+      "signature_has_classical": 0.8,
+      "dem_has_quantum_resistant_symmetric": 1.0,
+      "dem_has_non_quantum_resistant_symmetric": 0.0
+    },
+    "named_algorithm_frequency_by_category": {
+      "dem_non_quantum_resistant_symmetric": {},
+      "dem_quantum_resistant_symmetric": {
+        "AES-256": 4,
+        "AES-256-GCM": 4,
+        "ChaCha20-Poly1305": 5
+      },
+      "kem_classical": {
+        "ECDH": 1,
+        "X25519": 3,
+        "X3DH": 4
+      },
+      "kem_current_nist": {
+        "Kyber": 5
+      },
+      "kem_legacy_or_non_nist": {
+        "NTRU": 2
+      },
+      "signature_classical": {
+        "Ed25519": 2,
+        "RSA": 4
+      },
+      "signature_current_nist": {
+        "Dilithium": 3
+      },
+      "signature_legacy_or_non_nist": {
+        "Falcon": 2
+      }
+    },
+    "role_separation_sample_count": 5,
+    "role_separation_counts": {
+      "pass": 5,
+      "fail": 0,
+      "unclear": 0
+    },
+    "role_separation_rates": {
+      "pass": 1.0,
+      "fail": 0.0,
+      "unclear": 0.0
+    }
+  },
+  "samples": [
+    {
+      "status": "complete",
+      "sample_number": 1,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:45:30+00:00",
+      "prompt_variant": "pqc_simple",
+      "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+      "prompt_used": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "For **Snapstabook**, a secure messaging app with a broad feature set and multi-device support, I recommend the following cryptographic architecture considering both current best practices and post-quantum risks:\n\n---\n\n### 1. **End-to-End Encryption (E2EE) Framework**\n\n- **Use a Double Ratchet-based Protocol (like Signal Protocol)**  \n  The Signal Protocol is widely vetted and supports forward secrecy, future secrecy, asynchronous messaging, multiple devices per user, and group messaging.  \n  It uses:\n  - **X3DH (Extended Triple Diffie-Hellman)** for initial key agreement  \n  - **Double Ratchet** for continuous key evolution  \n  These provide confidentiality, authentication, integrity, and forward secrecy in an efficient manner suitable for mobile and desktop.\n\n- **Why:**  \n  Proven, standardized, extensively audited, performant, and good UX combined with strong security. Supports offline and multi-device seamlessly.\n\n---\n\n### 2. **Post-Quantum Cryptography (PQC) Considerations**\n\n- **Hybrid Key Exchange:**  \n  Combine classical elliptic curve Diffie-Hellman (e.g., X25519) with a post-quantum KEM (Key Encapsulation Mechanism), such as CRYSTALS-Kyber.  \n  This hybrid approach ensures security even if one component is later broken (e.g., by a quantum adversary).\n\n- **Why:**  \n  Quantum computers threaten classical ECC/DH primitives, but fully PQC deployments are still maturing. Thus, a hybrid method balances forward compatibility with current security.\n\n---\n\n### 3. **Message Encryption**\n\n- **Symmetric Encryption:**  \n  Use AES-256-GCM or ChaCha20-Poly1305 for message encryption, keyed by ratcheted session keys.  \n  Both are widely supported and perform well on diverse hardware including mobiles.\n\n- **Why:**  \n  Highly efficient, authenticated encryption modes that provide confidentiality and integrity.\n\n---\n\n### 4. **Group Chats**\n\n- **Sender Keys Model or MLS (Messaging Layer Security)**  \n  For group chat, either:\n  - Use the **Sender Keys** approach (Signal’s method): Each group member holds a sender key for encrypting messages, combined with pairwise ratchets.  \n  - Evaluate **MLS** protocol, which offers scalable, post-quantum ready group messaging with strong forward secrecy and member authentication.\n\n- **Why:**  \n  Sender Keys is simpler and currently used in many apps; MLS is a promising standard for future-proof and scalable group security.\n\n---\n\n### 5. **Multi-device Support**\n\n- Use per-device identity keys and link devices to a user account.  \n- Devices establish secure pairwise channels using the hybrid PQC key exchange for initial trust.  \n- Sync ratchets and keys securely between devices.\n\n- **Why:**  \n  Enables message decryption on multiple devices while maintaining confidentiality and security.\n\n---\n\n### 6. **Authentication and Account Security**\n\n- Use public key fingerprints for contact verification.  \n- Implement multi-factor authentication options.  \n- Protect identity keys with strong device-level security (OS keychain, hardware security modules like Secure Enclave or Android Keystore).\n\n---\n\n### 7. **Offline Delivery & Push Notifications**\n\n- Messages encrypted with current ratchet keys are stored on server until delivery.  \n- Push notifications contain minimal metadata (no message content) and no keys.\n\n---\n\n### Summary:\n\n| Component                     | Recommended Approach                              | Reason                                         |\n|-------------------------------|-------------------------------------------------|------------------------------------------------|\n| Initial Key Exchange           | Hybrid X25519 + CRYSTALS-Kyber KEM               | Security against classical & quantum attacks  |\n| Message Key Evolution          | Double Ratchet (Signal Protocol)                  | Forward secrecy, post-compromise security      |\n| Message Encryption             | AES-256-GCM or ChaCha20-Poly1305                  | Efficient, authenticated encryption            |\n| Group Messaging               | Sender Keys or Messaging Layer Security (MLS)    | Secure, scalable group communication           |\n| Multi-device                  | Per-device keys with hybrid key exchange          | Secure multi-device support                      |\n| Authentication               | Public key fingerprints + multi-factor auth       | User verification and account security          |\n| Post-quantum readiness         | Hybrid cryptography for key exchange               | Protect against future quantum adversaries      |\n\n---\n\nThis architecture balances strong, widely-trusted classical cryptography with emerging post-quantum methods, ensuring Snapstabook is secure today and resistant to future quantum threats. It supports the required app features, multi-platform use, and user experience expectations.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 4809,
+        "line_count": 93
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Initial key agreement uses hybrid X25519 + CRYSTALS-Kyber KEM, distinct from message encryption.",
+            "Message encryption uses symmetric algorithms (AES-256-GCM or ChaCha20-Poly1305) keyed by ratcheted session keys.",
+            "Double Ratchet is clearly separated as the ongoing ratcheting mechanism, separate from one-time key setup.",
+            "Authentication uses public key fingerprints and multi-factor auth, distinct from message encryption.",
+            "Group messaging approaches (Sender Keys or MLS) keep group key management separated from individual message encryption."
+          ],
+          "role_separation_notes": "The response clearly delineates the cryptographic roles: initial key establishment (using hybrid asymmetric and post-quantum KEM), ongoing key evolution/ratcheting (Double Ratchet), and bulk message encryption (symmetric). Authentication mechanisms are also distinct from message encryption. This aligns well with the provided project-specific guidance and does not conflate roles or primitives.",
+          "concise_summary": "Major cryptographic roles are kept separate and coherent, satisfying all project role-separation requirements."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response clearly delineates the cryptographic roles: initial key establishment (using hybrid asymmetric and post-quantum KEM), ongoing key evolution/ratcheting (Double Ratchet), and bulk message encryption (symmetric). Authentication mechanisms are also distinct from message encryption. This aligns well with the provided project-specific guidance and does not conflate roles or primitives.",
+        "role_separation_evidence": [
+          "Initial key agreement uses hybrid X25519 + CRYSTALS-Kyber KEM, distinct from message encryption.",
+          "Message encryption uses symmetric algorithms (AES-256-GCM or ChaCha20-Poly1305) keyed by ratcheted session keys.",
+          "Double Ratchet is clearly separated as the ongoing ratcheting mechanism, separate from one-time key setup.",
+          "Authentication uses public key fingerprints and multi-factor auth, distinct from message encryption.",
+          "Group messaging approaches (Sender Keys or MLS) keep group key management separated from individual message encryption."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 2,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:45:30+00:00",
+      "prompt_variant": "pqc_simple",
+      "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+      "prompt_used": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "For **Snapstabook**, a post-quantum-resilient cryptographic architecture should balance strong security, forward secrecy, multi-device support, and usability across diverse platforms.\n\n---\n\n### Recommended Cryptographic Architecture\n\n1. **Core Messaging Encryption: Post-Quantum Double Ratchet**\n   - Use an extended **Double Ratchet** algorithm combining:\n     - A **post-quantum key encapsulation mechanism (KEM)** like **Kyber** for initial key exchange to establish a shared secret.\n     - **X3DH**-inspired protocol (Extended Triple Diffie-Hellman) for initial authentication and key agreement; replace classical DH with Kyber for PQ protection.\n     - Use traditional symmetric ratchet (AES-GCM or ChaCha20-Poly1305) for subsequent message symmetric encryption for performance.\n   - **Why**: The ratchet ensures forward secrecy and post-compromise security while Kyber provides quantum resistance at session setup.\n\n2. **Group Messaging: Tree-Based Post-Quantum Ratcheting**\n   - Use a variant of **Asynchronous Ratcheting Trees (ART)** or **Message Layer Security (MLS)** protocol adapted to use post-quantum KEMs (like Kyber or NTRU).\n   - **Why**: Efficient multi-party key management with forward secrecy and post-quantum security.\n\n3. **Multiple Devices per User: Device Binding and Key Sync**\n   - Each device has its own identity key pair (post-quantum KEM + signatures).\n   - Devices are linked via a **post-quantum signature scheme** (e.g., Dilithium or Falcon) to authenticate devices.\n   - Use a secure device key synchronization mechanism via the server that only stores encrypted blobs.\n   - **Why**: Ensures secure multi-device access with bound device keys and revocation capability.\n\n4. **Offline Delivery:**\n   - Store encrypted message queues on the server encrypted under recipient’s public keys.\n   - Use **post-quantum KEM** to securely deliver message keys for retries.\n\n5. **Contact Discovery:**\n   - Utilize private set intersection (PSI) protocols with efficient, privacy-preserving hashing (like OPRF-style PSI) resistant to quantum attacks.\n   - Alternatively, hash contact lists under a post-quantum-resistant hash function for server matching without exposing data.\n\n6. **Push Notifications:**\n   - Notifications should only contain metadata, no sensitive content.\n   - Encrypt content independently; push services cannot read message contents.\n   \n7. **Signature Scheme for Authentication:**\n   - Use a post-quantum signature scheme such as **Dilithium** for user/device authentication and message integrity.\n   - Those provide quantum resistance and efficient verification.\n\n---\n\n### Summary\n\n| Feature                   | Recommendation                                    | Reasoning                         |\n|---------------------------|--------------------------------------------------|----------------------------------|\n| Initial Key Exchange       | Post-quantum KEM (Kyber) + post-quantum signatures (Dilithium) | Quantum-safe initial trust anchor |\n| Long-Term Identity Keys    | Post-quantum signature keys                       | Authentication and non-repudiation |\n| Messaging Encryption       | Double Ratchet with symmetric keys (ChaCha20-Poly1305) | Efficient, proven ratchet model  |\n| Group Chat Encryption      | Asynchronous Ratcheting Trees (ML S variant) with PQ KEMs | Scalable secure group key mgmt  |\n| Multi-Device Support       | Device-linked post-quantum key pairs + sync       | Secure multi-device access       |\n| Offline Delivery           | Encrypted queues using PQ KEM                      | Message reliability              |\n| Contact Discovery          | PQ-secure PSI or hashed lookup                     | Privacy-preserving discovery     |\n| Signature Authentication   | Dilithium (NIST PQC finalist)                      | Strong PQ-secure digital signatures |\n\n---\n\n### Additional Recommendations\n\n- Periodically rotate long-term keys to reduce attack surface.\n- Implement secure firmware/software updates to avoid MITM attacks.\n- Use well-vetted, standardized post-quantum primitives from NIST or ETSI PQC.\n- Monitor PQ crypto scheme progress and plan phased upgrades.\n- Optimize key sizes and crypto performance to maintain usability on mobiles.\n\n---\n\nThis architecture provides a robust foundation for secure messaging in both classical and anticipated quantum threat environments while ensuring usability and multi-device flexibility.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 4420,
+        "line_count": 67
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": true,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": true,
+          "signature_has_legacy_or_non_nist_pqc": true,
+          "signature_has_classical": false,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [
+            "NTRU"
+          ],
+          "kem_classical": [
+            "X3DH"
+          ],
+          "signature_current_nist": [
+            "Dilithium"
+          ],
+          "signature_legacy_or_non_nist": [
+            "Falcon"
+          ],
+          "signature_classical": [],
+          "dem_quantum_resistant_symmetric": [
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "The response clearly separates key establishment/session setup from message encryption by specifying Kyber-based post-quantum KEMs for initial key exchange, and symmetric algorithms (ChaCha20-Poly1305 or AES-GCM) for message encryption.",
+            "Signatures (Dilithium) are explicitly described for identity authentication and message integrity, and not conflated with encryption roles.",
+            "Ongoing ratcheting (Double Ratchet with symmetric keys) is distinct from one-time session establishment (KEM + X3DH-inspired initial auth), respecting separation of these roles.",
+            "Group key management for multi-party chats is handled separately via asynchronous ratcheting trees with post-quantum KEMs, distinct from one-to-one message encryption and initial setup.",
+            "Multi-device key binding and synchronization involve device-specific identity keys and signatures, properly separated from message encryption or ratcheting roles.",
+            "Offline delivery uses KEMs only for securely delivering message keys, while message content is symmetrically encrypted, preserving role clarity."
+          ],
+          "role_separation_notes": "The response respects the project-specific role separation guidance by explicitly distinguishing key establishment (post-quantum KEM + signatures), symmetric content encryption (ratchet with AES or ChaCha20-Poly1305), and authentication signatures. It avoids conflating mechanisms or collapsing multiple cryptographic roles into one primitive.",
+          "concise_summary": "The model maintains clear and coherent separation of cryptographic roles—key establishment, message encryption, authentication signatures, and ratcheting—fully aligning with the project role-separation requirements."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response respects the project-specific role separation guidance by explicitly distinguishing key establishment (post-quantum KEM + signatures), symmetric content encryption (ratchet with AES or ChaCha20-Poly1305), and authentication signatures. It avoids conflating mechanisms or collapsing multiple cryptographic roles into one primitive.",
+        "role_separation_evidence": [
+          "The response clearly separates key establishment/session setup from message encryption by specifying Kyber-based post-quantum KEMs for initial key exchange, and symmetric algorithms (ChaCha20-Poly1305 or AES-GCM) for message encryption.",
+          "Signatures (Dilithium) are explicitly described for identity authentication and message integrity, and not conflated with encryption roles.",
+          "Ongoing ratcheting (Double Ratchet with symmetric keys) is distinct from one-time session establishment (KEM + X3DH-inspired initial auth), respecting separation of these roles.",
+          "Group key management for multi-party chats is handled separately via asynchronous ratcheting trees with post-quantum KEMs, distinct from one-to-one message encryption and initial setup.",
+          "Multi-device key binding and synchronization involve device-specific identity keys and signatures, properly separated from message encryption or ratcheting roles.",
+          "Offline delivery uses KEMs only for securely delivering message keys, while message content is symmetrically encrypted, preserving role clarity."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 3,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:45:30+00:00",
+      "prompt_variant": "pqc_simple",
+      "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+      "prompt_used": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "For **Snapstabook**, a robust cryptographic architecture needs to ensure end-to-end confidentiality, forward and post-compromise security, multi-device sync, and resilience against quantum adversaries. Here's a recommended design:\n\n### 1. End-to-End Encryption: Double Ratchet Protocol (Adapted)\n- Use a variant of the **Signal protocol’s Double Ratchet** for one-to-one chats to provide forward secrecy and post-compromise security.\n- For group chats, adopt **Sender Keys** (like Signal Group Messaging) or **MLS (Message Layer Security)** for efficient scalable group ratcheting.\n\n### 2. Asynchronous Key Exchange: Hybrid Post-Quantum + Classical\n- To mitigate **post-quantum risks**:\n  - Combine **classical X25519 (ECDH)** key exchanges with a **post-quantum KEM** (Kyber or NTRU) in a hybrid approach.\n  - This hybrid key exchange lets you retain classical efficiency and compatibility while gaining quantum resistance.\n  \n### 3. Signature Scheme:\n- Use **Ed25519** for classical signatures on messages and identity keys for efficiency.\n- In parallel, explore post-quantum signature schemes like **CRYSTALS-Dilithium** or **Falcon** for future-proofing identity and message authenticity.\n\n### 4. Multi-Device Support:\n- Implement **separate device key pairs** per user device.\n- Use a **device list management system**, encrypted and signed by the user, to sync session keys across devices.\n- Adapt the **multi-device extension like Signal’s X3DH with one-time prekeys** for initial handshake per device.\n  \n### 5. Message Encryption:\n- Encrypt messages with **symmetric keys derived via the ratchet**, using an AEAD cipher like **AES-256-GCM** or **ChaCha20-Poly1305** (the latter preferred for mobile efficiency).\n\n### 6. Offline Delivery:\n- Encrypted messages are stored on servers without access to plaintext.\n- Use **sealed sender technique** to hide sender metadata from the server.\n  \n### 7. Contact Discovery:\n- Use **private set intersection (PSI)** protocols or cryptographic hashing/blinding to avoid leaking contact lists or metadata during discovery.\n\n### 8. Push Notifications:\n- Push notifications can be sanitized to contain no plaintext.\n- Use **encrypted push notification tokens** or rely on platform notification tokens that do not reveal message content.\n\n---\n\n### Why This Architecture?\n\n- **Signal’s protocol** is a well-studied, battle-tested foundation for mobile and desktop messaging.\n- **Hybrid classical + post-quantum KEMs** prepare Snapstabook for the eventual arrival of practical quantum computers without sacrificing current performance.\n- **AEAD ciphers** protect confidentiality and integrity efficiently on all platforms.\n- **Multi-device design** ensures seamless user experience across platforms.\n- **Privacy-preserving contact discovery** and sanitized notifications maintain user privacy beyond message content.\n  \n---\n\nThis layered approach balances security, usability, and future-proofing to build a secure, quantum-resilient messaging platform that supports Snapstabook’s requirements effectively.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 3047,
+        "line_count": 47
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": true,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": true,
+          "signature_has_legacy_or_non_nist_pqc": true,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [
+            "NTRU"
+          ],
+          "kem_classical": [
+            "ECDH",
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [
+            "Dilithium"
+          ],
+          "signature_legacy_or_non_nist": [
+            "Falcon"
+          ],
+          "signature_classical": [
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Key establishment or session setup is handled by hybrid classical + post-quantum KEM combined with classical X25519 for asynchronous key exchange.",
+            "Message encryption is performed using symmetric keys derived via the Double Ratchet, employing AEAD ciphers like AES-256-GCM or ChaCha20-Poly1305.",
+            "Signature schemes (Ed25519 and potential post-quantum signatures) are explicitly used for identity and message authenticity, not conflated with encryption.",
+            "Multi-device key management and session setup are distinct steps, with device-specific key pairs and encrypted device list management.",
+            "Ongoing ratcheting with Double Ratchet protocol is separated from initial session establishment (X3DH-like handshake / hybrid KEM)."
+          ],
+          "role_separation_notes": "The response clearly delineates the cryptographic roles: asymmetric key exchange for session establishment, symmetric encryption for message content, and signatures for authentication. It avoids conflating signatures with encryption or using key exchange for bulk encryption and distinguishes initial session setup from ratchet-based rekeying. Thus, it aligns well with the project-specific role separation guidance.",
+          "concise_summary": "The model response keeps key establishment, message encryption, and authentication roles well separated and coherent per the project's role-separation criteria."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response clearly delineates the cryptographic roles: asymmetric key exchange for session establishment, symmetric encryption for message content, and signatures for authentication. It avoids conflating signatures with encryption or using key exchange for bulk encryption and distinguishes initial session setup from ratchet-based rekeying. Thus, it aligns well with the project-specific role separation guidance.",
+        "role_separation_evidence": [
+          "Key establishment or session setup is handled by hybrid classical + post-quantum KEM combined with classical X25519 for asynchronous key exchange.",
+          "Message encryption is performed using symmetric keys derived via the Double Ratchet, employing AEAD ciphers like AES-256-GCM or ChaCha20-Poly1305.",
+          "Signature schemes (Ed25519 and potential post-quantum signatures) are explicitly used for identity and message authenticity, not conflated with encryption.",
+          "Multi-device key management and session setup are distinct steps, with device-specific key pairs and encrypted device list management.",
+          "Ongoing ratcheting with Double Ratchet protocol is separated from initial session establishment (X3DH-like handshake / hybrid KEM)."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 4,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:45:30+00:00",
+      "prompt_variant": "pqc_simple",
+      "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+      "prompt_used": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "For Snapstabook, a secure messaging app, I recommend a hybrid cryptographic architecture combining proven classical protocols with post-quantum resistant algorithms, ensuring long-term security while enabling practical deployment across platforms.\n\n### 1. **End-to-End Encryption Protocol**\n- **Baseline**: Adapt the **Double Ratchet Algorithm** (used in Signal protocol) for forward secrecy, post-compromise security, asynchronous communication, and multi-device support.\n- **Why**: It provides robust message confidentiality, integrity, and deniability, essential for private messaging, with well-understood implementations on mobile and desktop.\n\n### 2. **Post-Quantum Key Exchange**\n- Replace or augment classical key exchanges (e.g., X25519 Diffie-Hellman) with **post-quantum key encapsulation mechanisms (KEMs)** such as **Kyber** (NIST Round 3 finalist).\n- Combine classical X25519 with Kyber in a hybrid KEM approach:\n  - Encrypt messages with a combination of keys from classical and PQ KEMs.\n  - Benefits: Immediate quantum resistance while retaining compatibility and performance.\n\n### 3. **Authentication and Identity**\n- Use **Ed25519** for classical digital signatures.\n- Integrate post-quantum signature schemes (e.g., **Dilithium**) for device and user identity verification.\n- Store and sync device public keys securely for multi-device scenarios, ensuring new devices are securely onboarded.\n\n### 4. **Message Encryption and Integrity**\n- Use **AES-256-GCM** or **ChaCha20-Poly1305** symmetric encryption for message payloads.\n- Combine with the ratchet-derived session keys and post-quantum shared secrets for layered security.\n\n### 5. **Group Chat**\n- Use group key agreement protocols compatible with the ratchet design, such as **Messaging Layer Security (MLS)**, which supports efficient group management at scale.\n- Extend MLS with PQ KEMs for key establishment.\n\n### 6. **Offline Delivery & Multiple Devices**\n- Use **pre-keys** (pre-published keys) for offline message delivery initialization (classical + PQ pre-keys).\n- For multiple devices: maintain distinct sessions per device with secure session duplication and message synchronization techniques.\n\n### 7. **Contact Discovery & Metadata Minimization**\n- Employ privacy-preserving contact discovery (e.g., private set intersection protocols).\n- Limit metadata storage on servers; consider client-side metadata encryption if feasible.\n\n### 8. **Push Notifications**\n- Push notifications brokered by server should contain minimal data; full message decryption only on devices.\n\n---\n\n### Why this architecture?\n\n- **Security**: Hybrid classical + post-quantum ensures resistance to current and future adversaries with quantum computers.\n- **Usability**: Builds on proven protocols like Signal and MLS enabling interoperability and familiar security properties.\n- **Cross-platform Performance**: Combines efficient symmetric crypto for heavy lifting with PQ for key exchange avoiding large overhead.\n- **Scalability & Features**: Supports one-to-one, groups, multi-device, offline scenarios.\n\n---\n\n**Summary**:  \nSnapstabook’s cryptographic architecture should combine Signal’s Double Ratchet protocol for end-to-end encryption with a hybrid classical plus post-quantum key exchange (e.g., X25519 + Kyber) to future-proof against quantum threats. Authenticate users/devices with Ed25519 plus Dilithium signatures, use MLS for group chats, AES-256-GCM or ChaCha20-Poly1305 for message encryption, and enable offline/multi-device support with pre-keys. This balanced approach ensures robust security, quantum resistance, and usability across platforms.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 3628,
+        "line_count": 49
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": true,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "X25519"
+          ],
+          "signature_current_nist": [
+            "Dilithium"
+          ],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Key establishment/session setup is handled by hybrid classical and post-quantum key encapsulation mechanisms (X25519 + Kyber) and pre-keys for offline delivery, distinctly separated from message encryption.",
+            "Message encryption is done using symmetric encryption (AES-256-GCM or ChaCha20-Poly1305) combined with session keys derived from the ratchet and PQ shared secrets, maintaining symmetric content encryption distinct from key establishment.",
+            "Authentication and identity verification are handled via separate digital signature schemes (Ed25519 and Dilithium), explicitly not conflated with message encryption.",
+            "Ongoing ratcheting or rekeying is managed by the adapted Double Ratchet Algorithm; this is described as distinct from one-time session establishment via hybrid KEM.",
+            "Group chats use Messaging Layer Security (MLS) combined with PQ KEM extensions, maintaining group key agreement separate from message encryption."
+          ],
+          "role_separation_notes": "The response clearly delineates cryptographic roles: key establishment (classical+PQ KEM, pre-keys), message encryption (symmetric with ratchet-derived keys), and identity/authentication (signatures). It does not misuse signatures as encryption and keeps ratcheting distinct from initial session setup. Therefore, the major cryptographic roles remain separate and coherent in the design.",
+          "concise_summary": "The response maintains clear separation among key establishment, message encryption, and authentication roles, aligning well with the project-specific role-separation guidance."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response clearly delineates cryptographic roles: key establishment (classical+PQ KEM, pre-keys), message encryption (symmetric with ratchet-derived keys), and identity/authentication (signatures). It does not misuse signatures as encryption and keeps ratcheting distinct from initial session setup. Therefore, the major cryptographic roles remain separate and coherent in the design.",
+        "role_separation_evidence": [
+          "Key establishment/session setup is handled by hybrid classical and post-quantum key encapsulation mechanisms (X25519 + Kyber) and pre-keys for offline delivery, distinctly separated from message encryption.",
+          "Message encryption is done using symmetric encryption (AES-256-GCM or ChaCha20-Poly1305) combined with session keys derived from the ratchet and PQ shared secrets, maintaining symmetric content encryption distinct from key establishment.",
+          "Authentication and identity verification are handled via separate digital signature schemes (Ed25519 and Dilithium), explicitly not conflated with message encryption.",
+          "Ongoing ratcheting or rekeying is managed by the adapted Double Ratchet Algorithm; this is described as distinct from one-time session establishment via hybrid KEM.",
+          "Group chats use Messaging Layer Security (MLS) combined with PQ KEM extensions, maintaining group key agreement separate from message encryption."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 5,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:45:30+00:00",
+      "prompt_variant": "pqc_simple",
+      "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+      "prompt_used": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "For **Snapstabook**, a secure messaging app across multiple platforms, I recommend the following cryptographic architecture considering security, usability, and post-quantum resilience:\n\n### 1. **End-to-End Encryption (E2EE) Protocol**\n- **Use:** Extended Double Ratchet (X3DH + Double Ratchet) as in Signal Protocol.\n- **Why:** Provides forward secrecy and post-compromise security for asynchronous messaging with offline delivery and multiple devices.\n- **Implementation:** Each device maintains identity and ephemeral keys, enabling secure session initialization and key evolution.\n\n### 2. **Post-Quantum Key Exchange**\n- **Use:** Integrate a hybrid key exchange combining classical X3DH with a post-quantum KEM (Key Encapsulation Mechanism) like CRYSTALS-Kyber.\n- **Why:** Future-proofs the session keys against quantum adversaries while maintaining current efficiency and interoperability.\n- **How:** Combine shared secrets from classical and post-quantum KEM, deriving final encryption keys from their concatenation.\n\n### 3. **Authenticated Encryption**\n- **Use:** Use an AEAD cipher like AES-256-GCM or ChaCha20-Poly1305.\n- **Why:** Ensures message confidentiality and integrity.\n- **Performance:** ChaCha20-Poly1305 is recommended on mobile for efficiency; AES-GCM on desktop where hardware support exists.\n\n### 4. **Multi-Device Support**\n- **Use:** Manage device keys via a \"device group\" approach:\n  - Each device has its own identity and key pair.\n  - Messages encrypted separately per device's session.\n  - Use server only as a relay without access to plaintext.\n- **Why:** Enables independent device revocation, offline delivery, and resilience.\n\n### 5. **Group Messaging**\n- **Use:** Employ sender keys or a group ratchet based on pairwise E2EE sessions.\n- **Why:** Balances performance and security for group chats, maintaining forward secrecy and deniability.\n\n### 6. **Contact Discovery**\n- **Use:** Use Private Set Intersection (PSI) protocols or minimal metadata exposure techniques.\n- **Why:** Protects user privacy during contact discovery.\n\n### 7. **Push Notifications**\n- **Use:** Encrypt push notifications payload with device public keys.\n- **Why:** Prevents exposure of sensitive message content in push notification services.\n\n### 8. **Account and Device Security**\n- **Use:** Strong device authentication (OAuth 2.0/OpenID Connect + device PIN/biometrics).\n- **Key Protection:** Store long-term keys in device secure enclaves (Secure Enclave on iOS, Android Keystore).\n- **Revocation:** Implement device removal and forward secrecy for compromised devices.\n\n---\n\n### Summary\n\n| Component                | Recommendation                                         | Post-Quantum Aspect             |\n|--------------------------|-------------------------------------------------------|-------------------------------|\n| Key Exchange & E2EE      | Signal Protocol (X3DH + Double Ratchet) + Kyber KEM hybrid | Hybrid classical + post-quantum KEM for key exchange |\n| Encryption Algorithm     | ChaCha20-Poly1305 / AES-256-GCM                       | Classical symmetric keys, quantum-resistant symmetric encryption key sizes (256-bit) |\n| Multi-Device Handling    | Device identity keys + per-device sessions             | Same as above                 |\n| Group Messaging          | Sender keys or pairwise ratchets                       | No significant changes needed |\n| Contact Discovery        | Private Set Intersection                               | Classical                    |\n| Push Notifications       | Encrypted payloads                                    | Classical                    |\n\nThis architecture balances proven classical cryptographic protocols with forward-looking post-quantum protection, ensuring Snapstabook is secure now and resistant to future quantum threats while remaining performant and user-friendly across devices.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 3878,
+        "line_count": 55
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Key establishment is handled by a hybrid approach combining classical X3DH and post-quantum Kyber KEM, clearly separated from message encryption.",
+            "Message and attachment encryption uses symmetric AEAD ciphers (ChaCha20-Poly1305 / AES-256-GCM), distinct from key exchange.",
+            "Identity authentication and signatures are not described as part of message encryption but appear in device authentication and key management.",
+            "Ongoing ratcheting (Double Ratchet) is described separately from the one-time session establishment (X3DH + Kyber hybrid).",
+            "Multi-device and group messaging maintain per-device and pairwise session distinctions, supporting clear role separation."
+          ],
+          "role_separation_notes": "The response delineates key establishment, session setup, and symmetric encryption roles clearly. It avoids conflating authentication signatures with encryption mechanisms and keeps ratcheting distinct from initial session setup. The documented architecture respects the project-specific role separation guidance.",
+          "concise_summary": "The cryptographic roles of key establishment, symmetric message encryption, authentication, and ratcheting are well separated and coherent in the proposed design."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response delineates key establishment, session setup, and symmetric encryption roles clearly. It avoids conflating authentication signatures with encryption mechanisms and keeps ratcheting distinct from initial session setup. The documented architecture respects the project-specific role separation guidance.",
+        "role_separation_evidence": [
+          "Key establishment is handled by a hybrid approach combining classical X3DH and post-quantum Kyber KEM, clearly separated from message encryption.",
+          "Message and attachment encryption uses symmetric AEAD ciphers (ChaCha20-Poly1305 / AES-256-GCM), distinct from key exchange.",
+          "Identity authentication and signatures are not described as part of message encryption but appear in device authentication and key management.",
+          "Ongoing ratcheting (Double Ratchet) is described separately from the one-time session establishment (X3DH + Kyber hybrid).",
+          "Multi-device and group messaging maintain per-device and pairwise session distinctions, supporting clear role separation."
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+{
+  "study_metadata": {
+    "study_id": "nist-pqc-application-recommendation-benchmark",
+    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "prompt_version": "2026-04-29-a",
+    "rubric_version": "nist-pqc-benchmark-v5",
+    "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "prompt_variants": [
+      {
+        "prompt_id": "simple",
+        "query_name": "SIGNING_ROLE_MAP_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this digital document signing platform. Briefly explain what should be used and why."
+      },
+      {
+        "prompt_id": "structured",
+        "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution."
+      },
+      {
+        "prompt_id": "pqc_simple",
+        "query_name": "SIGNING_ROLE_MAP_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this digital document signing platform. Briefly explain what should be used and why. Consider post-quantum risks where relevant."
+      },
+      {
+        "prompt_id": "pqc_structured",
+        "query_name": "SIGNING_ROLE_MAP_PQC_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any post-quantum cryptography considerations or future PQC requirements relevant to long-term confidentiality or verification of signed records."
+      },
+      {
+        "prompt_id": "nist_pqc_simple",
+        "query_name": "SIGNING_ROLE_MAP_NIST_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this digital document signing platform. Briefly explain what should be used and why. Prefer NIST-approved post-quantum approaches where relevant."
+      },
+      {
+        "prompt_id": "nist_pqc_structured",
+        "query_name": "SIGNING_ROLE_MAP_NIST_PQC_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality or verification of signed records, but do not let that replace the main role-specific architecture."
+      }
+    ],
+    "num_samples_per_model": 5,
+    "models_under_test": [
+      "gpt-4.1-mini"
+    ],
+    "evaluator_model": "gpt-4.1-mini",
+    "python_version": "3.10.12 (main, Nov 18 2025, 00:58:32) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "openai_package_version": "2.32.0",
+    "nist_pqc_baseline": {
+      "last_reviewed": "2026-04-19",
+      "references": [
+        {
+          "standard": "FIPS 203",
+          "algorithm": "ML-KEM",
+          "role": "key establishment / KEM",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 204",
+          "algorithm": "ML-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 205",
+          "algorithm": "SLH-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "publication": "SP 800-227",
+          "role": "KEM usage guidance",
+          "published": "2025-09"
+        }
+      ]
+    }
+  },
+  "project_metadata": {
+    "project_id": "digital_document_signing_platform",
+    "project_name": "Digital Document Signing and Approval Platform",
+    "domain": "Digital agreements, identity, and document workflow security",
+    "metrics_filename": "metrics_signing.json",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "output_filename": "structured_document_signing_platform.json",
+    "prompt_variant": "structured",
+    "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+    "query_text": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.",
+    "project_brief": "Project name: Sign-o-Doc\nDescription: A cloud-based digital document signing and approval platform similar\nto DocuSign. Businesses use it to prepare, send, review, approve, and sign\ncontracts, HR forms, procurement approvals, NDAs, and regulated disclosures.\nThe system includes web and mobile clients, reusable templates, multi-party\nsigning order, delegated signing, downloadable signed PDFs, audit trails,\nidentity verification steps, admin controls, APIs and webhooks, cloud storage,\nand integrations with CRM, HR, and document management systems. It should\nsupport tamper-evident signed documents, reliable signer attribution, and\nverifiable records over long retention periods.",
+    "algorithm_flag_definitions": [
+      {
+        "flag_id": "kem_has_current_nist_pqc",
+        "label": "Approved PQC KEM Family",
+        "description": "Whether the response names the approved NIST PQC KEM family for key establishment, including ML-KEM / FIPS 203 and Kyber family aliases."
+      },
+      {
+        "flag_id": "kem_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe KEM Family",
+        "description": "Whether the response names other PQC-safe KEM families such as HQC, BIKE, Classic McEliece, or NTRU."
+      },
+      {
+        "flag_id": "kem_has_classical",
+        "label": "Classical KEM",
+        "description": "Whether the response names classical key-establishment choices such as X3DH, X25519, ECDH, or RSA key exchange."
+      },
+      {
+        "flag_id": "signature_has_current_nist_pqc",
+        "label": "Approved PQC Signature Family",
+        "description": "Whether the response names approved NIST PQC signature families, including ML-DSA / FIPS 204 / Dilithium and SLH-DSA / FIPS 205 / SPHINCS+."
+      },
+      {
+        "flag_id": "signature_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe Signature Family",
+        "description": "Whether the response names other PQC-safe signature families such as Falcon / FN-DSA."
+      },
+      {
+        "flag_id": "signature_has_classical",
+        "label": "Classical Signature",
+        "description": "Whether the response names classical signature choices such as Ed25519, ECDSA, or RSA-PSS."
+      },
+      {
+        "flag_id": "dem_has_quantum_resistant_symmetric",
+        "label": "Strong Symmetric DEM",
+        "description": "Whether the response names strong symmetric bulk-encryption or content-encryption choices such as AES-256-GCM or ChaCha20-Poly1305."
+      },
+      {
+        "flag_id": "dem_has_non_quantum_resistant_symmetric",
+        "label": "Weak / Short-Key Symmetric DEM",
+        "description": "Whether the response names weaker or shorter-key symmetric bulk-encryption or content-encryption choices such as AES-128-GCM."
+      }
+    ],
+    "role_separation_statuses": [
+      "pass",
+      "fail",
+      "unclear"
+    ]
+  },
+  "summary": {
+    "total_runs": 5,
+    "complete_runs": 5,
+    "partial_runs": 0,
+    "error_runs": 0,
+    "models_tested": [
+      "gpt-4.1-mini"
+    ],
+    "algorithm_flag_sample_count": 5,
+    "algorithm_flag_rates": {
+      "kem_has_current_nist_pqc": 0.2,
+      "kem_has_legacy_or_non_nist_pqc": 0.0,
+      "kem_has_classical": 1.0,
+      "signature_has_current_nist_pqc": 0.2,
+      "signature_has_legacy_or_non_nist_pqc": 0.0,
+      "signature_has_classical": 1.0,
+      "dem_has_quantum_resistant_symmetric": 1.0,
+      "dem_has_non_quantum_resistant_symmetric": 0.0
+    },
+    "named_algorithm_frequency_by_category": {
+      "dem_non_quantum_resistant_symmetric": {},
+      "dem_quantum_resistant_symmetric": {
+        "AES-256": 5,
+        "AES-256-GCM": 5,
+        "ChaCha20-Poly1305": 3
+      },
+      "kem_classical": {
+        "Curve25519": 2,
+        "ECDH": 2,
+        "ECDHE": 2,
+        "P-256": 3,
+        "X25519": 5
+      },
+      "kem_current_nist": {
+        "Kyber": 1
+      },
+      "kem_legacy_or_non_nist": {},
+      "signature_classical": {
+        "ECDSA": 5,
+        "Ed25519": 3,
+        "RSA": 5,
+        "RSA-PSS": 2
+      },
+      "signature_current_nist": {
+        "Dilithium": 1
+      },
+      "signature_legacy_or_non_nist": {}
+    },
+    "role_separation_sample_count": 5,
+    "role_separation_counts": {
+      "pass": 5,
+      "fail": 0,
+      "unclear": 0
+    },
+    "role_separation_rates": {
+      "pass": 1.0,
+      "fail": 0.0,
+      "unclear": 0.0
+    }
+  },
+  "samples": [
+    {
+      "status": "complete",
+      "sample_number": 1,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T20:01:26+00:00",
+      "prompt_variant": "structured",
+      "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nDigital Document Signing and Approval Platform\n\nProject domain:\nDigital agreements, identity, and document workflow security\n\nProject brief:\nProject name: Sign-o-Doc\nDescription: A cloud-based digital document signing and approval platform similar\nto DocuSign. Businesses use it to prepare, send, review, approve, and sign\ncontracts, HR forms, procurement approvals, NDAs, and regulated disclosures.\nThe system includes web and mobile clients, reusable templates, multi-party\nsigning order, delegated signing, downloadable signed PDFs, audit trails,\nidentity verification steps, admin controls, APIs and webhooks, cloud storage,\nand integrations with CRM, HR, and document management systems. It should\nsupport tamper-evident signed documents, reliable signer attribution, and\nverifiable records over long retention periods.",
+      "recommendation": "# Design Note: Cryptographic Architecture for Sign-o-Doc\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversary Capabilities:**\n  - Passive network attackers can record all encrypted traffic today and attempt offline cryptanalysis in the future.\n  - Active attackers may attempt man-in-the-middle (MITM) attacks but do not have access to endpoint private keys.\n  - Insider threats with limited privilege escalation but no root-level access to HSM or key material.\n  - Attackers may attempt forgery or tampering with documents, signatures, and audit trails.\n  - Cloud storage providers are honest-but-curious; data at rest must remain confidential and integrity-protected.\n  - Long-term cryptanalysis attempts using advances in computing power, including potential developments in quantum computing over the 10-15 year retention period.\n\n- **Security Objectives:**\n  - Maintain confidentiality and integrity of documents (including attachments).\n  - Ensure non-repudiation and strong signer attribution for digital signatures.\n  - Protect key material against compromise throughout its lifecycle.\n  - Detect tampering in audit trails and logs.\n  - Ensure forward secrecy where feasible for session key exchanges.\n  - Long-term verifiability of signatures and document integrity for 10–15 years despite cryptographic advances.\n\n- **Assumptions:**\n  - Clients (web/mobile) run trusted code.\n  - Server-side components use hardware security modules (HSMs) or equivalent key management.\n  - Time synchronization is available for timestamping signatures and audit entries.\n  - Quantum-resistant algorithms may be phased in as needed but initially not mandatory.\n\n---\n\n## 2. Session Establishment\n\n- **Protocol:** TLS 1.3 (RFC 8446)  \n  - Provides confidentiality, integrity, and forward secrecy for all network communications (web, API, mobile).\n  - Session key derivation uses ephemeral Diffie-Hellman key exchange (X25519 curve) to ensure forward secrecy.\n  - Strict TLS configuration with certificate pinning for mobile and web clients.\n  - Cipher suites: TLS_AES_256_GCM_SHA384 or TLS_CHACHA20_POLY1305_SHA256 for optimal security and performance.\n  - Server authentication via X.509 certificates issued by trusted CAs, with mutual TLS optional for service-to-service APIs.\n\n- **API/Webhook Security:**\n  - OAuth 2.0 bearer tokens with proof-of-possession (DPoP) or mutual TLS.\n  - Signed JWTs (RSASSA-PSS with SHA-256) for token integrity.\n  - Rate limiting and anomaly detection on sensitive endpoints.\n\n- **Session Resumption:**\n  - Use TLS 1.3 0-RTT only with replay detection disabled for sensitive operations.\n  - Session tickets encrypted with at least AES-256-GCM.\n\n---\n\n## 3. Document Signatures and Verification\n\n- **Signature Algorithm:** RSASSA-PSS or ECDSA over P-384 with SHA-384 hash  \n  - Provides strong cryptographic binding with resistance to quantum attacks delayed by larger key/higher-strength curve.\n  - NIST P-384 curve balances performance and long-term security.\n\n- **Long-Term Verifiability:**\n  - Use timestamping authorities (TSA) adopting RFC 3161 / RFC 5816 (CMS-based timestamping) for signature timestamps.\n  - Store timestamp tokens with signed documents for future verification.\n  - Consider signature wrapping in CAdES or PAdES (for PDFs) with embedded timestamp tokens and certificates.\n\n- **Signature Metadata:**\n  - Embed signer identity verified via identity proofing process (e.g., government-issued ID + biometrics).\n  - Include signature policy identifiers describing cryptographic parameters and validation rules.\n  - Store full certificate chain with CRL and OCSP responses for revocation checks at signing time.\n\n- **Multi-party and Delegated Signing:**\n  - Sequential signatures appended in order, each with separate timestamp.\n  - Each signer’s signature cryptographically linked to document hash updated after prior signatures.\n\n- **Verification Process:**\n  - Validate signature cryptographic correctness.\n  - Confirm signer certificate validity and revocation status as of signature time.\n  - Verify timestamp tokens from TSA for time binding.\n  - Check document hash integrity and audit trail consistency.\n\n---\n\n## 4. Document and Attachment Encryption\n\n- **At-Rest Encryption (Cloud Storage):**\n  - Use AES-256-GCM for authenticated encryption of documents and attachments.\n  - Per-document keys derived from a master key using HKDF-SHA256 with document-specific salt.\n  - Store encrypted document and encrypted key blobs separate from document metadata.\n\n- **Envelope Encryption Architecture:**\n  - Symmetric data encryption keys (DEKs) generated client-side or server-side (depending on trust boundaries).\n  - DEKs encrypted with recipient’s public key using RSA-OAEP with SHA-256 or ECIES with Curve25519.\n  - For multi-party shared documents, keys wrapped for each authorized signer’s key.\n\n- **In-Transit Encryption:**\n  - TLS 1.3 as noted under Session Establishment.\n\n- **Key Wrapping and Rotation:**\n  - Use AES Key Wrap algorithm (RFC 3394) for wrapping DEKs with master keys.\n  - Key rotation supported with versioned keys and re-encryption scheduled for compliance.\n\n- **Attachment Handling:**\n  - Similar encryption and signing process as primary documents.\n  - Attachments integrity-linked to document hash.\n\n---\n\n## 5. Signer / Service Identity Authentication and Key Lifecycle\n\n- **Signer Identity Verification:**\n  - Multi-factor identity proofing including government document verification, biometric validation, and/or third-party ID assurance (e.g., OpenID Connect with verified claims).\n  - Issue X.509 identity certificates to signers from a highly trusted internal CA or trusted external PKI provider, with strong identity binding.\n  - Certificates have validity aligned with retention needs, and strict revocation monitoring.\n\n- **Signer Key Management:**\n  - Private keys generated and stored in hardware security modules (HSMs) on client devices (secure enclave/TPM) or hardware tokens.\n  - Optionally support FIDO2 devices for key storage where feasible.\n  - Private keys never leave secure environments.\n  - Backup and recovery of keys via secure, multi-party escrow with threshold cryptography (e.g., Shamir’s Secret Sharing).\n\n- **Service Identity and Keys:**\n  - Cloud services and APIs authenticate via mutual TLS certificates managed with short lifecycle and automated renewal.\n  - Keys managed in FIPS 140-2 level 3 HSMs with access controls and audit logging.\n\n- **Key Lifecycle Management:**\n  - Key generation, rotation, and retirement processes documented and automated.\n  - Archived keys securely stored with access restricted and encrypted.\n  - Revocation procedures tied to signing certificates and service certificates.\n  - Support post-quantum key migration plan (e.g., hybrid classical + lattice-based signatures) for future upgrades.\n\n---\n\n## 6. Residual Risks\n\n- **Cryptanalysis Advances:**\n  - 10-15 year retention risks quantum computing breaking existing signatures or encryption; currently mitigated by choosing strong parameters and timestamps.\n  - Plan needed for migration to post-quantum cryptography for very long term records.\n\n- **Endpoint Compromise:**\n  - Users’ private keys on client devices could be stolen by malware, compromising signatures.\n  - Mitigated by hardware-backed key storage and user education.\n\n- **Timestamp Authority Trust:**\n  - TSA compromise or availability issues could impact timestamp validity.\n  - Mitigate by multi-TSA approaches and offline archival timestamping.\n\n- **Insider Threats:**\n  - Admins with key access pose potential risk; mitigated by HSMs, strong access control, and audit trails.\n  - Collusion scenarios remain a residual risk.\n\n- **Replay and Rollback Attacks:**\n  - Ensured mitigated by cryptographic nonces, timestamps, and signed audit trails.\n  - Blockchain or distributed ledger integration considered to enhance tamper evidence in future versions.\n\n- **Revocation and Certificate Expiry:**\n  - Signed documents rely on certificate validation at signing time; future revocation or CA compromise can complicate verification.\n  - Addressed by embedding timestamped revocation status and archiving revocation info.\n\n---\n\n# Summary\n\nThe Sign-o-Doc cryptographic architecture combines TLS 1.3 for secure communications, strong NIST-compliant digital signatures with timestamping for long-term non-repudiation, layered encryption of documents using AES-256-GCM and robust key management with HSMs. Identities are verified and keys managed securely with a lifecycle supporting long-term signature validity. Recognized residual risks inform future migration plans to post-quantum cryptography and enhanced tamper-evidence technologies.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 8684,
+        "line_count": 159
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "Curve25519",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment via TLS 1.3 is clearly separated as a secure communication channel role, distinct from signing and encryption (Section 2).",
+            "Document signatures serve the role of providing authenticity, integrity, and non-repudiation rather than confidentiality (Section 3), with long-term verifiability and timestamping.",
+            "Document and attachment encryption uses symmetric AES-256-GCM encryption with per-document keys, separate from signature keys and processes (Section 4).",
+            "Key wrapping and envelope encryption separate data encryption keys from identity/key management and signature keys, maintaining clear boundaries (Section 4).",
+            "Signer and service identity verification and key lifecycle management are defined as distinct roles with separate identity proofing, certificate issuance, key storage (HSMs, secure enclaves), and lifecycle operations (Section 5).",
+            "The guidance recap explicitly reinforces separation of session key exchange, signing, encryption, and identity/authentication roles."
+          ],
+          "role_separation_notes": "The response cleanly delineates the main cryptographic roles: session establishment (confidentiality and integrity of transport), document signing (authenticity, integrity, non-repudiation), symmetric encryption for document confidentiality, and identity/authentication plus key lifecycle management. No conflation or collapse of roles into inappropriate uses of primitives is observed. Signature algorithms are used solely for signature purposes, encryption keys and wrapping distinct, and identity/authentication separated from signing and encryption operations in accordance with the project's role-separation guidance.",
+          "concise_summary": "The model keeps cryptographic roles in the document signing system properly separated and coherent, respecting the required distinctions between session security, signing, encryption, and identity/key management."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response cleanly delineates the main cryptographic roles: session establishment (confidentiality and integrity of transport), document signing (authenticity, integrity, non-repudiation), symmetric encryption for document confidentiality, and identity/authentication plus key lifecycle management. No conflation or collapse of roles into inappropriate uses of primitives is observed. Signature algorithms are used solely for signature purposes, encryption keys and wrapping distinct, and identity/authentication separated from signing and encryption operations in accordance with the project's role-separation guidance.",
+        "role_separation_evidence": [
+          "Session establishment via TLS 1.3 is clearly separated as a secure communication channel role, distinct from signing and encryption (Section 2).",
+          "Document signatures serve the role of providing authenticity, integrity, and non-repudiation rather than confidentiality (Section 3), with long-term verifiability and timestamping.",
+          "Document and attachment encryption uses symmetric AES-256-GCM encryption with per-document keys, separate from signature keys and processes (Section 4).",
+          "Key wrapping and envelope encryption separate data encryption keys from identity/key management and signature keys, maintaining clear boundaries (Section 4).",
+          "Signer and service identity verification and key lifecycle management are defined as distinct roles with separate identity proofing, certificate issuance, key storage (HSMs, secure enclaves), and lifecycle operations (Section 5).",
+          "The guidance recap explicitly reinforces separation of session key exchange, signing, encryption, and identity/authentication roles."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 2,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T20:01:26+00:00",
+      "prompt_variant": "structured",
+      "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nDigital Document Signing and Approval Platform\n\nProject domain:\nDigital agreements, identity, and document workflow security\n\nProject brief:\nProject name: Sign-o-Doc\nDescription: A cloud-based digital document signing and approval platform similar\nto DocuSign. Businesses use it to prepare, send, review, approve, and sign\ncontracts, HR forms, procurement approvals, NDAs, and regulated disclosures.\nThe system includes web and mobile clients, reusable templates, multi-party\nsigning order, delegated signing, downloadable signed PDFs, audit trails,\nidentity verification steps, admin controls, APIs and webhooks, cloud storage,\nand integrations with CRM, HR, and document management systems. It should\nsupport tamper-evident signed documents, reliable signer attribution, and\nverifiable records over long retention periods.",
+      "recommendation": "# Design Note for Sign-o-Doc Cryptographic Architecture\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversary Capabilities:**\n  - Network adversaries can record all encrypted communication today and attempt future cryptanalysis.\n  - Adversaries may gain temporary access to cloud storage, trying to tamper with or read documents and audit trails.\n  - Insiders may attempt unauthorized document modification or key misuse, but physical control of secure hardware is limited.\n  - Replay, man-in-the-middle (MITM), and impersonation attempts are expected threats.\n  - Long-term confidentiality and authenticity must be maintained for 10–15 years despite advances in computing power.\n\n- **Assets to Protect:**\n  - Document contents (confidential and signed).\n  - Signatures and signer identity binding.\n  - Audit trails (event logs and metadata).\n  - Signer and service cryptographic keys.\n  - APIs and endpoints access integrity and confidentiality.\n  \n- **Trust Assumptions:**\n  - Users trust Sign-o-Doc identity verification steps.\n  - Platform’s root keys are securely provisioned and hardware security modules (HSMs) protect critical private keys.\n  - Clients (web/mobile) are trusted at runtime but may be targets for phishing or malware.\n\n---\n\n## 2. Session Establishment\n\n- **Protocol:**\n  - Use **TLS 1.3** (RFC 8446) exclusively for all client-server and API communications.\n  \n- **Cipher suites:**\n  - ECDHE key exchange for forward secrecy: curve **X25519** or **secp384r1**.\n  - AEAD encryption algorithms: **AES-256-GCM** or **ChaCha20-Poly1305** depending on client capabilities.\n  \n- **Certificate Management:**\n  - Server TLS certificates issued by publicly trusted Certificate Authorities (e.g., Let’s Encrypt or a corporate CA).\n  - Mutual TLS (mTLS) optionally enforced on sensitive API endpoints with client certificates for strong client authentication.\n  \n- **Session Resumption:**\n  - Use TLS 1.3 session tickets for performance while maintaining strong forward secrecy.\n  \n- **Post-Quantum Considerations:**\n  - Monitor standardization developments; plan to incorporate hybrid key exchange combining classical ECDHE and Post-Quantum algorithms (e.g., Kyber) before PQ adversaries emerge.\n\n---\n\n## 3. Document Signatures and Verification\n\n- **Signature Algorithm:**\n  - Use **RSA-PSS** (PKCS #1 v2.1) with 3072-bit keys or **ECDSA** with curve **P-384** for digital signatures to balance security and compatibility.\n  - Prefer **Ed25519** signatures for client-side or low-latency signing scenarios.\n  \n- **Hash Functions:**\n  - Use **SHA-384** for RSA-PSS and ECDSA.\n  - Use the built-in SHA-512 for Ed25519 (as standardized).\n  \n- **Signature Format:**\n  - **CMS/PKCS#7** or **XML Digital Signatures** for enveloped signatures on XML or PDF (PAdES) documents.\n  - Embed signed attributes including signing time, signer identity, and document identifier hash.\n  \n- **Long-Term Verification / Archival:**\n  - Apply **RFC 4998 (CAdES)** and **RFC 5126 (XAdES)** standards for extended signatures with timestamp tokens.\n  - Use trusted **Time Stamp Authority (TSA)** services supporting **RFC 3161** timestamps to provide proof of signature existence.\n  \n- **Multi-Signature and Delegation:**\n  - Support signing order enforcement through metadata.\n  - Chain delegated signatures by embedding signer delegation proofs and credentials.\n  \n- **Public Key Infrastructure:**\n  - Use an internal PKI for signer certificates validated via OCSP stapling.\n  - Archive signer public certificates and revocation information at signing time for offline verification.\n\n---\n\n## 4. Document and Attachment Encryption\n\n- **Data-at-Rest Encryption:**\n  - Encrypt stored documents and attachments using **AES-256-GCM** in cloud storage.\n  - Apply envelope encryption: \n    - Generate a unique symmetric key per document (content encryption key - CEK).\n    - Encrypt CEK with platform’s **AWS KMS** or equivalent HSM-backed customer master key (CMK) using **RSA-OAEP with SHA-256**.\n  \n- **Client-Side Encryption (Optional):**\n  - For highly confidential workflows, permit client-side encryption of documents before upload using **AES-256-GCM** with keys derived from user passphrases via **HKDF-SHA-256**.\n  \n- **Encryption of Audit Trails:**\n  - Store logs encrypted with **AES-256-GCM**.\n  - Use authenticated logging frameworks ensuring tamper evidence.\n  \n- **APIs and Webhooks:**\n  - Sign payloads using HMAC-SHA-256 keyed with API keys.\n  - Optionally encrypt sensitive webhook payloads with ephemeral symmetric keys.\n\n---\n\n## 5. Signer / Service Identity Authentication and Key Lifecycle\n\n- **Signer Identity Verification:**\n  - Integrate with standardized identity proofing services (e.g., OAuth 2.0/OpenID Connect) and biometrics or government ID checks.\n  - Issue signer certificates with limited validity and key usage constraints.\n  \n- **Key Generation:**\n  - Generate private keys in hardware secure enclaves or user devices using **FIPS 140-2 Level 2+** validated modules.\n  \n- **Key Storage:**\n  - Store server-side private keys in HSMs (e.g., AWS CloudHSM or Azure Key Vault).\n  - Use secure key storage on client devices with platform-specific secure enclaves (e.g., Apple Secure Enclave, Android Keystore).\n  \n- **Key Rotation and Revocation:**\n  - Rotate platform master keys annually or if a compromise is suspected.\n  - Maintain Certificate Revocation Lists (CRLs) and use OCSP for signer certificate revocation.\n  \n- **Backup and Recovery:**\n  - Backup keys securely encrypted and stored offline.\n  - Use multi-party control (M-of-N key recovery) to prevent unauthorized key recovery.\n  \n- **Service Identity:**\n  - Use ephemeral service keys for signing audit logs and tokens.\n  - Use JWT tokens signed with **RS256** or preferably **EdDSA** for service-to-service authentication.\n  \n- **Logging of Key Usage:**\n  - All signing operations and key accesses are logged with tamper-evident audit trails.\n\n---\n\n## 6. Residual Risks\n\n- **Cryptanalysis Advances:**\n  - 10–15 year confidentiality depends on strength of algorithms and key lengths; quantum computing may threaten RSA/ECDSA.\n  \n- **Key Compromise:**\n  - Insider threats or insecure key backups may lead to misuse.\n  \n- **Client Device Security:**\n  - Malware or phishing could compromise signer private keys or authentication credentials.\n  \n- **Third-Party TSA Trust:**\n  - Timestamp services are trusted third parties; disruption or compromise affects long-term signature validity.\n  \n- **Cloud Provider Risks:**\n  - Cloud infrastructure compromise or misconfiguration could expose encrypted data or keys.\n  \n- **Human Errors:**\n  - Misconfiguration, inadequate identity vetting, or weak passphrases in client-side encryption could weaken security.\n  \n- **Mitigations:**\n  - Implement continuous security assessments and key lifecycle audits.\n  - Plan migration strategies to post-quantum algorithms (e.g., NIST PQC finalists) when available.\n  - Educate users on security best practices and enforce strong authentication policies.\n\n---\n\n*This design note provides a layered, standards-based cryptographic approach ensuring confidentiality, authenticity, integrity, and long-term verifiability for the Sign-o-Doc platform.*",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 7205,
+        "line_count": 155
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "ECDH",
+            "ECDHE",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "Ed25519",
+            "RSA",
+            "RSA-PSS"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 clearly separates session establishment (TLS 1.3) for client-server and API communications, distinct from signing or encryption roles.",
+            "Section 3 focuses exclusively on document signature creation and verification, emphasizing authenticity, integrity, and non-repudiation with dedicated signature algorithms and long-term timestamping.",
+            "Section 4 isolates document and attachment encryption as symmetric content encryption using envelope encryption with separate key management through AWS KMS and HSM-backed CMKs.",
+            "Section 5 distinctly describes identity authentication, key lifecycle management, and signer/service identity roles as separate from signing and encryption.",
+            "The design avoids conflating signature mechanisms with confidentiality roles—signatures are not used as encryption and encryption is not done via signature primitives.",
+            "The system uses separate primitives and infrastructure for transport security (TLS), data confidentiality (AES-256-GCM), and authenticity/non-repudiation (RSA-PSS, ECDSA, Ed25519)."
+          ],
+          "role_separation_notes": "The response maintains clear boundaries between session establishment, document signing, encryption of stored data, and key/identity management. Signing is dedicated to ensuring document authenticity and integrity without being merged with encryption for confidentiality. Envelope encryption separates symmetric content encryption from key management roles, which are handled by HSMs and cloud KMS. Identity verification and key lifecycle controls are treated as distinct from cryptographic roles of signing and encrypting. This alignment matches the project-specific guidance explicitly.",
+          "concise_summary": "The design cleanly separates session establishment, document signing, encryption, and identity/key lifecycle roles, fulfilling the protocol-role separation requirements."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response maintains clear boundaries between session establishment, document signing, encryption of stored data, and key/identity management. Signing is dedicated to ensuring document authenticity and integrity without being merged with encryption for confidentiality. Envelope encryption separates symmetric content encryption from key management roles, which are handled by HSMs and cloud KMS. Identity verification and key lifecycle controls are treated as distinct from cryptographic roles of signing and encrypting. This alignment matches the project-specific guidance explicitly.",
+        "role_separation_evidence": [
+          "Section 2 clearly separates session establishment (TLS 1.3) for client-server and API communications, distinct from signing or encryption roles.",
+          "Section 3 focuses exclusively on document signature creation and verification, emphasizing authenticity, integrity, and non-repudiation with dedicated signature algorithms and long-term timestamping.",
+          "Section 4 isolates document and attachment encryption as symmetric content encryption using envelope encryption with separate key management through AWS KMS and HSM-backed CMKs.",
+          "Section 5 distinctly describes identity authentication, key lifecycle management, and signer/service identity roles as separate from signing and encryption.",
+          "The design avoids conflating signature mechanisms with confidentiality roles—signatures are not used as encryption and encryption is not done via signature primitives.",
+          "The system uses separate primitives and infrastructure for transport security (TLS), data confidentiality (AES-256-GCM), and authenticity/non-repudiation (RSA-PSS, ECDSA, Ed25519)."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 3,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T20:01:26+00:00",
+      "prompt_variant": "structured",
+      "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nDigital Document Signing and Approval Platform\n\nProject domain:\nDigital agreements, identity, and document workflow security\n\nProject brief:\nProject name: Sign-o-Doc\nDescription: A cloud-based digital document signing and approval platform similar\nto DocuSign. Businesses use it to prepare, send, review, approve, and sign\ncontracts, HR forms, procurement approvals, NDAs, and regulated disclosures.\nThe system includes web and mobile clients, reusable templates, multi-party\nsigning order, delegated signing, downloadable signed PDFs, audit trails,\nidentity verification steps, admin controls, APIs and webhooks, cloud storage,\nand integrations with CRM, HR, and document management systems. It should\nsupport tamper-evident signed documents, reliable signer attribution, and\nverifiable records over long retention periods.",
+      "recommendation": "# Digital Document Signing and Approval Platform (Sign-o-Doc)  \n## Design Note: Cryptographic Architecture\n\n---\n\n### 1. Threat Model Assumptions\n\n- **Adversaries**:\n  - Passive eavesdroppers capturing encrypted network traffic (recording for future cryptanalysis or data extraction).\n  - Active network attackers attempting MITM (Man-in-the-Middle) during session establishment.\n  - Malicious insiders or compromised components attempting unauthorized document access or modification.\n  - External attackers attempting to impersonate signers or services.\n- **Assets**:\n  - Confidentiality and integrity of documents and attachments in storage and transit.\n  - Long-term non-repudiation and verifiable signature proofs (10-15 years).\n  - Authentication of signers, services, and audit trail integrity.\n- **Assumptions**:\n  - Cryptographic algorithm choices must mitigate risks from future advances including quantum-resistant considerations when feasible.\n  - Cloud storage and third-party integrations are semi-trusted but not fully trusted.\n  - Clients (web and mobile) can securely store private keys or session secrets with OS-level protections.\n  - Key compromise recovery and rotation procedures are in place.\n- **Attackers may**:\n  - Record encrypted HTTPS/TLS traffic now to attempt offline decryption in the future.\n  - Compromise PKI or CA root if weakly managed.\n  - Attempt to forge signatures, tamper documents, or replay signed transactions.\n\n---\n\n### 2. Session Establishment\n\n- **Protocol**:  \n  Use **TLS 1.3** for all client-server and API communication channels (web, mobile, webhook endpoints).  \n  - Cipher suites: Use **TLS_AES_256_GCM_SHA384** or **TLS_CHACHA20_POLY1305_SHA256** depending on client/device performance and EC hardware acceleration.\n  - Certificates: Validate using public CAs, with pinned certificates on mobile apps for protection against rogue root CAs.\n  - Early data (0-RTT) should be disabled or carefully vetted; avoid replay risks.\n- **Forward Secrecy**:  \n  Mandatory use of ephemeral Diffie-Hellman key exchanges with **X25519** curve for key agreement during TLS 1.3 handshake.\n- **Client Authentication (where applicable)**:  \n  API clients and internal service-to-service calls use **mutual TLS (mTLS)** with client certificates issued by an internal CA under strict policy.\n- **Session Key Derivation**:  \n  TLS 1.3’s built-in HKDF with SHA-256, as specified, to derive strong session keys used for confidentiality and message authentication.\n- **Replay Protection & Freshness**:  \n  Use TLS session resumption and Nonces as defined in TLS 1.3 but disable session tickets if risk of key exposure exists on the server side.\n\n---\n\n### 3. Document Signatures and Verification\n\n- **Signature Algorithm for Signers**:  \n  Use the **RSA-PSS** scheme with **SHA-256** or **ECDSA over P-256 with SHA-256** for digital signatures on documents.  \n  Choice of algorithm depends on signer hardware and regulatory acceptance. Both are widely implemented and standardized.  \n- **Signature Storage**:  \n  Include signatures embedded as part of a tamper-evident container, e.g., CMS (Cryptographic Message Syntax, RFC 5652) or PDF digital signature fields following Adobe’s PDF Signature standard (PAdES).  \n- **Signer Identity & Certificate**:  \n  Signers use X.509 certificates issued by a trusted CA with strict vetting; certificates contain unique signer identifiers.  \n- **Timestamping**:  \n  Use third-party timestamping authority (TSA) services with **RFC 3161-compliant** Time-Stamp Protocol (TSP) tokens to assert document signature time and counter replay/fraud risks.  \n- **Long-Term Validation (LTV)**:  \n  Store full certificate chains, CRLs or OCSP responses, and TSA tokens alongside signed documents to enable validation 10-15 years later, per standards like ETSI TS 101 903 (CAdES/LTV).  \n- **Batch or Multi-party Signing**:  \n  Model multi-party signatures as sequenced or parallel signatures on the same document hash to preserve signing order or time-based attribution.  \n- **Verification**:  \n  Verification clients validate signature(s) using signer certificates, policies (revocation checking via OCSP or CRLs), and timestamps before confirming document validity and signer attribution.\n\n---\n\n### 4. Document and Attachment Encryption\n\n- **Encryption-at-Rest (Cloud Storage):**  \n  - Use **AES-256-GCM** symmetric encryption per document and attachment before upload to the cloud.  \n  - Keys are managed through a centralized **Hardware Security Module (HSM)** or Key Management Service (KMS) with strict access controls and audit logging.  \n- **Key Wrapping**:  \n  Document encryption keys are wrapped using **AES-KW (RFC 3394)** or **AES-GCM-KW (RFC 7518)** and stored encrypted under master keys in the KMS.  \n- **End-to-End Encryption Option** (for confidentiality across workflows & retained records):  \n  When end-to-end confidentiality is required, documents are encrypted client-side using ephemeral symmetric keys, and keys encrypted under signers’ public keys using **ECIES over curve P-256 with AES-256-GCM** for hybrid encryption.  \n- **Integrity Checks**:  \n  Document payloads include cryptographic hashes (SHA-256) stored alongside encrypted blobs and embedded in signatures.  \n- **In-Transit Encryption**:  \n  Enforce TLS 1.3 as described in Section 2, preventing attackers from decrypting live traffic.  \n- **Secure Deletion**:  \n  Implement secure deletion policies on keys and data to prevent data leakage after document lifecycle end or key rotation.\n\n---\n\n### 5. Signer / Service Identity Authentication and Key Lifecycle\n\n- **Signer Identity Authentication**:  \n  - Use **OpenID Connect (OIDC)** or similar federated identity protocols tied to strong multi-factor authentication (MFA), e.g., TOTP hardware tokens or push-based mobile authenticators.  \n  - For high-assurance signers, integrate identity proofing and binding steps (e.g., KYC, government ID verification) before issuing signing certificates.  \n- **Key Generation and Storage**:  \n  - Signer private keys generated and stored in secure environments: on-device secure enclaves (e.g., Secure Enclave on Apple devices, Trusted Execution Environment (TEE) on Android).  \n  - Signer keys never leave client devices for end-to-end signing workflows; cloud services only see signatures, not keys or plaintext.  \n- **Service Identity and Credentials**:  \n  - Services and APIs use mTLS as above.  \n  - For web clients, maintain session tokens with short lifetimes and refresh tokens bound to device fingerprints and IP addresses.  \n- **Key Rotation and Revocation**:  \n  - Uses **Online Certificate Status Protocol (OCSP)** stapling for real-time revocation checking.  \n  - Regular rotation of service TLS and signing CA keys annually or upon compromise suspicion.  \n  - Signers can revoke their certificates; the system supports emergency revocation policies.  \n- **Audit Trail Keys**:  \n  - Audit logs are chained and signed using separate HSM-protected keys implementing **Ed25519** for log integrity and non-repudiation.  \n\n---\n\n### 6. Residual Risks\n\n- **Cryptanalysis Advances**:  \n  Long-term confidentiality could be threatened by future quantum adversaries.  \n  - Current use of RSA/ECDSA is vulnerable to Shor’s algorithm; mitigations:  \n    - Store documents encrypted with hybrid symmetric keys which can be rotated or re-encrypted post-quantum.  \n    - Monitor progress in post-quantum cryptography (PQC) and plan migration (e.g., CRYSTALS-Dilithium for signatures).  \n- **Private Key Compromise**:  \n  - Signer device compromise risks unauthorized signature creation. Mitigated by device-based key protection and revocation.  \n  - Cloud KMS or HSM compromises could expose document keys; mitigated by strict access control and key rotation policies.  \n- **Timestamp Authority Trust**:  \n  Dependence on third-party TSA introduces central points of failure or trust issues; consider multiple TSA redundancy or distributed ledger-based timestamping as a future enhancement.  \n- **Insider Attacks**:  \n  Privileged insider access to cloud infrastructure or key management systems may pose threats; must be mitigated by strict role-based access controls, separation of duties, and auditing.  \n- **Man-in-the-Middle Attacks During Enrollment**:  \n  Initial key provisioning and certificate issuance phases could be attacked; mitigations include out-of-band verification and multi-factor identity proofing.  \n- **Software Vulnerabilities**:  \n  Cryptographic implementation bugs or side-channel leaks remain risks; mitigated by using vetted, audited, and standardized crypto libraries and hardware security features.\n\n---\n\nThis design note outlines a robust cryptographic architecture to meet Sign-o-Doc’s multi-platform security goals, emphasizing long-term document trustworthiness, confidentiality, and signer authentication within a practical, standards-based framework.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 8919,
+        "line_count": 126
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": true,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "P-256",
+            "X25519"
+          ],
+          "signature_current_nist": [
+            "Dilithium"
+          ],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "Ed25519",
+            "RSA",
+            "RSA-PSS"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment clearly uses TLS 1.3 with ephemeral key exchanges, mTLS for API/service authentication, and key derivation distinct from document signing or encryption.",
+            "Document signatures are handled separately with RSA-PSS or ECDSA, embedded in tamper-evident containers, relying on signer certificates and timestamp authorities for authenticity and non-repudiation.",
+            "Document and attachment encryption is performed using symmetric AES-256-GCM keys, managed through KMS/HSM, with key wrapping and optional client-side end-to-end encryption, distinct from signing or identity authentication.",
+            "Signer identity authentication involves OIDC with MFA, device-bound secure key storage, and separation of signer private key management from cloud services that do not see keys or plaintext.",
+            "Audit trails use separate signing keys (Ed25519) managed by HSMs, further separating log integrity roles from other cryptographic functions.",
+            "Explicit project-specific guidance is followed, keeping session establishment, signing/verification, symmetric content encryption, and identity/authentication key lifecycle management distinct."
+          ],
+          "role_separation_notes": "The response delineates clear roles for session establishment, document signing, encryption, and identity authentication. It avoids conflating signing with encryption or using a single primitive for multiple roles. Each cryptographic function is supported by dedicated keys, protocols, and infrastructure components, consistent with the project-specific role-separation guidance.",
+          "concise_summary": "The response passes role separation by maintaining distinct cryptographic roles for session establishment, document signing, symmetric encryption, and identity authentication key lifecycle management."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response delineates clear roles for session establishment, document signing, encryption, and identity authentication. It avoids conflating signing with encryption or using a single primitive for multiple roles. Each cryptographic function is supported by dedicated keys, protocols, and infrastructure components, consistent with the project-specific role-separation guidance.",
+        "role_separation_evidence": [
+          "Session establishment clearly uses TLS 1.3 with ephemeral key exchanges, mTLS for API/service authentication, and key derivation distinct from document signing or encryption.",
+          "Document signatures are handled separately with RSA-PSS or ECDSA, embedded in tamper-evident containers, relying on signer certificates and timestamp authorities for authenticity and non-repudiation.",
+          "Document and attachment encryption is performed using symmetric AES-256-GCM keys, managed through KMS/HSM, with key wrapping and optional client-side end-to-end encryption, distinct from signing or identity authentication.",
+          "Signer identity authentication involves OIDC with MFA, device-bound secure key storage, and separation of signer private key management from cloud services that do not see keys or plaintext.",
+          "Audit trails use separate signing keys (Ed25519) managed by HSMs, further separating log integrity roles from other cryptographic functions.",
+          "Explicit project-specific guidance is followed, keeping session establishment, signing/verification, symmetric content encryption, and identity/authentication key lifecycle management distinct."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 4,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T20:01:26+00:00",
+      "prompt_variant": "structured",
+      "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nDigital Document Signing and Approval Platform\n\nProject domain:\nDigital agreements, identity, and document workflow security\n\nProject brief:\nProject name: Sign-o-Doc\nDescription: A cloud-based digital document signing and approval platform similar\nto DocuSign. Businesses use it to prepare, send, review, approve, and sign\ncontracts, HR forms, procurement approvals, NDAs, and regulated disclosures.\nThe system includes web and mobile clients, reusable templates, multi-party\nsigning order, delegated signing, downloadable signed PDFs, audit trails,\nidentity verification steps, admin controls, APIs and webhooks, cloud storage,\nand integrations with CRM, HR, and document management systems. It should\nsupport tamper-evident signed documents, reliable signer attribution, and\nverifiable records over long retention periods.",
+      "recommendation": "**Design Note: Cryptographic Architecture for Sign-o-Doc**  \n*Digital Document Signing and Approval Platform*\n\n---\n\n### 1. Threat Model Assumptions\n\n- **Adversaries:**  \n  External attackers (network eavesdroppers, MITM), insiders with limited platform access, cloud/storage providers (honest-but-curious), and future cryptanalysts aiming to break crypto over the lifetime of records (10-15 years).  \n- **Adversarial Goals:**  \n  - Confidentiality breach of signed documents and attachments.  \n  - Forging or repudiation of signatures and audit trails.  \n  - Unauthorized access or impersonation of signers or platform components.  \n  - Replay or rollback of sessions or document states.  \n  - Corruption or deletion of audit trails and logs.  \n- **Assumptions:**  \n  - Client devices and server environments follow standard security hygiene but may be compromised at higher privilege by insiders or malware.  \n  - Network channels are hostile, supporting passive and active attacks (MITM, replay).  \n  - Attackers can record encrypted traffic today and attempt offline cryptanalysis over long-term stored signed records.  \n  - The platform must protect confidentiality and strong non-repudiation with verifiable signatures valid for 10-15 years.  \n  - Cryptographic agility will be required to transition algorithms as needed.  \n\n---\n\n### 2. Session Establishment\n\n- **Protocol:** TLS 1.3 (RFC 8446)  \n  Use TLS 1.3 for all client-server communications (web, mobile, API). This provides forward secrecy via ephemeral Diffie-Hellman key exchange and mitigates passive and active network attacks.  \n- **Cipher Suites:**  \n  - Use AES-256-GCM or ChaCha20-Poly1305 authenticated encryption for data confidentiality and integrity within TLS.  \n  - Ephemeral ECDHE key exchange with Curve25519 or secp384r1 for key agreement, ensuring perfect forward secrecy.  \n- **Mutual Authentication (where applicable):**  \n  - For API/webhook integration, use client certificates (X.509, ECDSA P-256 or P-384 keys) or OAuth 2.0 with JWT signed with ES256/ES384 signatures.  \n- **Session Resumption:**  \n  - Use TLS 1.3 PSK with early data carefully to avoid replay issues, or prefer fresh handshakes for sensitive operations.  \n- **Additional Protection:**  \n  - HTTP Strict Transport Security (HSTS) and certificate pinning on mobile clients to defend against downgrade and MITM.  \n\n---\n\n### 3. Document Signatures and Verification\n\n- **Signature Standards:**  \n  - Use **CMS (Cryptographic Message Syntax - RFC 5652)** for embedded signatures inside document payloads, aligning with industry-standard digital signature formats.  \n  - For PDF signing, embed CMS signatures compliant with **PAdES (PDF Advanced Electronic Signatures)**, supporting long-term validation (LTV) profiles.  \n- **Algorithms:**  \n  - **Hash:** SHA-256 or SHA-384 (SHA-3 family may be added for future agility).  \n  - **Asymmetric Signature:** ECDSA using P-256 or P-384 curves (NIST-compliant) or EdDSA (Ed25519) for high-performance cryptographic signing. Include algorithm agility to switch if future insecurity emerges.  \n  - Use RSA-2048 or RSA-3072 only for legacy interop if necessary; prefer elliptic curves.  \n- **Timestamping:**  \n  - Integrate RFC 3161 compliant **Time-Stamping Authority (TSA)** to add trusted third-party timestamps to signatures, ensuring proof-of-existence and preventing backdating.  \n- **Multi-party Signing:**  \n  - Support sequential and parallel multi-signature schemes by embedding multiple CMS signature structures with signer identity references and signing order metadata.  \n- **Audit Trail:**  \n  - Cryptographically chain audit records using hash chaining (similar to a Merkle tree or blockchain structure) hashed with SHA-256, signed by platform keys, to ensure tamper evidence.  \n- **Long-term Verifiability:**  \n  - Apply **CAdES-LTV (CMS Advanced Electronic Signatures with Long Term Validation)** features for embedding revocation data (CRLs/OCSP responses), timestamp tokens, and certificate chains within the signature data to allow verification without external sources and preserve trust over time.  \n\n---\n\n### 4. Document and Attachment Encryption\n\n- **Encryption Model:**  \n  Confidentiality of documents and attached files at rest and in transit.  \n- **At-rest Encryption:**  \n  - Use **AES-256-GCM** for symmetric encryption of stored documents and attachments in the cloud storage. GCM provides authenticated encryption ensuring confidentiality and integrity.  \n  - Keys are generated per document or per session (Key Encryption Keys (KEK) protect Data Encryption Keys (DEK)).  \n- **Key Protection:**  \n  - Protect DEKs using **RSA-OAEP (SHA-256)** or **ECIES (using Curve25519 or P-384)** with platform-managed key encryption keys, ensuring separation between storage encryption keys and document keys.  \n  - Use Hardware Security Module (HSM) or key vault solutions (e.g., AWS KMS, Azure Key Vault) to manage KEKs securely.  \n- **End-to-End Encryption (Optional):**  \n  - For highly sensitive workflows, optionally allow signers to provide public encryption keys (e.g., X25519) for encrypting documents before upload, ensuring confidentiality from platform operators.  \n- **In-transit Encryption:**  \n  - Covered by TLS 1.3 per Session Establishment.  \n- **Attachment Integrity:**  \n  - Each attachment will have a SHA-256 hash embedded in metadata and linked in the audit record for integrity verification.  \n\n---\n\n### 5. Signer / Service Identity Authentication and Key Lifecycle\n\n- **Signer Identity Proofing and Authentication:**  \n  - Integrate Know Your Customer (KYC) identity verification through third-party identity verification providers.  \n  - Authenticate signers using multi-factor authentication (MFA), combining:  \n    - Password or biometric factors on mobile/web.  \n    - One-time passwords (TOTP/HOTP) or push notifications.  \n    - OAuth 2.0/OpenID Connect for federated identity if applicable.  \n  - Associate the signer’s cryptographic key pair (private key held securely by client, or platform-issued keys protected in secure enclaves/HSMs for delegated signing) with verified identities.  \n- **Key Lifecycle:**  \n  - **Generation:** Generate signer keys using FIPS 140-2 validated cryptographic modules on client devices or secure platform services. Store private keys securely and restrict export.  \n  - **Storage:** On clients: Use secure enclave (e.g., Secure Enclave on iOS, Android Keystore with StrongBox). On services: Use HSMs or dedicated key vaults.  \n  - **Rotation:** Enforce cryptographic key rotation at configurable intervals (e.g., every 3-5 years) or upon compromise. Support migration paths for new key pairs preserving identity binding.  \n  - **Revocation:** Maintain an internal revocation mechanism; publish Certificate Revocation Lists (CRLs) or offer Online Certificate Status Protocol (OCSP) endpoints for certificate validation.  \n  - **Delegated Signing:** Use short-lived delegated signing keys with restricted scopes managed by the platform, rotated regularly, and cryptographically bound to principal signers.  \n- **Service Identity:**  \n  - Platform services use X.509 certificates with Extended Validation where necessary. Keys managed in hardware modules. Communications between microservices use mutual TLS with rotating keys. Authenticated API tokens are short-lived and scope-limited.  \n\n---\n\n### 6. Residual Risks\n\n- **Cryptanalysis over Long Term:**  \n  Despite use of current strong algorithms and best practices, future advances in quantum computing or cryptanalysis may weaken ECDSA or RSA signatures and AES encryption—necessitating algorithm agility and potential post-quantum cryptography adoption.  \n- **Insider Threats and Key Leakage:**  \n  Compromise or misuse of keys by administrators or insiders remains a risk. Mitigations include strict access controls, role-based separation of duties, audit logging, and hardware security isolates.  \n- **Client Device Security:**  \n  Compromise of client signing devices (malware, rootkits) could leak private keys or allow unauthorized signing. Use of secure enclaves and user education helps but cannot eliminate this risk.  \n- **Trusted Timestamp Authority (TSA) Dependence:**  \n  Trust in timestamping and archiving depends on availability and integrity of TSA services. Integrity of timestamps is critical for non-repudiation in long-term storage.  \n- **API Credential Leakage:**  \n  API keys or tokens with excessive privileges could be leaked or misused. Enforce minimum privilege and monitoring.  \n- **Revocation and Certificate Expiry:**  \n  Loss of revocation infrastructure or failure to update revocation data in archived signatures could impair long-term validation. Embedding revocation data (CAdES-LTV) reduces but does not eliminate this risk.  \n- **Cloud Provider Risks:**  \n  Cloud infrastructures may suffer from vulnerabilities or legal challenges that affect data confidentiality and integrity. Encryption and key management protect data but metadata and availability are subject to provider controls.  \n\n---\n\n**Summary:** This cryptographic architecture adopts industry best standards and concrete algorithms to securely establish sessions, authenticate signers, sign and verify documents with tamper-evident and timestamped signatures, encrypt documents and attachments for confidentiality, and manage identities and keys securely for the long-term validity of records in the Sign-o-Doc platform. Regular review and agility will be required to maintain security over the extended retention lifetime.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 9553,
+        "line_count": 119
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "Curve25519",
+            "ECDH",
+            "ECDHE",
+            "P-256",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment is distinctly handled via TLS 1.3 with ephemeral key exchange for transport security, separate from document signing or encryption roles.",
+            "Document signatures use CMS/PAdES structures with specific asymmetric signature algorithms (ECDSA, EdDSA), focusing on authenticity, integrity, and non-repudiation rather than confidentiality.",
+            "Document and attachment confidentiality is managed separately by symmetric encryption (AES-256-GCM) with keys protected via asymmetric key encryption (RSA-OAEP or ECIES).",
+            "Signer and service identity authentication and key lifecycle management are described as distinct roles from signing and encryption, including KYC processes, MFA, key generation/storage/rotation, and delegated signing keys.",
+            "The design explicitly delineates responsibility domains: transport/session security, signature generation/verification, content encryption, and identity/key management as separate cryptographic roles."
+          ],
+          "role_separation_notes": "The response carefully partitions cryptographic functionality into the four major roles specified by the project-specific guidance: session establishment, document signature, content encryption, and identity/authentication with key management. Each role uses appropriate cryptographic primitives and mechanisms without collapsing one role into another. For example, signatures are never used for confidentiality, symmetric encryption is dedicated to content protection, and key lifecycle management is separated from signing operations. This clear protocol-role separation supports modularity, security clarity, and maintainability within the Sign-o-Doc system architecture.",
+          "concise_summary": "The response maintains clear and coherent separation of major cryptographic roles for Sign-o-Doc, passing the role separation evaluation."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response carefully partitions cryptographic functionality into the four major roles specified by the project-specific guidance: session establishment, document signature, content encryption, and identity/authentication with key management. Each role uses appropriate cryptographic primitives and mechanisms without collapsing one role into another. For example, signatures are never used for confidentiality, symmetric encryption is dedicated to content protection, and key lifecycle management is separated from signing operations. This clear protocol-role separation supports modularity, security clarity, and maintainability within the Sign-o-Doc system architecture.",
+        "role_separation_evidence": [
+          "Session establishment is distinctly handled via TLS 1.3 with ephemeral key exchange for transport security, separate from document signing or encryption roles.",
+          "Document signatures use CMS/PAdES structures with specific asymmetric signature algorithms (ECDSA, EdDSA), focusing on authenticity, integrity, and non-repudiation rather than confidentiality.",
+          "Document and attachment confidentiality is managed separately by symmetric encryption (AES-256-GCM) with keys protected via asymmetric key encryption (RSA-OAEP or ECIES).",
+          "Signer and service identity authentication and key lifecycle management are described as distinct roles from signing and encryption, including KYC processes, MFA, key generation/storage/rotation, and delegated signing keys.",
+          "The design explicitly delineates responsibility domains: transport/session security, signature generation/verification, content encryption, and identity/key management as separate cryptographic roles."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 5,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T20:01:26+00:00",
+      "prompt_variant": "structured",
+      "query_name": "SIGNING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a digital document signing and approval platform with web, mobile, APIs, cloud storage, audit trails, and downloadable signed records.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Document Signatures and Verification\n4. Document and Attachment Encryption\n5. Signer / Service Identity Authentication and Key Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that signed records may need confidentiality and verifiability for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nDigital Document Signing and Approval Platform\n\nProject domain:\nDigital agreements, identity, and document workflow security\n\nProject brief:\nProject name: Sign-o-Doc\nDescription: A cloud-based digital document signing and approval platform similar\nto DocuSign. Businesses use it to prepare, send, review, approve, and sign\ncontracts, HR forms, procurement approvals, NDAs, and regulated disclosures.\nThe system includes web and mobile clients, reusable templates, multi-party\nsigning order, delegated signing, downloadable signed PDFs, audit trails,\nidentity verification steps, admin controls, APIs and webhooks, cloud storage,\nand integrations with CRM, HR, and document management systems. It should\nsupport tamper-evident signed documents, reliable signer attribution, and\nverifiable records over long retention periods.",
+      "recommendation": "# Digital Document Signing and Approval Platform: Cryptographic Architecture Design Note\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversary Capabilities:**\n  - Passive network attackers able to record all network traffic, including encrypted traffic, with the intention of offline cryptanalysis in the future.\n  - Active network attackers able to intercept and modify traffic (man-in-the-middle).\n  - Insider threats with potential access to cloud storage or audit trail logs.\n  - Malicious users attempting forgery or repudiation of signatures.\n  - Long-term cryptanalysis capabilities anticipating advances in computing power (e.g., quantum threats considered at a high level).\n  \n- **Assets to Protect:**\n  - Confidentiality of documents and attachments during transmission and in cloud storage.\n  - Integrity and non-repudiation of signatures and audit trail records.\n  - Reliable association between signer identities and their signatures over 10-15 years.\n  - Authentication tokens and session keys.\n  \n- **Operational Assumptions:**\n  - Cloud storage and infrastructure are assumed honest-but-curious.\n  - Web and mobile clients are trusted environments but can potentially be the target of phishing or malware.\n  - Long-term verifiability requires algorithms resistant to foreseeable cryptanalysis.\n\n---\n\n## 2. Session Establishment\n\n- **Transport Security:**\n  - Use **TLS 1.3** with strong cipher suites (e.g., AES-256-GCM or ChaCha20-Poly1305) to secure all client-server communications across web, mobile, and APIs.\n  - Enforce **Certificate Pinning** on mobile and web clients via HTTP Public Key Pinning (HPKP) or Trust On First Use (TOFU) where appropriate to reduce MitM risks.\n  - Use elliptic curve Diffie-Hellman key exchange (X25519) for session key agreement.\n  \n- **Mutual Authentication:**\n  - Web and mobile clients authenticate the server using TLS certificates from a trusted CA.\n  - Server authenticates clients using bearer tokens (OAuth 2.0 JWT with JWS using RSASSA-PSS SHA-256 signatures) obtained after user authentication.\n  \n- **Key Strength and Forward Secrecy:**\n  - Enable perfect forward secrecy by default using ephemeral Diffie-Hellman key exchange.\n  - Session keys generated via TLS handshake are 256-bit symmetric keys used with AES-256-GCM to provide confidentiality and integrity.\n  \n- **Replay Mitigation:**\n  - Use nonces and timestamps embedded in JWT tokens.\n  - Server-side replay protection mechanisms for API calls and webhook endpoints.\n\n---\n\n## 3. Document Signatures and Verification\n\n- **Signature Algorithm:**\n  - Use **RSASSA-PSS with SHA-256** or **ECDSA with secp256r1 curve (NIST P-256)** for assuming standardization and interoperability.\n  - Long-term records signed using **RSA-4096-PSS-SHA-256** or **ECDSA with secp384r1** to increase resilience for 10-15 years.\n  \n- **Signature Format:**\n  - Use **CMS (Cryptographic Message Syntax)** / **PKCS#7** or **CAdES (CMS Advanced Electronic Signatures)** standard encapsulation for digital signatures on PDF documents.\n  - Each signature includes signing time, signer certificate chain, and timestamping token.\n  \n- **Timestamping:**\n  - Integrate a trusted **RFC 3161 Time-Stamp Authority (TSA)** to timestamp signatures upon signing and approval to provide non-repudiation with real-world time validation.\n  \n- **Signer Certificate Validation:**\n  - Use PKIX certificate validation with OCSP (Online Certificate Status Protocol) or CRL for revocation checking at the time of signing.\n  - Archive signer certificates and revocation information alongside signed records to support long-term validation.\n  \n- **Multi-Signature and Signing Order:**\n  - Support nested or sequential signatures with linked signed data structures for multi-party workflows.\n  \n- **Verification:**\n  - Tools must validate cryptographic signature, certificate chain, timestamp token, and check audit trail linking during any future verification.\n\n---\n\n## 4. Document and Attachment Encryption\n\n- **At-Rest Encryption:**\n  - Use envelope encryption:\n    - Generate a random 256-bit symmetric key per document and attachments.\n    - Use **AES-256-GCM** for encrypting documents and attachments in cloud storage.\n  - Encrypt the symmetric key with the platform’s public key using **RSA-OAEP with SHA-256** or **ECIES (ISO 18033-2)** with curve secp256r1 for secure key wrapping.\n  \n- **End-to-End Encryption Options:**\n  - For highly sensitive documents, optionally support client-side encryption before upload:\n    - Keys derived from user-provided passphrase via **PBKDF2 with SHA-256**, or better **Argon2id** for key derivation.\n    - Encryption using AES-256-GCM in client apps.\n  \n- **Data in Transit:**\n  - All file uploads and downloads over TLS 1.3 with strong cryptographic suites.\n  \n- **Key Management:**\n  - Store encrypted document keys separately and only accessible to authorized signing and auditing services.\n  - Use hardware security modules (HSM) or cloud KMS (e.g., AWS KMS with FIPS 140-2 validation) for key material generation, storage, and cryptographic operations.\n  \n- **Attachment Integrity:**\n  - Compute and store SHA-256 hashes for each attachment to ensure integrity.\n  \n---\n\n## 5. Signer / Service Identity Authentication and Key Lifecycle\n\n- **Signer Identity Verification:**\n  - Use multi-factor authentication (MFA) for user login and signing confirmation.\n  - Identity proofing integrated with third-party identity providers using **OAuth 2.0** or **OpenID Connect** with verified attributes.\n  - For higher assurance, support eID or smartcard-based signing with client certificates.\n  \n- **Signer Key Management:**\n  - Store signer’s private keys in secure device enclaves (mobile secure element, OS keychain).\n  - Alternatively, use **Hardware Security Modules (HSM)** for key management for server-side signing with user approval safeguards.\n  - Key generation using NIST-approved algorithms: RSA-4096 or ECDSA P-384.\n  - Enforce key rotation policies aligned with certificate expiry and use Certificate Transparency logs.\n  \n- **Platform / Service Identity:**\n  - Platform authenticates to external integrations using client certificates and OAuth 2.0 client credentials flows.\n  - Periodic key material rotation for service keys adhering to cryptoperiods (e.g., max 1 year).\n  \n- **Audit Trail Authentication:**\n  - Audit logs cryptographically protected by **HMAC-SHA-256** and/or blockchain anchoring for tamper-evidence.\n  - Audit trail signing by dedicated service keys rotated regularly.\n  \n- **Key Revocation and Compromise Handling:**\n  - Support certificate revocation with OCSP and CRL.\n  - Provide signer key revocation workflows and re-issuance.\n  - Maintain transparent logs of revoked keys and expired certificates.\n\n---\n\n## 6. Residual Risks\n\n- **Algorithmic Obsolescence:**\n  - Risk of currently trusted algorithms being broken by future advances (e.g., quantum computing).\n  - Mitigation: plan for post-quantum cryptography upgrades, maintain cryptographic agility.\n  \n- **Private Key Compromise:**\n  - If signer private keys are stolen, attacker can forge signatures.\n  - Mitigation: enforce hardware-backed key storage and MFA.\n  \n- **Insider Threat and Cloud Trust:**\n  - Cloud administrators might access encrypted data or audit logs.\n  - Mitigation: strict access control, encryption with separate keys, audit trail tamper-evidence.\n  \n- **Replay and Man-in-the-Middle Attacks:**\n  - TLS mitigates this, but improper token management could allow session replay.\n  - Mitigation: short-lived tokens, replay detection mechanisms.\n  \n- **Long-term Signature Verification Dependencies:**\n  - Availability of TSA and certificate validation data for 10–15 years may be unavailable.\n  - Mitigation: archive all relevant data including timestamps and revocation info.\n  \n- **User Device Security:**\n  - Malware or phishing on user devices could expose credentials or sign without consent.\n  - Mitigation: user education, device attestation, and anomaly detection.\n\n---\n\nThis design note lays out a concrete cryptographic architecture adhering to standards and best practices to ensure confidentiality, integrity, authentication, and long-term verifiability for Sign-o-Doc platform.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 8221,
+        "line_count": 154
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "P-256",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment clearly separated under Section 2 with TLS 1.3, key exchange, mutual authentication, and replay mitigation.",
+            "Document signatures and verification (Section 3) distinct from transport/session security and encryption roles; signatures used solely for authenticity, integrity, non-repudiation.",
+            "Document and attachment encryption (Section 4) focused exclusively on symmetric content encryption with envelope encryption scheme, separate from signing role.",
+            "Signer and service identity authentication and key lifecycle management (Section 5) handled separately, including MFA, key storage, key rotation, and audit trail protection.",
+            "Explicit project-specific guidance at the end emphasizes separation of session establishment, signing, encryption, and identity/key management roles."
+          ],
+          "role_separation_notes": "The response maintains a clear and coherent separation of major cryptographic roles aligned with the project guidance. Transport session security is confined to TLS and ephemeral keys. Signing functions are separate and dedicated to authenticity and non-repudiation, using standardized signature formats and timestamping. Encryption roles are focused on content confidentiality with symmetric keys and key wrapping. Identity verification and key lifecycle are handled distinctly with MFA, secure key storage, and separate audit signing keys. No collapsing of roles or primitives occurs.",
+          "concise_summary": "The response successfully preserves distinct and coherent cryptographic roles for session establishment, document signing, encryption, and identity/key management as required."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response maintains a clear and coherent separation of major cryptographic roles aligned with the project guidance. Transport session security is confined to TLS and ephemeral keys. Signing functions are separate and dedicated to authenticity and non-repudiation, using standardized signature formats and timestamping. Encryption roles are focused on content confidentiality with symmetric keys and key wrapping. Identity verification and key lifecycle are handled distinctly with MFA, secure key storage, and separate audit signing keys. No collapsing of roles or primitives occurs.",
+        "role_separation_evidence": [
+          "Session establishment clearly separated under Section 2 with TLS 1.3, key exchange, mutual authentication, and replay mitigation.",
+          "Document signatures and verification (Section 3) distinct from transport/session security and encryption roles; signatures used solely for authenticity, integrity, non-repudiation.",
+          "Document and attachment encryption (Section 4) focused exclusively on symmetric content encryption with envelope encryption scheme, separate from signing role.",
+          "Signer and service identity authentication and key lifecycle management (Section 5) handled separately, including MFA, key storage, key rotation, and audit trail protection.",
+          "Explicit project-specific guidance at the end emphasizes separation of session establishment, signing, encryption, and identity/key management roles."
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,580 @@
+{
+  "study_metadata": {
+    "study_id": "nist-pqc-application-recommendation-benchmark",
+    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "prompt_version": "2026-04-29-a",
+    "rubric_version": "nist-pqc-benchmark-v5",
+    "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "prompt_variants": [
+      {
+        "prompt_id": "simple",
+        "query_name": "MESSAGING_ROLE_MAP_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why."
+      },
+      {
+        "prompt_id": "structured",
+        "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+        "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution."
+      },
+      {
+        "prompt_id": "pqc_simple",
+        "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Consider post-quantum risks where relevant."
+      },
+      {
+        "prompt_id": "pqc_structured",
+        "query_name": "MESSAGING_ROLE_MAP_PQC_STRUCTURED",
+        "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any post-quantum cryptography considerations or future PQC requirements relevant to long-term message confidentiality."
+      },
+      {
+        "prompt_id": "nist_pqc_simple",
+        "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this secure messaging app. Briefly explain what should be used and why. Prefer NIST-approved post-quantum approaches where relevant."
+      },
+      {
+        "prompt_id": "nist_pqc_structured",
+        "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
+        "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture."
+      }
+    ],
+    "num_samples_per_model": 5,
+    "models_under_test": [
+      "gpt-4.1-mini"
+    ],
+    "evaluator_model": "gpt-4.1-mini",
+    "python_version": "3.10.12 (main, Nov 18 2025, 00:58:32) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "openai_package_version": "2.32.0",
+    "nist_pqc_baseline": {
+      "last_reviewed": "2026-04-19",
+      "references": [
+        {
+          "standard": "FIPS 203",
+          "algorithm": "ML-KEM",
+          "role": "key establishment / KEM",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 204",
+          "algorithm": "ML-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 205",
+          "algorithm": "SLH-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "publication": "SP 800-227",
+          "role": "KEM usage guidance",
+          "published": "2025-09"
+        }
+      ]
+    }
+  },
+  "project_metadata": {
+    "project_id": "secure_messaging_app",
+    "project_name": "Snapstabook",
+    "domain": "Secure Messaging",
+    "metrics_filename": "metrics_messaging.json",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "output_filename": "structured_prompt_messaging_app.json",
+    "prompt_variant": "structured",
+    "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+    "query_text": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.",
+    "project_brief": "Description: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+    "algorithm_flag_definitions": [
+      {
+        "flag_id": "kem_has_current_nist_pqc",
+        "label": "Approved PQC KEM Family",
+        "description": "Whether the response names the approved NIST PQC KEM family for key establishment, including ML-KEM / FIPS 203 and Kyber family aliases."
+      },
+      {
+        "flag_id": "kem_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe KEM Family",
+        "description": "Whether the response names other PQC-safe KEM families such as HQC, BIKE, Classic McEliece, or NTRU."
+      },
+      {
+        "flag_id": "kem_has_classical",
+        "label": "Classical KEM",
+        "description": "Whether the response names classical key-establishment choices such as X3DH, X25519, ECDH, or RSA key exchange."
+      },
+      {
+        "flag_id": "signature_has_current_nist_pqc",
+        "label": "Approved PQC Signature Family",
+        "description": "Whether the response names approved NIST PQC signature families, including ML-DSA / FIPS 204 / Dilithium and SLH-DSA / FIPS 205 / SPHINCS+."
+      },
+      {
+        "flag_id": "signature_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe Signature Family",
+        "description": "Whether the response names other PQC-safe signature families such as Falcon / FN-DSA."
+      },
+      {
+        "flag_id": "signature_has_classical",
+        "label": "Classical Signature",
+        "description": "Whether the response names classical signature choices such as Ed25519, ECDSA, or RSA-PSS."
+      },
+      {
+        "flag_id": "dem_has_quantum_resistant_symmetric",
+        "label": "Strong Symmetric DEM",
+        "description": "Whether the response names strong symmetric bulk-encryption or content-encryption choices such as AES-256-GCM or ChaCha20-Poly1305."
+      },
+      {
+        "flag_id": "dem_has_non_quantum_resistant_symmetric",
+        "label": "Weak / Short-Key Symmetric DEM",
+        "description": "Whether the response names weaker or shorter-key symmetric bulk-encryption or content-encryption choices such as AES-128-GCM."
+      }
+    ],
+    "role_separation_statuses": [
+      "pass",
+      "fail",
+      "unclear"
+    ]
+  },
+  "summary": {
+    "total_runs": 5,
+    "complete_runs": 5,
+    "partial_runs": 0,
+    "error_runs": 0,
+    "models_tested": [
+      "gpt-4.1-mini"
+    ],
+    "algorithm_flag_sample_count": 5,
+    "algorithm_flag_rates": {
+      "kem_has_current_nist_pqc": 0.4,
+      "kem_has_legacy_or_non_nist_pqc": 0.2,
+      "kem_has_classical": 1.0,
+      "signature_has_current_nist_pqc": 0.0,
+      "signature_has_legacy_or_non_nist_pqc": 0.2,
+      "signature_has_classical": 1.0,
+      "dem_has_quantum_resistant_symmetric": 1.0,
+      "dem_has_non_quantum_resistant_symmetric": 0.0
+    },
+    "named_algorithm_frequency_by_category": {
+      "dem_non_quantum_resistant_symmetric": {},
+      "dem_quantum_resistant_symmetric": {
+        "AES-256": 5,
+        "AES-256-GCM": 5,
+        "ChaCha20-Poly1305": 2
+      },
+      "kem_classical": {
+        "Curve25519": 3,
+        "ECDH": 1,
+        "X25519": 5,
+        "X3DH": 5
+      },
+      "kem_current_nist": {
+        "Kyber": 2
+      },
+      "kem_legacy_or_non_nist": {
+        "NTRU": 1
+      },
+      "signature_classical": {
+        "Ed25519": 4,
+        "RSA": 5
+      },
+      "signature_current_nist": {},
+      "signature_legacy_or_non_nist": {
+        "Falcon": 1
+      }
+    },
+    "role_separation_sample_count": 5,
+    "role_separation_counts": {
+      "pass": 5,
+      "fail": 0,
+      "unclear": 0
+    },
+    "role_separation_rates": {
+      "pass": 1.0,
+      "fail": 0.0,
+      "unclear": 0.0
+    }
+  },
+  "samples": [
+    {
+      "status": "complete",
+      "sample_number": 1,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:44:51+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "# Snapstabook Secure Messaging – Cryptographic Architecture Design Note\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversaries:** \n  - Global passive adversaries capable of recording all encrypted traffic (network, push notifications) now and in the future.\n  - Active network adversaries able to intercept, modify, inject, or replay messages.\n  - Compromise of user devices or servers is possible but limited in scope.\n  - Insider threats within the service operator with ability to access stored data.\n- **Attacker goals:** \n  - Long-term confidentiality breach of messages and attachments (for 10–15 years).\n  - User impersonation, device cloning.\n  - Traffic analysis resistance is desirable but not primary.\n- **System constraints:** \n  - Multi-device per user scenario with device addition/removal.\n  - Offline message delivery available.\n  - Endpoints may be resource-constrained (mobile devices).\n- **Security guarantees to provide:** \n  - Message confidentiality and integrity.\n  - Authentication of identities and devices.\n  - Forward secrecy and post-compromise security.\n  - Long-term confidentiality despite future quantum advances (to a degree).\n  \n---\n\n## 2. Session Establishment\n\n- **Identity Keypairs:**  \n  Each user generates a long-term identity keypair using **X25519** (Elliptic Curve Diffie-Hellman over Curve25519) for key agreement.  \n  Signatures use **Ed25519** for identity verification.\n\n- **Device Keys:**  \n  Each device holds its own **X25519** device key and **Ed25519** signature key pair, registered to the user's account.\n\n- **Initial Authentication:**  \n  Users mutually authenticate by validating each other’s **Ed25519** public keys out-of-band or via a short authentication string (SAS) mechanism (e.g., 6-digit codes derived from a hash of the identity keys).\n\n- **Handshake Protocol:**  \n  Use an **extended Noise_XK handshake** pattern leveraging X25519 for ephemeral-static key agreement to establish symmetric keys. This includes:  \n  - Ephemeral key generation on each session creation.  \n  - Mutual authentication with Ed25519 signatures on handshake messages.  \n\n- **Multi-device Group Sessions:**  \n  For group chats (and multi-device sync), use **Double Ratchet** sessions initialized through the **Signal Protocol’s X3DH** variant for multi-device key agreement.  \n  - Use **sender keys** ratcheted per device to support multiple devices per user.\n\n- **Key Confirmation:**  \n  After handshake, both parties confirm established keys via authenticated message exchange to ensure integrity.\n\n---\n\n## 3. Message and Attachment Encryption\n\n- **Message Encryption:**  \n  Use **AES-256-GCM** (AES in Galois/Counter Mode with 256-bit keys) for symmetric encryption of message payloads, providing confidentiality and integrity.\n\n- **Key Derivation:**  \n  Keys for AES-256-GCM are derived via **HKDF-SHA-512** from the shared secret established in the ratcheting mechanism.\n\n- **Message Authentication:**  \n  AES-GCM includes authenticity; for additional message metadata protection, use an **HMAC-SHA-512** over headers and identifiers.\n\n- **Attachment Encryption:**  \n  - Attachments are encrypted separately with a fresh random **AES-256-GCM** key for each attachment.  \n  - The attachment key is then encrypted asymmetrically for each participant using **X25519**-derived shared secrets (via ephemeral-static ECDH) and the same HKDF key derivation.  \n  - This hybrid approach enables efficient encrypted attachment transfer and per-recipient key distribution.\n\n- **Offline Delivery:**  \n  Encrypted messages and encrypted attachments are stored on the server until devices come online; no plaintext data is stored on the server.\n\n- **Replay Protection:**  \n  Use monotonically increasing message sequence numbers and local state tracking to detect and discard replayed messages.\n\n---\n\n## 4. Identity Authentication\n\n- **Long-term Identity Verification:**  \n  Use **Ed25519** key pairs with user-friendly key fingerprints displayed at onboarding and recoverable via trusted out-of-band channels.\n\n- **Device Linking:**  \n  New devices are added by authenticating against an existing device using QR code scanning (verified signatures), validating ownership without passwords exposed in plaintext.\n\n- **Contact Discovery:**  \n  Use cryptographic hashing with **bcrypt** or **Argon2id** on user identifiers before sending to the server, minimizing information leakage. Contact matching results are cryptographically blinded from the server.\n\n- **Revocation and Device Removal:**  \n  Users can revoke device keys, triggered by signature revocation and server push to other devices to invalidate trust in that key.\n\n- **Push Notification Authentication:**  \n  Utilize platform-specific push tokens combined with short-lived cryptographic tokens signed by the device keys to validate sender identity when waking devices for message delivery.\n\n---\n\n## 5. Ongoing Key Update / Ratcheting\n\n- **Double Ratchet Algorithm:**  \n  Implement the **Double Ratchet** algorithm (as in the Signal Protocol) for forward secrecy and post-compromise security.  \n  - Combines Diffie-Hellman ratchet (X25519 ephemeral keys) and symmetric-key ratchet (HKDF-SHA-512-based keys).  \n  - Each message advances the ratchet state to produce fresh AES-256-GCM keys.\n\n- **Post-Compromise Security:**  \n  After a compromise, subsequent ratchet steps refresh keys, removing attacker ability to decrypt future messages.\n\n- **Multi-device Synchronization:**  \n  Each device manages its own ratchet session. Devices synchronize state via the server in encrypted form, minimizing cross-device trust leakage.\n\n- **Group Chat Ratcheting:**  \n  Use **Sender Keys** ratchet introduced by the Signal Protocol for group chats, combining per-device ratchets with shared symmetric keys distributed via the server.\n\n- **Key Expiry:**  \n  Periodic re-keying after a fixed number of messages (e.g., every 1000 messages) or time duration (e.g., weekly) to limit key usage exposure and comply with long-term security.\n\n---\n\n## 6. Residual Risks\n\n- **Quantum Threats:**  \n  X25519 and Ed25519 are not quantum-resistant; adversaries with practical quantum computers could break long-term confidentiality. Consider future migration to post-quantum algorithms (e.g., CRYSTALS-KYBER for KEM, FALCON for signatures) as they mature.\n\n- **Device Compromise:**  \n  Physical compromise or malware can expose plaintext keys and messages. Rely on OS-level security and user education.\n\n- **Metadata Leakage:**  \n  Although messages are encrypted, metadata such as timing, device identifiers, and message sizes may leak some communication patterns.\n\n- **Usability vs. Security Tradeoff:**  \n  User experience is paramount; complex key verification may be bypassed by users leading to potential MITM vulnerabilities.\n\n- **Denial of Service and Server Attacks:**  \n  Server compromise could disrupt delivery and store encrypted data but cannot decrypt without keys.\n\n- **Backup and Key Recovery:**  \n  Secure backup mechanisms for keys are necessary; insecure backups can expose long-term keys.\n\n---\n\n**Summary:**  \nSnapstabook’s cryptographic design uses state-of-the-art elliptic-curve cryptography (X25519, Ed25519), the Signal protocol’s noise-based handshake and Double Ratchet for session and key management, AES-256-GCM for message encryption, and careful device authentication/management for multi-device operation. This approach balances strong long-term message confidentiality, forward secrecy, usability, and mobile/desktop platform compatibility.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 7537,
+        "line_count": 141
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": true,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "Curve25519",
+            "ECDH",
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [
+            "Falcon"
+          ],
+          "signature_classical": [
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 clearly separates session establishment with X25519 key agreement and Ed25519 signatures from message encryption.",
+            "Section 3 confines message and attachment encryption to symmetric AES-256-GCM keys derived from ratchet secrets, distinct from identity key operations.",
+            "Identity authentication and signatures (Ed25519) are used solely for authentication and verification, not as message encryption.",
+            "Ongoing ratcheting described in Section 5 is distinct from initial session establishment, maintaining separate roles for key update.",
+            "Attachment encryption uses a hybrid scheme with ephemeral-static asymmetric encryption only for key transport, keeping actual encryption symmetric."
+          ],
+          "role_separation_notes": "The response consistently keeps the cryptographic roles distinct per the project guidance: session establishment and authentication (X25519 and Ed25519), symmetric message and attachment encryption (AES-GCM), and ongoing ratcheting are described as separate components and processes. Signatures are used for authentication and are not misrepresented as encryption. The use of hybrid encryption for attachments respects the separation between asymmetric key transport and symmetric content encryption.",
+          "concise_summary": "The response maintains clear and coherent separation between session establishment, message encryption, identity authentication, and ratcheting per the given role-separation criteria."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response consistently keeps the cryptographic roles distinct per the project guidance: session establishment and authentication (X25519 and Ed25519), symmetric message and attachment encryption (AES-GCM), and ongoing ratcheting are described as separate components and processes. Signatures are used for authentication and are not misrepresented as encryption. The use of hybrid encryption for attachments respects the separation between asymmetric key transport and symmetric content encryption.",
+        "role_separation_evidence": [
+          "Section 2 clearly separates session establishment with X25519 key agreement and Ed25519 signatures from message encryption.",
+          "Section 3 confines message and attachment encryption to symmetric AES-256-GCM keys derived from ratchet secrets, distinct from identity key operations.",
+          "Identity authentication and signatures (Ed25519) are used solely for authentication and verification, not as message encryption.",
+          "Ongoing ratcheting described in Section 5 is distinct from initial session establishment, maintaining separate roles for key update.",
+          "Attachment encryption uses a hybrid scheme with ephemeral-static asymmetric encryption only for key transport, keeping actual encryption symmetric."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 2,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:44:51+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversaries:** Passive and active network attackers capable of recording encrypted traffic today and mounting future cryptanalysis attempts.\n- **Long-Term Confidentiality:** Message confidentiality must resist cryptanalysis and key compromise attempts for 10–15 years.\n- **Device Compromise:** Devices (mobile and desktop) may be lost or seized, but the system should limit exposure to other devices or past/future messages.\n- **Server Trust:** Servers are honest-but-curious; they relay and store encrypted messages but do not have access to plaintext or long-term keys.\n- **Multi-device Complexity:** Users may have several devices active simultaneously; attacker compromises of some devices may occur without compromising other devices.\n- **Out-of-band Verification:** Users may perform manual verification for identity authentication but should be optional for usability.\n- **Offline Delivery & Push Notifications:** Messages must be deliverable offline; push notifications should not leak message contents or user metadata.\n\n---\n\n## 2. Session Establishment\n\n### Device Identity & Long-Term Keys\n\n- Each device generates an **X25519** key pair for long-term identity keys, providing 128-bit security in a modern, post-quantum-resistant foundation.\n- Devices generate **Ed25519** signature key pairs used to authenticate session keys and messages.\n\n### Account & Device Registration\n\n- On device registration, devices upload their **long-term public keys** signed with an ephemeral authority key to the server for each user.\n- Devices authenticate via user credentials but user authentication is decoupled from cryptographic identity to allow asynchronous device enrollment.\n\n### Initial Key Agreement\n\n- Establish pairwise sessions using the **X3DH (Extended Triple Diffie-Hellman)** protocol (as used in Signal):\n  - Combines three DH exchanges between:\n    - Initiator’s ephemeral key\n    - Initiator’s identity key\n    - Receiver’s identity key\n    - Receiver’s signed pre-key\n  - Protects against identity/key compromise and provides forward secrecy.\n- For multi-device support:\n  - Initiator performs X3DH handshake with each device of the recipient, establishing one-to-one device sessions.\n- Pre-keys published by devices to server for asynchronous initial session establishment.\n\n---\n\n## 3. Message and Attachment Encryption\n\n### Message Encryption\n\n- Use **Double Ratchet Algorithm** for each device-to-device session, combining:\n  - A **Diffie-Hellman ratchet** over Curve25519 for forward secrecy and post-compromise security.\n  - A **symmetric-key ratchet** using **HKDF-SHA-256** for key derivation.\n- Encrypt messages using **AES-256-GCM** (for authenticated encryption) with keys derived from the ratchet.\n\n### Multi-Device Group Chats\n\n- Implement **Sender Keys** approach similar to Signal’s Group Messaging:\n  - Sender generates symmetric “group” keys for group messages.\n  - Group keys updated frequently to forward-secrecy guarantee.\n  - Group keys distributed encrypted under pairwise ratchet sessions.\n\n### Attachments Encryption\n\n- Encrypt attachments locally with **AES-256-GCM** using randomly generated symmetric keys per attachment.\n- Attachments are stored encrypted on server or third-party storage.\n- Attachment encryption keys are encrypted per recipient device using the established pairwise ratchet session keys.\n- Use **HKDF** to derive keys for attachments separate from message keys to isolate compromises.\n\n---\n\n## 4. Identity Authentication\n\n- On first interaction, user devices present **Ed25519-signed** identity public keys.\n- Use **Short Authentication Strings (SAS)** method (e.g., emoji or numeric fingerprint codes derived from concatenated Ed25519 public key fingerprints) for user-friendly, out-of-band verification.\n- Users can verify each other’s identities manually or by scanning QR codes representing identity keys.\n- Server metadata includes device identifiers and public identity keys but no private data.\n- Device addition/removal events are cryptographically signed and notified.\n\n---\n\n## 5. Ongoing Key Update / Ratcheting\n\n- Use Double Ratchet message keys to derive a new symmetric key for every new message to guarantee forward secrecy.\n- Perform a new DH ratchet when receiving a new ephemeral public key in the message header to improve post-compromise security.\n- Periodically rotate identity and signed pre-keys on devices (e.g., once a week or monthly) to limit exposure.\n- When user adds/removes a device:\n  - Other devices securely update and redistribute pre-keys.\n  - Re-key group sessions if device membership changes.\n- Implement **sealed sender** mechanism to hide sender metadata in messages where supported to increase anonymity.\n\n---\n\n## 6. Residual Risks\n\n- **Compromise of a Device:** If an attacker compromises a device, they gain access to its keys and message history on that device but cannot decrypt messages on other devices or past/future messages protected by ratchets.\n- **Server Metadata Exposure:** Servers learn device public keys and message routing metadata but not message contents or identities beyond device identifiers.\n- **Long-Term Key Persistence:** Long-term signing and identity keys could become vulnerable with future cryptanalysis beyond 10–15 years; periodic rotation mitigates this risk.\n- **Group Chat Membership Changes:** Delay or failure in propagating membership updates could expose some messages to unintended members temporarily.\n- **Backup and Key Recovery:** Balancing usability and security in key backup mechanisms is challenging; out-of-band recovery risks phishing/social engineering.\n- **Quantum Threats:** The current design is not quantum-resistant—post-quantum primitives should be evaluated when quantum computing becomes practical.\n\n---\n\nThis architecture leverages proven cryptographic protocols and algorithms widely adopted for secure messaging, achieving confidentiality, forward secrecy, post-compromise security, and usability for Snapstabook's multi-device, cross-platform scenario.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 6114,
+        "line_count": 102
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "Curve25519",
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 clearly separates key establishment/session setup (X3DH protocol, long-term keys, ephemeral keys) from message encryption.",
+            "Section 3 describes message and attachment encryption based on symmetric keys derived from ratchets, distinct from the initial key agreement.",
+            "Section 4 separates identity authentication using Ed25519 signatures and SAS from message encryption.",
+            "Section 5 distinguishes ongoing ratcheting (Double Ratchet) and periodic key rotation from initial session establishment.",
+            "Attachments encryption keys are derived separately using HKDF to isolate from message keys, demonstrating role separation within content encryption.",
+            "Project-specific guidance is explicitly followed: session setup is distinct; message and attachment encryption remain symmetric; signatures are used only for authentication, not encryption; ratcheting is a separate ongoing process."
+          ],
+          "role_separation_notes": "The response maintains a coherent and well-separated cryptographic role structure consistent with the provided guidance. Key establishment, message encryption, identity authentication, and ongoing key updating are clearly delimited as separate roles. No role conflation or collapsing of distinct cryptographic functions into one mechanism is observed.",
+          "concise_summary": "The response correctly separates key establishment, message encryption, identity authentication, and ratcheting into distinct roles, passing the protocol-role separation criteria."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response maintains a coherent and well-separated cryptographic role structure consistent with the provided guidance. Key establishment, message encryption, identity authentication, and ongoing key updating are clearly delimited as separate roles. No role conflation or collapsing of distinct cryptographic functions into one mechanism is observed.",
+        "role_separation_evidence": [
+          "Section 2 clearly separates key establishment/session setup (X3DH protocol, long-term keys, ephemeral keys) from message encryption.",
+          "Section 3 describes message and attachment encryption based on symmetric keys derived from ratchets, distinct from the initial key agreement.",
+          "Section 4 separates identity authentication using Ed25519 signatures and SAS from message encryption.",
+          "Section 5 distinguishes ongoing ratcheting (Double Ratchet) and periodic key rotation from initial session establishment.",
+          "Attachments encryption keys are derived separately using HKDF to isolate from message keys, demonstrating role separation within content encryption.",
+          "Project-specific guidance is explicitly followed: session setup is distinct; message and attachment encryption remain symmetric; signatures are used only for authentication, not encryption; ratcheting is a separate ongoing process."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 3,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:44:51+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n## 1. Threat Model Assumptions\n- **Adversary Capabilities:**  \n  - Passive eavesdropping on all network traffic, including capture and long-term storage.  \n  - Active network attacker capable of message injection, modification, replay, and dropping.  \n  - Possible compromise of user devices (partial), but not full compromise of all devices of a user simultaneously.  \n  - Attempts to impersonate users or devices via man-in-the-middle (MITM) on key exchanges.  \n- **Security Goals:**  \n  - Confidentiality of messages and attachments for at least 10-15 years, resisting future cryptanalytic advances (post-quantum attacks considered).  \n  - Authentication of sender identity and device binding.  \n  - Forward secrecy and future secrecy under device or key compromise.  \n  - Integrity and authenticity of messages and attachments.  \n  - Usable multi-device experience and offline message delivery.  \n- **Out of Scope:**  \n  - Compromise of server infrastructure beyond what is mitigated by end-to-end encryption.  \n  - Side-channel attacks on device hardware.  \n  - Denial-of-service beyond standard mitigations.\n\n## 2. Session Establishment\n- **Identity Key Pair:**  \n  - Each user generates and stores a long-term signing key pair using **Ed25519** for user identity keys on each device.  \n- **Prekeys / One-time Keys:**  \n  - Devices generate and upload signed ephemeral X25519 key pairs for use in session setup.  \n- **Multi-device Session Initialization:**  \n  - Employ an extended version of the **X3DH (Extended Triple Diffie-Hellman)** protocol to establish shared secrets between each sender device and recipient device.  \n  - Each device publishes a signed **identity key (Ed25519)** and an ephemeral **X25519** key bundle for initial key agreement.  \n- **Key Agreement Algorithm:**  \n  - Use **X25519** elliptic-curve Diffie-Hellman for key agreement between device key pairs.  \n- **Post-Quantum Consideration:**  \n  - Plan for hybrid key agreement by combining X25519 with a NIST Round 3 post-quantum KEM such as **CRYSTALS-Kyber** to hedge against future quantum threats.  \n- **Session Context Binding:**  \n  - Bind devices and user identity keys cryptographically in the initial session context to prevent MITM.  \n- **Server Role:**  \n  - Acts only as a store-and-forward for prekey bundles and encrypted messages; does not have access to session keys.\n\n## 3. Message and Attachment Encryption\n- **Message Encryption:**  \n  - Use **AES-256-GCM** for symmetric encryption to provide confidentiality and integrity for messages.  \n- **Key Derivation for Messages:**  \n  - Derive per-message keys using the **Double Ratchet** algorithm (see section 5) with a root key derived at session setup.  \n- **Attachments Encryption:**  \n  - Encrypt attachments separately using AES-256-GCM with a randomly generated symmetric key per attachment.  \n  - Attachments encrypted client-side; the symmetric key encrypted with the current ratchet message key and sent alongside message metadata.  \n- **Compression:**  \n  - Apply client-side compression (e.g., Brotli) before encryption to reduce size and leak less metadata.  \n- **Offline and Multi-Device Delivery:**  \n  - Encrypted message packages stored on server; each receiving device decrypts independently using device-specific session keys.  \n- **Authentication:**  \n  - Messages include a MAC/tag from AES-GCM; additionally, use ed25519 signatures on session initialization only to authenticate identity keys.\n\n## 4. Identity Authentication\n- **User Identity Verification:**  \n  - Users verify each others’ identity keys out-of-band using QR-code scanning or security phrases generated from Ed25519 public keys (e.g., Short Authentication String with SHA256 hash truncated).  \n- **Device Authentication and Binding:**  \n  - Each device's identity key is signed by the user's primary device or root key on device addition.  \n  - Notifications and UI prompts inform users when a new device is added for their account.  \n- **Trust On First Use (TOFU):**  \n  - Establish default trust with device keys on initial contact assuming no active MITM.  \n  - Allow users to review and revoke device keys if needed, similar to Signal's device management.  \n- **Contact Discovery:**  \n  - Perform contact discovery using cryptographic hash-based identifiers (e.g., truncated SHA256) to prevent server from learning contacts in plaintext.\n\n## 5. Ongoing Key Update / Ratcheting\n- **Double Ratchet Algorithm:**  \n  - Use the **Double Ratchet** algorithm (based on X3DH) per device-to-device session to provide forward secrecy and post-compromise security.  \n  - Each message ratchets the sending chain key and receiving chain key with new ephemeral Diffie-Hellman keys (X25519).  \n- **Group Chat Ratcheting:**  \n  - Use the **Sender Keys** technique combined with Double Ratchet to efficiently ratchet group keys per device member.  \n  - Re-establish group session keys upon membership changes.  \n- **Key Storage:**  \n  - Securely store ratchet states on device encrypted at rest with platform secure storage.  \n- **Key Expiry:**  \n  - Rotate long-term prekeys periodically (e.g., weekly) to prevent replay and stale session attacks.  \n- **Post-Quantum Future Ratchet:**  \n  - Plan transparent upgrade to integrate post-quantum ephemeral keys (e.g., Kyber) in ratchet steps when standardized and performant implementations mature.\n\n## 6. Residual Risks\n- **Long-Term Confidentiality Risks:**  \n  - Future advances in cryptanalysis or quantum computing post post-quantum algorithm adoption may compromise past messages.  \n  - Imperfect implementation of post-quantum hybrid algorithms may reduce security guarantees.  \n- **Metadata Leakage:**  \n  - Server or network adversary can still observe message timing, frequency, and participant sets even though content is encrypted.  \n- **Device Compromise:**  \n  - Compromise of a user’s device reveals all stored session keys and message history on that device.  \n- **User Errors:**  \n  - Insecure platform installation, social engineering, or failure to verify identity keys can allow impersonation or MITM.  \n- **Denial of Service:**  \n  - Network attackers or servers can block or delay messages without detection.  \n- **Key Backup and Recovery:**  \n  - No secure cross-device key syncing is described; device loss without backup results in message loss or loss of access to messages encrypted under ratchet keys.  \n\n---\n\n**Summary:**  \nSnapstabook will combine X3DH extended with hybrid post-quantum support, Double Ratchet ratcheting, AES-256-GCM for confidentiality and integrity, Ed25519 for signatures and identity binding, and user-verifiable identity key management with TOFU and device addition notifications. This approach targets long-term confidentiality, multi-device support, and pragmatic usability on varied client platforms.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 6882,
+        "line_count": 96
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment is clearly separated in section 2 with key agreement (X3DH and post-quantum hybrid) and identity key publishing.",
+            "Message and attachment encryption use symmetric AES-256-GCM keys derived from ratcheting keys, distinct from signing or key agreement.",
+            "Identity authentication and device binding are handled separately in section 4 with Ed25519 signing and out-of-band verification, not as part of message encryption.",
+            "Ongoing key update and ratcheting (Double Ratchet) described distinctly from initial session setup, with ratchet states stored securely on device.",
+            "Signatures are used only for identity key authentication, not for encrypting messages or attachments.",
+            "Attachments are encrypted separately from messages using symmetric keys derived from ratchet keys, consistent with role separation.",
+            "Server is treated only as a store-and-forward relay, with no key management or cryptographic role conflation."
+          ],
+          "role_separation_notes": "The response cleanly separates the major cryptographic roles according to the project guidelines: session key establishment, symmetric message encryption, identity authentication via signatures, and ratcheting key updates. No roles are conflated or inappropriately merged. The post-quantum hybrid aspects are described as planned extensions and do not blend roles. Overall, the protocol-role distinctions are coherent and consistent with best practices in secure messaging.",
+          "concise_summary": "The response distinctly separates session setup, message encryption, identity authentication, and ratcheting, meeting the project-specific role-separation guidance."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response cleanly separates the major cryptographic roles according to the project guidelines: session key establishment, symmetric message encryption, identity authentication via signatures, and ratcheting key updates. No roles are conflated or inappropriately merged. The post-quantum hybrid aspects are described as planned extensions and do not blend roles. Overall, the protocol-role distinctions are coherent and consistent with best practices in secure messaging.",
+        "role_separation_evidence": [
+          "Session establishment is clearly separated in section 2 with key agreement (X3DH and post-quantum hybrid) and identity key publishing.",
+          "Message and attachment encryption use symmetric AES-256-GCM keys derived from ratcheting keys, distinct from signing or key agreement.",
+          "Identity authentication and device binding are handled separately in section 4 with Ed25519 signing and out-of-band verification, not as part of message encryption.",
+          "Ongoing key update and ratcheting (Double Ratchet) described distinctly from initial session setup, with ratchet states stored securely on device.",
+          "Signatures are used only for identity key authentication, not for encrypting messages or attachments.",
+          "Attachments are encrypted separately from messages using symmetric keys derived from ratchet keys, consistent with role separation.",
+          "Server is treated only as a store-and-forward relay, with no key management or cryptographic role conflation."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 4,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:44:51+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversaries:** Nation-state actors, sophisticated hackers, or insider threats capable of passive and active network attacks.\n- **Capabilities:** Recording all encrypted traffic today with the aim to decrypt it later (store now, decrypt later attack).\n- **Goals:**\n  - Compromise confidentiality and integrity of messages and attachments.\n  - Compromise user identities or impersonate devices.\n  - Compromise long-term keys.\n- **Assumptions:**\n  - The endpoints (user devices) are trusted at least at the moment of sending/receiving.\n  - Users have secure device enrollment and authentication mechanisms.\n  - The server infrastructure is semi-trusted: it relays encrypted messages but is not trusted to decrypt content.\n  - Forward secrecy and post-compromise security for long-term confidentiality are required (messages encrypted today must remain confidential for 10-15 years).\n  - Multiple devices per user; secure device linking and cross-device key synchronization are needed.\n  - Offline message delivery and push notifications through server require end-to-end encryption without exposing plaintext to the server.\n  \n---\n\n## 2. Session Establishment\n\n- **Long-term identity key pairs:** \n  - Use **X25519** elliptic curve Diffie-Hellman keys for all devices of a user.\n  - Per-device public keys are published on a user’s server profile.\n- **Prekey mechanism and initial session handshake:** \n  - Utilize the **X3DH (Extended Triple Diffie-Hellman)** protocol for authenticated key agreement and initial shared secret derivation.\n  - Prekeys are stored and regularly refreshed on the server to enable asynchronous session initiation.\n- **Cross-device session establishment:** \n  - Each device generates a unique identity key pair and signed one-time prekeys signed by the long-term identity key.\n  - When adding a new device, an authenticated device-to-device key exchange occurs via a trusted channel (e.g., QR code scan or verification process).\n- **Key derivation function:**\n  - Use **HKDF with SHA-512** to derive root and chain keys from shared secrets.\n- **Server roles:**\n  - Store prekeys and serve them without having access to private key material.\n  - Facilitate offline delivery but never access plaintext.\n\n---\n\n## 3. Message and Attachment Encryption\n\n- **Message encryption:**\n  - Apply the **Double Ratchet algorithm** as standardized in the **Signal Protocol**.\n  - Messages encrypted using **AES-256-GCM** with unique per-message keys derived by the ratchet.\n  - Use 128-bit random nonces combined with message counters for uniqueness.\n- **Attachment encryption:**\n  - Encrypt all attachments client-side with **ChaCha20-Poly1305** for efficiency on mobile devices.\n  - Generate a random 256-bit symmetric key per attachment.\n  - Encrypt the attachment symmetric key with the established session keys using **AES-256-GCM**.\n- **Metadata protection:**\n  - Minimize metadata leakage by encrypting as much as possible, including filenames and message types.\n- **Offline and push notification support:**\n  - Messages and attachments are stored encrypted at the server for offline delivery.\n  - Push notifications contain only minimal non-sensitive metadata; no plaintext content.\n  \n---\n\n## 4. Identity Authentication\n\n- **Initial device authentication:**\n  - Long-term device identity keys certified by the user’s account key, protected by secure passphrase or biometric.\n- **User-to-user verification:**\n  - Use **Safety Numbers** (a hash of the concatenated long-term public keys) represented by QR codes or numeric fingerprints.\n  - Support out-of-band verification between users.\n- **Device addition and management:**\n  - Require existing user devices to approve new device addition via cryptographic proof or challenge-response.\n- **Trust on first use (TOFU):**\n  - Warn users if identity keys change unexpectedly to detect potential MITM attacks.\n  \n---\n\n## 5. Ongoing Key Update / Ratcheting\n\n- **Double ratchet:**\n  - Utilize the Double Ratchet algorithm combining a Diffie-Hellman ratchet and a symmetric-key ratchet for each session.\n  - Every sent and received message advances the ratchet state to produce new message keys.\n- **Group chats:**\n  - Use **Sender Keys** protocol (a variant of Double Ratchet with sender keys for group efficiency).\n  - Each participant maintains ratchet state per sender device.\n- **Post-compromise security:**\n  - Root ratchet updates via periodic Diffie-Hellman exchanges ensure that past session keys become invalid if a device is compromised.\n- **Key storage and state synchronization:**\n  - Encrypted key state backup using secure local storage or end-to-end encrypted cloud backup for multi-device synchronization.\n  \n---\n\n## 6. Residual Risks\n\n- **Endpoint compromise:** If a user’s device is compromised, past and future messages accessible on device may be exposed despite cryptography.\n- **Long-term compromise of identity keys** might allow impersonation until revoked and re-verified.\n- **Metadata leakage:** While message contents are encrypted, some metadata (such as timing, message size, and sender device IDs) may leak.\n- **Server infrastructure:** Although messages are encrypted end-to-end, server availability or denial-of-service attacks can prevent message delivery.\n- **Prekey publishing server risks:** Prekey compromise could reveal session initiation secrets if not properly secured.\n- **Quantum computing threats:** While algorithms like X25519 are considered secure now, a future quantum adversary could target stored ciphertext unless post-quantum cryptography is eventually adopted.\n\n---\n\nThis design utilizes state-of-the-art cryptographic standards tailored for multi-device, asynchronous messaging with long-term confidentiality and usability on mobile and desktop platforms.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 5868,
+        "line_count": 100
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 clearly separates session establishment involving X3DH and prekey mechanism for authenticated key agreement.",
+            "Section 3 distinctly addresses message and attachment encryption using symmetric schemes (Double Ratchet, AES-256-GCM, ChaCha20-Poly1305).",
+            "Section 4 handles identity authentication separately from messaging encryption, relying on Safety Numbers and certified device identity keys.",
+            "Section 5 maintains ongoing ratcheting and key updates distinct from initial session setup.",
+            "Project-specific guidance is followed: key establishment (X3DH) is separate from symmetric content encryption, identity authentication is not conflated with encryption, and ratcheting/rekeying is separated from one-time session establishment."
+          ],
+          "role_separation_notes": "The response cleanly delineates cryptographic roles: key agreement/session setup is handled by X3DH and prekey publication; message and attachment content encryption are symmetric and independent; identity authentication uses signatures and verification without improperly merging with encryption; ratcheting and ongoing key updates are clearly a separate layer from initial session establishment as instructed. No major collapse of roles or conflation of primitives is evident.",
+          "concise_summary": "The design maintains clear and coherent separation between key establishment, symmetric content encryption, identity authentication, and ongoing ratcheting roles, fulfilling the project-specific role-separation requirements."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response cleanly delineates cryptographic roles: key agreement/session setup is handled by X3DH and prekey publication; message and attachment content encryption are symmetric and independent; identity authentication uses signatures and verification without improperly merging with encryption; ratcheting and ongoing key updates are clearly a separate layer from initial session establishment as instructed. No major collapse of roles or conflation of primitives is evident.",
+        "role_separation_evidence": [
+          "Section 2 clearly separates session establishment involving X3DH and prekey mechanism for authenticated key agreement.",
+          "Section 3 distinctly addresses message and attachment encryption using symmetric schemes (Double Ratchet, AES-256-GCM, ChaCha20-Poly1305).",
+          "Section 4 handles identity authentication separately from messaging encryption, relying on Safety Numbers and certified device identity keys.",
+          "Section 5 maintains ongoing ratcheting and key updates distinct from initial session setup.",
+          "Project-specific guidance is followed: key establishment (X3DH) is separate from symmetric content encryption, identity authentication is not conflated with encryption, and ratcheting/rekeying is separated from one-time session establishment."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 5,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-30T11:44:51+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
+      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n## 1. Threat Model Assumptions\n- Adversaries can record, store, and replay all encrypted network traffic indefinitely (i.e., possess ciphertext archives).\n- Attackers may compromise servers but not end-user devices simultaneously (no full device compromise at the same time as server compromise).\n- Attackers can perform active network attacks (MITM, message injection, replay attacks).\n- Attackers may attempt to impersonate users or devices.\n- Devices may be lost or stolen.\n- Private keys stored on devices may be accessed by malware or physical attackers post-compromise.\n- Message confidentiality and integrity must remain assured for 10-15 years after transmission.\n- Backward secrecy: compromise of long-term keys should not expose past messages.\n- Forward secrecy: compromise of current session keys should not expose past or future messages.\n- Group chats include multi-party end-to-end encryption with dynamic membership changes.\n- Push notifications and delivery infrastructure are untrusted.\n- Occasional offline or intermittent connectivity with asynchronous message delivery.\n\n## 2. Session Establishment\n- **Long-term identity keys:** Each user/device has an Ed25519 key pair for identity signature and authentication, generated per device.\n- **Prekeys for asynchronous setup:** Use X25519-based Extended Triple Diffie-Hellman (X3DH) for initial key agreement, leveraging signed prekeys and one-time prekeys stored on server to enable offline message sending.\n- **Device linking for multi-device:** Devices perform authenticated key agreement using the same protocol with user's identity key to establish secure device-to-device binding.\n- **Session establishment:** After X3DH completes, both parties derive a shared secret to bootstrap the Double Ratchet.\n- **Algorithm summaries for session setup:**\n  - Identity keys: Ed25519 (RFC 8032) for signatures.\n  - Key agreement: Curve25519 (X25519) for DH, using X3DH protocol as per Signal Protocol.\n  - Key derivation: HKDF-SHA512 for extracting keys from DH outputs.\n- **Group sessions:** Use the Messaging Layer Security (MLS) protocol (version 14+) for group session initialization and membership updates, managing group keys and providing forward secrecy.\n\n## 3. Message and Attachment Encryption\n- **Message encryption:** Use the Double Ratchet algorithm for one-to-one messages, based on the initial shared secret from X3DH.\n  - Symmetric encryption: AES-256-GCM for authenticated encryption.\n  - Key derivation: HKDF-SHA512 in the ratchet to generate per-message keys.\n- **Attachments encryption:** Encrypt attachments (voice notes, images, files) using AES-256-GCM with a randomly generated content encryption key (CEK) per attachment.\n  - CEKs are encrypted using the current session key ratchet or group key.\n  - Support chunked encryption for large attachment files.\n- **Offline delivery:** Store encrypted message package including header, ciphertext, MAC, and ratchet info on server until fetched.\n- **Metadata minimization:** Encrypt as much metadata as possible; for example, encrypt message counters or padding for length hiding.\n- **Message authentication:** AES-GCM ciphertext provides confidentiality and integrity.\n- **Group message encryption:** MLS provides tree-based authenticated encryption with AES-256-GCM or ChaCha20-Poly1305 (MLS default), ensuring forward secrecy and post-compromise security for group chats.\n\n## 4. Identity Authentication\n- **User/device binding:** Devices sign their public keys with their long-term Ed25519 identity key.\n- **Trust on first use (TOFU):** When adding devices, users verify device fingerprints manually or via QR code scan.\n- **Verification in UI:** Present users with short authentication strings (SAS) hashes computed from identity keys for out-of-band verification (e.g., comparing fingerprints).\n- **Key continuity checks:** Clients notify users when identity keys of contacts change, allowing manual re-verification.\n- **Contact discovery:** Use privacy-preserving contact discovery protocols using hashed phone numbers or Secure Enclave TMP mechanisms to avoid exposing user contact lists.\n- **Server authentication:** TLS 1.3 enforced with certificate pinning on client for server communication, preventing server MITM.\n\n## 5. Ongoing Key Update / Ratcheting\n- **Double Ratchet:** Each message sent advances the ratchet, generating new symmetric message keys, supporting forward secrecy.\n- **Prekeys replenishment:** Devices upload new one-time prekeys periodically to server to enable continual offline session initiation.\n- **MLS group ratcheting:** Membership changes (join/leave) trigger tree key updates, providing post-compromise security and forward secrecy.\n- **Key rotation:** Long-term keys rotated periodically (e.g., every 12 months) requiring new key publication and re-verification.\n- **Message replay prevention:** Use unique per-message counters or sequence numbers with anti-replay protection on clients.\n- **Backup and recovery:** Encrypted key backup mechanism using passphrase-based key encryption with Argon2id for KDF to protect keys and allow multi-device sync.\n\n## 6. Residual Risks\n- **Long-term key compromise:** If a device's long-term identity key is compromised, previous message confidentiality may be endangered before key rotation.\n- **Device compromise:** Malware on endpoint devices may leak decrypted messages or keys, outside cryptographic protections.\n- **User error:** Poor handling of verification processes or key backup passphrases could enable attacks.\n- **Metadata leakage:** Server-side collection of message timing, volume, and user presence metadata is still possible.\n- **Quantum resistance:** Current asymmetric algorithms (X25519, Ed25519) are not quantum-secure; long-term confidentiality beyond 15 years may be impacted.\n- **Push notification exposure:** Push services may access unencrypted notification metadata.\n- **Denial of service:** Server or network-level attacks can prevent message delivery but do not compromise content confidentiality.\n- **Group chat complexity:** Dynamic group membership may present risks of improper forward secrecy if devices do not update keys promptly.\n\n---\n\nThis architecture leverages proven secure messaging protocols such as Signal's X3DH and Double Ratchet for direct messaging, and incorporates MLS for group chats, ensuring confidentiality and forward secrecy while supporting multi-device scenarios in a practical, user-friendly manner.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 6520,
+        "line_count": 68
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": true,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [
+            "NTRU"
+          ],
+          "kem_classical": [
+            "Curve25519",
+            "X25519",
+            "X3DH"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "Ed25519",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 clearly separates key establishment/session setup using X3DH and MLS protocols from message encryption.",
+            "Section 3 describes message and attachment encryption strictly as symmetric encryption roles (AES-256-GCM) with keys derived from the established sessions.",
+            "Identity authentication is handled separately in Section 4, using Ed25519 signatures for user/device binding and TOFU verification, not conflated with message encryption.",
+            "Ongoing ratcheting and rekeying are distinctly explained in Section 5, clearly separated from one-time session establishment in Section 2."
+          ],
+          "role_separation_notes": "The response maintains clear separation between long-term identity keys and authentication, session establishment via X3DH/MLS, symmetric message and attachment encryption, and ratcheting/key updates. There is no conflation of roles such as using signatures for encryption or mixing key establishment with message encryption itself, in line with the project-specific guidance.",
+          "concise_summary": "The response cleanly separates cryptographic roles: identity authentication, session setup, symmetric message encryption, and ratcheting, meeting the project role-separation criteria."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response maintains clear separation between long-term identity keys and authentication, session establishment via X3DH/MLS, symmetric message and attachment encryption, and ratcheting/key updates. There is no conflation of roles such as using signatures for encryption or mixing key establishment with message encryption itself, in line with the project-specific guidance.",
+        "role_separation_evidence": [
+          "Section 2 clearly separates key establishment/session setup using X3DH and MLS protocols from message encryption.",
+          "Section 3 describes message and attachment encryption strictly as symmetric encryption roles (AES-256-GCM) with keys derived from the established sessions.",
+          "Identity authentication is handled separately in Section 4, using Ed25519 signatures for user/device binding and TOFU verification, not conflated with message encryption.",
+          "Ongoing ratcheting and rekeying are distinctly explained in Section 5, clearly separated from one-time session establishment in Section 2."
+        ]
+      }
+    }
+  ]
+}

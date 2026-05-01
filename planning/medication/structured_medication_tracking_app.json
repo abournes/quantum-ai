@@ -1,0 +1,572 @@
+{
+  "study_metadata": {
+    "study_id": "nist-pqc-application-recommendation-benchmark",
+    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "prompt_version": "2026-04-29-a",
+    "rubric_version": "nist-pqc-benchmark-v5",
+    "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "prompt_variants": [
+      {
+        "prompt_id": "simple",
+        "query_name": "MEDICATION_ROLE_MAP_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this clinical health system. Briefly explain what should be used and why."
+      },
+      {
+        "prompt_id": "structured",
+        "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution."
+      },
+      {
+        "prompt_id": "pqc_simple",
+        "query_name": "MEDICATION_ROLE_MAP_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this clinical health system. Briefly explain what should be used and why. Consider post-quantum risks where relevant."
+      },
+      {
+        "prompt_id": "pqc_structured",
+        "query_name": "MEDICATION_ROLE_MAP_PQC_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any post-quantum cryptography considerations or future PQC requirements relevant to long-term patient-data confidentiality."
+      },
+      {
+        "prompt_id": "nist_pqc_simple",
+        "query_name": "MEDICATION_ROLE_MAP_NIST_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this clinical health system. Briefly explain what should be used and why. Prefer NIST-approved post-quantum approaches where relevant."
+      },
+      {
+        "prompt_id": "nist_pqc_structured",
+        "query_name": "MEDICATION_ROLE_MAP_NIST_PQC_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term patient-data confidentiality, but do not let that replace the main role-specific architecture."
+      }
+    ],
+    "num_samples_per_model": 5,
+    "models_under_test": [
+      "gpt-4.1-mini"
+    ],
+    "evaluator_model": "gpt-4.1-mini",
+    "python_version": "3.10.12 (main, Nov 18 2025, 00:58:32) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "openai_package_version": "2.32.0",
+    "nist_pqc_baseline": {
+      "last_reviewed": "2026-04-19",
+      "references": [
+        {
+          "standard": "FIPS 203",
+          "algorithm": "ML-KEM",
+          "role": "key establishment / KEM",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 204",
+          "algorithm": "ML-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 205",
+          "algorithm": "SLH-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "publication": "SP 800-227",
+          "role": "KEM usage guidance",
+          "published": "2025-09"
+        }
+      ]
+    }
+  },
+  "project_metadata": {
+    "project_id": "hospital_patient_medication_tracking_app",
+    "project_name": "Hospital Patient Health and Medication Tracking App",
+    "domain": "Clinical health systems",
+    "metrics_filename": "metrics_medication.json",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "output_filename": "structured_medication_tracking_app.json",
+    "prompt_variant": "structured",
+    "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+    "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.",
+    "project_brief": "Project name: TrackPatients.AI\nDescription: A hospital patient health and medication tracking platform used by\nphysicians, nurses, pharmacists, and administrators. The system stores patient\nhealth records, diagnoses, medication orders, allergies, barcode medication\nadministration events, lab results, discharge notes, and audit records. It has\nweb and mobile clients, backend APIs, cloud-hosted databases, encrypted backups,\nreporting dashboards, and integrations with EHR, pharmacy, and laboratory\nsystems. It should support routine clinical workflows, controlled access for\nauthorized staff, and basic protection for patient and medication data across\nweb, mobile, and backend systems.",
+    "algorithm_flag_definitions": [
+      {
+        "flag_id": "kem_has_current_nist_pqc",
+        "label": "Approved PQC KEM Family",
+        "description": "Whether the response names the approved NIST PQC KEM family for key establishment, including ML-KEM / FIPS 203 and Kyber family aliases."
+      },
+      {
+        "flag_id": "kem_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe KEM Family",
+        "description": "Whether the response names other PQC-safe KEM families such as HQC, BIKE, Classic McEliece, or NTRU."
+      },
+      {
+        "flag_id": "kem_has_classical",
+        "label": "Classical KEM",
+        "description": "Whether the response names classical key-establishment choices such as X3DH, X25519, ECDH, or RSA key exchange."
+      },
+      {
+        "flag_id": "signature_has_current_nist_pqc",
+        "label": "Approved PQC Signature Family",
+        "description": "Whether the response names approved NIST PQC signature families, including ML-DSA / FIPS 204 / Dilithium and SLH-DSA / FIPS 205 / SPHINCS+."
+      },
+      {
+        "flag_id": "signature_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe Signature Family",
+        "description": "Whether the response names other PQC-safe signature families such as Falcon / FN-DSA."
+      },
+      {
+        "flag_id": "signature_has_classical",
+        "label": "Classical Signature",
+        "description": "Whether the response names classical signature choices such as Ed25519, ECDSA, or RSA-PSS."
+      },
+      {
+        "flag_id": "dem_has_quantum_resistant_symmetric",
+        "label": "Strong Symmetric DEM",
+        "description": "Whether the response names strong symmetric bulk-encryption or content-encryption choices such as AES-256-GCM or ChaCha20-Poly1305."
+      },
+      {
+        "flag_id": "dem_has_non_quantum_resistant_symmetric",
+        "label": "Weak / Short-Key Symmetric DEM",
+        "description": "Whether the response names weaker or shorter-key symmetric bulk-encryption or content-encryption choices such as AES-128-GCM."
+      }
+    ],
+    "role_separation_statuses": [
+      "pass",
+      "fail",
+      "unclear"
+    ]
+  },
+  "summary": {
+    "total_runs": 5,
+    "complete_runs": 5,
+    "partial_runs": 0,
+    "error_runs": 0,
+    "models_tested": [
+      "gpt-4.1-mini"
+    ],
+    "algorithm_flag_sample_count": 5,
+    "algorithm_flag_rates": {
+      "kem_has_current_nist_pqc": 0.2,
+      "kem_has_legacy_or_non_nist_pqc": 0.2,
+      "kem_has_classical": 1.0,
+      "signature_has_current_nist_pqc": 0.0,
+      "signature_has_legacy_or_non_nist_pqc": 0.0,
+      "signature_has_classical": 1.0,
+      "dem_has_quantum_resistant_symmetric": 1.0,
+      "dem_has_non_quantum_resistant_symmetric": 0.0
+    },
+    "named_algorithm_frequency_by_category": {
+      "dem_non_quantum_resistant_symmetric": {},
+      "dem_quantum_resistant_symmetric": {
+        "AES-256": 5,
+        "AES-256-GCM": 5,
+        "ChaCha20-Poly1305": 2
+      },
+      "kem_classical": {
+        "Curve25519": 1,
+        "ECDH": 4,
+        "ECDHE": 4,
+        "P-256": 1,
+        "X25519": 3
+      },
+      "kem_current_nist": {
+        "Kyber": 1
+      },
+      "kem_legacy_or_non_nist": {
+        "NTRU": 1
+      },
+      "signature_classical": {
+        "ECDSA": 4,
+        "RSA": 5
+      },
+      "signature_current_nist": {},
+      "signature_legacy_or_non_nist": {}
+    },
+    "role_separation_sample_count": 5,
+    "role_separation_counts": {
+      "pass": 5,
+      "fail": 0,
+      "unclear": 0
+    },
+    "role_separation_rates": {
+      "pass": 1.0,
+      "fail": 0.0,
+      "unclear": 0.0
+    }
+  },
+  "samples": [
+    {
+      "status": "complete",
+      "sample_number": 1,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T19:31:28+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nHospital Patient Health and Medication Tracking App\n\nProject domain:\nClinical health systems\n\nProject brief:\nProject name: TrackPatients.AI\nDescription: A hospital patient health and medication tracking platform used by\nphysicians, nurses, pharmacists, and administrators. The system stores patient\nhealth records, diagnoses, medication orders, allergies, barcode medication\nadministration events, lab results, discharge notes, and audit records. It has\nweb and mobile clients, backend APIs, cloud-hosted databases, encrypted backups,\nreporting dashboards, and integrations with EHR, pharmacy, and laboratory\nsystems. It should support routine clinical workflows, controlled access for\nauthorized staff, and basic protection for patient and medication data across\nweb, mobile, and backend systems.",
+      "recommendation": "**1. Threat Model Assumptions**\n\n- Adversaries can eavesdrop and record encrypted communications today, with potential attempts to decrypt in the future (retrospective attacks).\n- Patient health information (PHI) confidentiality must be preserved for 10 to 15 years, covering the lifetime of data sensitivity.\n- Attackers may attempt man-in-the-middle (MITM), replay attacks, and unauthorized system or service impersonation.\n- Internal threat actors include rogue employees who may access or exfiltrate data.\n- External threats target API endpoints, web/mobile clients, backups, and integrations, trying to exploit cryptographic weaknesses.\n- Cloud infrastructure hosting the system is assumed to be potentially vulnerable or partially untrusted.\n- Backups might be stored off-site or in separate cloud storage; physical access to backup media may be possible.\n- Integration partners (EHR, pharmacy, lab) require cryptographically authenticated and confidential channels.\n- User authentication is out of scope for direct cryptographic design but assumes role-based access controls are enforced.\n\n---\n\n**2. Session Establishment for Clinical APIs and System Links**\n\n- Use **TLS 1.3** exclusively for all web, mobile, API, and inter-system communication channels to provide confidentiality, integrity, and forward secrecy.\n- Cipher Suites: TLS_AES_256_GCM_SHA384 or TLS_CHACHA20_POLY1305_SHA256 for authenticated encryption, ensuring strong symmetric encryption with AEAD.\n- Public key algorithm: **ECDHE with Curve25519** or **P-384** for ephemeral key exchange providing forward secrecy.\n- Server certificates use **X.509 with RSA 3072-bit or ECDSA P-384 keys** issued by a trusted internal or external CA.\n- Client authentication on APIs and system links via mutual TLS (mTLS) to authenticate machines and services using client certificates.\n- Session tickets or resumption are disabled or heavily controlled to minimize exposure to session replay attacks.\n- Implement strict certificate pinning (on mobile and critical endpoints) and OCSP stapling to ensure revocation checking.\n- API gateways enforce strict TLS usage and reject connections with downgrade or weak cipher suites.\n\n---\n\n**3. PHI, API Payload, and Backup Encryption**\n\n- **At-rest data encryption**: For all databases in cloud or on-premises, use AES-256-GCM for authenticated encryption.\n- Database encryption keys stored in a Hardware Security Module (HSM) or cloud KMS (e.g., AWS KMS, Azure Key Vault) with strict access controls.\n- API Payload Encryption: For end-to-end encryption of highly sensitive PHI fields within payloads, use **AES-256-GCM** or **ChaCha20-Poly1305** symmetric encryption combined with **HKDF-SHA-384** for key derivation per session/message.\n- All PHI fields should be encrypted before transport or storage, with keys segmented per patient or session to minimize compromise impact.\n- Backups must be encrypted with **AES-256 in GCM mode**; keys managed separately from active database keys and also stored securely in HSM or KMS.\n- Backups integrity verified using SHA-384 or SHA-512 HMAC with corresponding keys.\n- Transport encryption plus payload encryption together ensure confidentiality even if TLS is broken in future.\n- Apply field-level encryption in application logic so that even DBAs or cloud admins do not have plaintext access.\n- Encrypt audit logs using same AES-256-GCM encryption with separate keys.\n\n---\n\n**4. Machine and Service Identity Authentication**\n\n- Use **X.509 certificates** provisioned per service and machine, adhering to a public key infrastructure (PKI) controlled by the hospital or the platform provider.\n- Certificates use ECDSA with P-384 or RSA 3072 keys for a 15-year trust horizon.\n- Services authenticate via mTLS connections; clients verify server certs and vice versa.\n- Automated certificate issuance and renewal using protocols like **ACME** adapted for private PKI or integration with enterprise CA services.\n- Use **JWT tokens signed with RSASSA-PSS 3072-bit keys** or ECDSA P-384 in OAuth 2.0 or OpenID Connect flows for user and service-to-service API authentication layered on top of mTLS.\n- Role-based access control enforced by token claims issued by a dedicated identity provider (IdP).\n- Machines and services maintain private keys in secure storage such as TPM modules or cloud instance metadata services with restricted access.\n- All certificates have strict lifetimes (e.g., 1 year) with automated rotation.\n\n---\n\n**5. Ongoing Key Rotation / Credential Lifecycle**\n\n- All long-term keys (machine cert keys, database master keys, backup keys) rotated at least annually or upon suspicion of compromise.\n- Short-term session keys are ephemeral, generated fresh via TLS 1.3 handshake for each session.\n- Database encryption data keys rotated quarterly using envelope encryption: master key decrypts new data key, which re-encrypts database fields.\n- Backup encryption keys rotated independently of live database keys.\n- Maintain audit trails for all key generation, use, and rotation events.\n- Automated tooling ensures certificate renewal (e.g., every 11 months) to avoid expiry gaps.\n- API authentication tokens (JWTs) issued with short lifetimes (minutes to hours) and support revocation mechanisms.\n- All cryptographic materials stored encrypted at rest with role segregation for key access policies.\n- Emergency key revocation and re-issuance processes developed to quickly respond to detected compromise.\n- Regular cryptographic algorithm review and compliance check in line with NIST guidelines and clinical regulation standards (e.g., HIPAA, CFR 21).\n\n---\n\n**6. Residual Risks**\n\n- Future cryptanalysis breakthroughs could weaken current recommended algorithms (AES-256, ECDSA P-384); planned cryptographic agility mitigates this risk.\n- Insider threats with privileged access to keys or decrypted data remain a concern despite encryption boundaries.\n- Compromised endpoints (mobile devices, laptops) may expose authentication credentials or session tokens.\n- Some third-party integrations may have weaker or incompatible crypto standards, requiring compensating controls or isolated trust boundaries.\n- Backup key compromise could lead to long-term exposure of archived PHI despite encryption.\n- Potential implementation flaws, side-channel attacks, or software vulnerabilities could expose cryptographic secrets.\n- Operational errors in key management or certificate lifecycle could introduce periods of unintentional exposure.\n- Compliance gaps may arise if encryption practices do not stay current with evolving regulatory requirements.\n- Availability risks from complex key management may impact system uptime if automated renewals fail.\n\n---\n\nThis design note balances strong, standards-based cryptographic primitives with operational best practices to protect patient data confidentiality and system integrity over the mandated long security lifecycle.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 6918,
+        "line_count": 84
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": true,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [
+            "NTRU"
+          ],
+          "kem_classical": [
+            "Curve25519",
+            "ECDH",
+            "ECDHE"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 clearly separates session establishment role using TLS 1.3 with ephemeral key exchange (ECDHE) for forward secrecy.",
+            "Section 3 distinctly assigns symmetric encryption (AES-256-GCM, ChaCha20-Poly1305) for PHI, API payload, database, backup, and audit log encryption.",
+            "Section 4 addresses machine and service identity authentication with X.509 certificates, mTLS, and signature schemes (ECDSA, RSASSA-PSS) separate from encryption keys.",
+            "Section 5 focuses on ongoing key rotation and credential lifecycle processes as distinct from one-time session setup or bulk data encryption.",
+            "The response explicitly designates PKI roles for authentication/signatures separate from symmetric key roles for data encryption and further distinct session keys established via TLS.",
+            "Automated certificate issuance/renewal and token-based user/service auth layered on top of mTLS separate identity/authentication from data encryption.",
+            "Use of envelope encryption with separate keys and key stores (HSM/KMS) for database and backup also indicates role distinction between data encryption and key management."
+          ],
+          "role_separation_notes": "The response adheres well to the project-specific guidance by maintaining clear, non-overlapping cryptographic roles: one for session setup (TLS ephemeral keys), one for bulk symmetric data encryption, one for identity/authentication via certificates and signatures, and one for key lifecycle management. There is no conflation of encryption with signatures or combining session keys with data encryption keys improperly. The role separation is coherent and well-structured across the documented sections.",
+          "concise_summary": "The response cleanly separates session establishment, symmetric data encryption, identity authentication, and key lifecycle roles, meeting the project’s role-separation guidelines."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response adheres well to the project-specific guidance by maintaining clear, non-overlapping cryptographic roles: one for session setup (TLS ephemeral keys), one for bulk symmetric data encryption, one for identity/authentication via certificates and signatures, and one for key lifecycle management. There is no conflation of encryption with signatures or combining session keys with data encryption keys improperly. The role separation is coherent and well-structured across the documented sections.",
+        "role_separation_evidence": [
+          "Section 2 clearly separates session establishment role using TLS 1.3 with ephemeral key exchange (ECDHE) for forward secrecy.",
+          "Section 3 distinctly assigns symmetric encryption (AES-256-GCM, ChaCha20-Poly1305) for PHI, API payload, database, backup, and audit log encryption.",
+          "Section 4 addresses machine and service identity authentication with X.509 certificates, mTLS, and signature schemes (ECDSA, RSASSA-PSS) separate from encryption keys.",
+          "Section 5 focuses on ongoing key rotation and credential lifecycle processes as distinct from one-time session setup or bulk data encryption.",
+          "The response explicitly designates PKI roles for authentication/signatures separate from symmetric key roles for data encryption and further distinct session keys established via TLS.",
+          "Automated certificate issuance/renewal and token-based user/service auth layered on top of mTLS separate identity/authentication from data encryption.",
+          "Use of envelope encryption with separate keys and key stores (HSM/KMS) for database and backup also indicates role distinction between data encryption and key management."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 2,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T19:31:28+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nHospital Patient Health and Medication Tracking App\n\nProject domain:\nClinical health systems\n\nProject brief:\nProject name: TrackPatients.AI\nDescription: A hospital patient health and medication tracking platform used by\nphysicians, nurses, pharmacists, and administrators. The system stores patient\nhealth records, diagnoses, medication orders, allergies, barcode medication\nadministration events, lab results, discharge notes, and audit records. It has\nweb and mobile clients, backend APIs, cloud-hosted databases, encrypted backups,\nreporting dashboards, and integrations with EHR, pharmacy, and laboratory\nsystems. It should support routine clinical workflows, controlled access for\nauthorized staff, and basic protection for patient and medication data across\nweb, mobile, and backend systems.",
+      "recommendation": "**TrackPatients.AI** – Cryptographic Design Note\n\n---\n\n### 1. Threat Model Assumptions\n\n- Adversaries may eavesdrop on network traffic between clients, APIs, databases, and external integrations and record encrypted traffic for offline analysis now and in the future.\n- Adversaries may attempt to impersonate endpoints or services to gain unauthorized access.\n- Insider threats or compromised machines may lead to credential leakage.\n- Cryptanalysis advances over 10-15 years may degrade the strength of currently used encryption.\n- Backup media and databases may be stolen or copied.\n- The system must ensure patient health information (PHI) confidentiality and integrity for at least 10-15 years.\n- Attacks could include replay, man-in-the-middle, credential theft, and unauthorized decryption.\n- Authorized users and services only: strict access control enforced through cryptographic authentication and authorization tokens.\n- The system runs in a regulated environment; compliance with HIPAA and related data privacy standards is assumed.\n\n---\n\n### 2. Session Establishment for Clinical APIs and System Links\n\n- Use TLS 1.3 only (no older TLS versions) for all web, mobile, and backend API communications, enforcing mutual authentication between critical system components (server and selected trusted clients or backend services).\n- Server certificates:\n  - X.509 certificates with 4096-bit RSA or ECDSA P-384 (NIST P-384 curve), issued by an internal PKI or a trusted commercial CA.\n- Client certificates:\n  - For backend services and internal APIs, use mTLS with X.509 client certificates (ECDSA P-256 or P-384).\n- For web and mobile clients:\n  - Use OAuth 2.0 Bearer tokens exchanged after user authentication.\n  - Token authorization via OpenID Connect (OIDC) with JWTs signed using RSASSA-PSS (RSA 2048-bit with SHA-256 or SHA-384) or ECDSA P-256.\n- Session keys:\n  - Established using ephemeral Diffie-Hellman key exchange with X25519 or P-384 during TLS 1.3 handshake.\n- TLS cipher suites must only use AEAD authenticated encryption primitives:\n  - AES-256-GCM or ChaCha20-Poly1305.\n- Replay protection:\n  - Rely on TLS 1.3 anti-replay features, with additional nonce or timestamp checks inside the API payload where applicable.\n\n---\n\n### 3. PHI, API Payload, and Backup Encryption\n\n- PHI and sensitive records in-rest encryption inside databases:\n  - Field-level encryption of extremely sensitive fields (e.g., patient identifiers, medications) using AES-256-GCM in authenticated encryption mode.\n- Data payload encryption for API communication:\n  - Rely primarily on TLS 1.3 confidentiality.\n  - Sensitive fields encrypted client-side when necessary using AES-256-GCM with keys derived from user session tokens or service keys.\n- Backups:\n  - Encrypt full backup files using AES-256 in GCM mode.\n  - Key wrapping for backup encryption keys using AES Key Wrap (RFC 3394) with a master key stored in a Hardware Security Module (HSM) or cloud KMS.\n- Database encryption at rest:\n  - Use Transparent Data Encryption (TDE) with AES-256-GCM as supported by the database platform.\n- Key derivation:\n  - Use HKDF with SHA-512 for generating encryption keys from master secrets or passphrases.\n- Integrity:\n  - Use HMAC-SHA-256 or SHA-512 with the corresponding payload encryption keys to verify backups and stored records.\n\n---\n\n### 4. Machine and Service Identity Authentication\n\n- Use a PKI-based authentication scheme for all interconnected machines and services in backend infrastructure:\n  - Machines possess unique X.509 identity certificates, issued by internal CA.\n  - Certificates rotate on a 1-year validity cycle.\n- Services authenticate over APIs using OAuth 2.0 Client Credentials Grant with JWT assertion signed with RSASSA-PSS 2048-bit or ECDSA P-256 keys.\n- Distributed services authenticate via mTLS with ephemeral elliptic curve keys (X25519 or P-384) during connection negotiation.\n- Web and mobile clients authenticate users via OIDC, binding tokens to device certificates where possible (e.g., mobile with secure enclave-backed keys).\n- Hardware device identity (e.g., mobile phones) can leverage platform attestation mechanisms such as Apple DeviceCheck or Android SafetyNet for enhanced assurance.\n- For automated scripts or external integrations, use short-lived OAuth tokens with scopes limited to minimum necessary privileges.\n\n---\n\n### 5. Ongoing Key Rotation / Credential Lifecycle\n\n- Automated key rotation policies:\n  - TLS certificates: rotate every 12 months or after compromise.\n  - Encryption master keys: rotate every 2 years; backup encryption keys rotated in coordination.\n  - OAuth client secrets and JWT signing keys: rotated every 90 days.\n- Use a centralized Key Management System (KMS) or Hardware Security Module (HSM) for secure key storage and access control.\n- Implement strict audit logging for all key creation, usage, and rotation events.\n- Revoke compromised keys or credentials immediately and trigger emergency key rotation.\n- User authentication credentials:\n  - Enforce periodic password resets or better yet, use multi-factor authentication with hardware or biometric factors.\n- Implement support for cryptographically secure key derivation to minimize token/key distribution complexity during rotation.\n- Backups re-encrypted with new keys upon rotation; maintain secure key archival with access control and destruction policies respecting retention periods.\n\n---\n\n### 6. Residual Risks\n\n- Quantum computing advances may compromise RSA and elliptic curve signatures/ciphers over 15 years; post-quantum cryptography migration plan needed in long-term.\n- Insider attacks with access to decrypted data or keys remain a risk; mitigate through segmentation and least privilege.\n- Device compromise on mobile or client side could leak keys or tokens.\n- Backup media theft after initial encryption relies on key secrecy; key compromise may expose long-term backups.\n- Zero-day cryptanalysis vulnerabilities in chosen algorithms could undermine security.\n- Dependence on PKI infrastructure and CA trustworthiness may lead to certificate spoofing if compromised.\n- Cryptographic agility limited by legacy integrations may delay future upgrades.\n- Replay or downgrade attacks minimized but not eliminated if endpoints misconfigure TLS or tokens.\n- Incomplete field-level encryption coverage might expose some metadata or less critical PHI.\n- Human operational errors during key rotation or credential revocations causing access lags or vulnerabilities.\n\n---\n\n**Summary:**  \nTrackPatients.AI's cryptographic design emphasizes TLS 1.3 with AEAD cipher suites, strong machine and user authentication backed by PKI and OAuth/OIDC JWTs, combined with AES-256-GCM for at-rest and backup encryption. The design anticipates long data confidentiality needs with strict key rotation, centralized key management, and layered protections balancing usability, compliance, and cryptographic best practices.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 6945,
+        "line_count": 102
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "P-256",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM",
+            "ChaCha20-Poly1305"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment uses TLS 1.3 with ephemeral Diffie-Hellman key exchange and AEAD cipher suites, distinct from data encryption.",
+            "PHI and sensitive data encrypted symmetrically with AES-256-GCM; API payload encryption is separate from transport-layer encryption.",
+            "Machine and service authentication use PKI-based certificates and OAuth 2.0 JWT assertions, separated from encryption keys used for data confidentiality.",
+            "Key rotation and credential lifecycle management handled independently via KMS/HSM with distinct rotation schedules and audit logging.",
+            "Clear separation between session setup (TLS, ephemeral keys), data encryption (symmetric AES-GCM), authentication/signatures (PKI, OAuth JWT), and key lifecycle."
+          ],
+          "role_separation_notes": "The design cleanly delineates each cryptographic role according to project-specific guidance. Session establishment uses ephemeral asymmetric keys for session keys, while data encryption relies on symmetric AES-GCM. Authentication and signatures are handled via PKI-issued certificates and OAuth tokens, distinct from encryption keys. Key rotation and credential management are explicitly separated from one-time session setup. There is no conflation of roles such as misuse of signatures for encryption or combining authentication with bulk encryption.",
+          "concise_summary": "The response maintains clear and coherent separation of major cryptographic roles, passing the protocol-role separation evaluation."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The design cleanly delineates each cryptographic role according to project-specific guidance. Session establishment uses ephemeral asymmetric keys for session keys, while data encryption relies on symmetric AES-GCM. Authentication and signatures are handled via PKI-issued certificates and OAuth tokens, distinct from encryption keys. Key rotation and credential management are explicitly separated from one-time session setup. There is no conflation of roles such as misuse of signatures for encryption or combining authentication with bulk encryption.",
+        "role_separation_evidence": [
+          "Session establishment uses TLS 1.3 with ephemeral Diffie-Hellman key exchange and AEAD cipher suites, distinct from data encryption.",
+          "PHI and sensitive data encrypted symmetrically with AES-256-GCM; API payload encryption is separate from transport-layer encryption.",
+          "Machine and service authentication use PKI-based certificates and OAuth 2.0 JWT assertions, separated from encryption keys used for data confidentiality.",
+          "Key rotation and credential lifecycle management handled independently via KMS/HSM with distinct rotation schedules and audit logging.",
+          "Clear separation between session setup (TLS, ephemeral keys), data encryption (symmetric AES-GCM), authentication/signatures (PKI, OAuth JWT), and key lifecycle."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 3,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T19:31:28+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nHospital Patient Health and Medication Tracking App\n\nProject domain:\nClinical health systems\n\nProject brief:\nProject name: TrackPatients.AI\nDescription: A hospital patient health and medication tracking platform used by\nphysicians, nurses, pharmacists, and administrators. The system stores patient\nhealth records, diagnoses, medication orders, allergies, barcode medication\nadministration events, lab results, discharge notes, and audit records. It has\nweb and mobile clients, backend APIs, cloud-hosted databases, encrypted backups,\nreporting dashboards, and integrations with EHR, pharmacy, and laboratory\nsystems. It should support routine clinical workflows, controlled access for\nauthorized staff, and basic protection for patient and medication data across\nweb, mobile, and backend systems.",
+      "recommendation": "**1. Threat Model Assumptions**\n\n- Adversaries may capture all network traffic (active/passive eavesdropping) today and may attempt to decrypt it in the future (record-and-decrypt).\n- Attackers might gain insider-level access to intermediate network segments or cloud infrastructure but not full key material unless explicitly stolen.\n- Clients (web, mobile) and backend systems could be targets for impersonation or unauthorized API access attempts.\n- Data confidentiality of electronic protected health information (ePHI) must be preserved for up to 10-15 years to comply with healthcare regulations.\n- Physical theft or loss of backups or storage is plausible, requiring strong data-at-rest encryption.\n- Systems must resist common cryptographic attacks (e.g., replay, key reuse, downgrade).\n- External integrations may not have a fully trusted environment and require secure mutual authentication.\n- Key management infrastructure is trusted to a reasonable extent but subject to audits and least-privilege principles.\n\n---\n\n**2. Session Establishment for Clinical APIs and System Links**\n\n- Use **TLS 1.3** (RFC 8446) exclusively for all API and system connections to provide forward secrecy, reducing risks from future compromise of long-term keys.\n- Configure TLS with the strongest cipher suites:\n  - AEAD cipher suite: `TLS_AES_256_GCM_SHA384`\n  - Key exchange: Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) over curve **X25519** or **secp384r1**\n  - Certificates using **ECDSA** with P-384 curve or RSA 3072/4096 bits (EC preferred)\n- Enforce **mutual TLS (mTLS)** for all backend system links and critical API endpoints to authenticate both client and server machines/services.\n- Use **OCSP Stapling** and **Certificate Transparency** to harden PKI trust.\n- Implement strict certificate validation with pinned or trusted CA roots; reject weak signatures or legacy hashing algorithms (no SHA1).\n- For mobile/web clients, use trusted browser or OS TLS stacks with HSTS and Certificate Pinning via TLS Certificate Public Key Pinning (PKP) or Trust On First Use (TOFU) where applicable.\n- Protect against replay attacks at API layer with nonce/timestamp tokens layered on top of TLS.\n\n---\n\n**3. PHI, API Payload, and Backup Encryption**\n\n- **Data in transit:** Protected under TLS 1.3 as per above; all API payloads transmitted inside the encrypted TLS session.\n- **Data at rest:**  \n  - Use **AES-256-GCM** for all PHI stored in databases and file stores (e.g., medication logs, audit trails).\n  - Encrypt fields or documents using deterministic encryption only where necessary for indexed queries; otherwise, use randomized AEAD encryption, e.g., **AES-256-GCM** with unique nonces.\n  - Key hierarchy:  \n    - Use a master key wrapped in an HSM or cloud KMS (e.g., AWS KMS, Azure Key Vault) with key policies restricting access.\n    - Generate and store data encryption keys (DEKs) wrapped under the master key.\n- **Backups:**  \n  - Encrypt backups with **AES-256-GCM** or use storage with built-in encryption at rest validated against FIPS 140-2/3.\n  - Include HMAC verification (e.g., HMAC-SHA-256) for integrity checks.\n  - Backup encryption keys must be rotated regularly and stored separately from operational keys.\n- **API payload encryption (if sensitive):**  \n  - Optionally double encrypt PHI in the payload using **JSON Web Encryption (JWE)** with **ECDH-ES + AES_256_GCM** algorithm suite for end-to-end encryption when non-TLS trusted intermediaries exist (e.g., third-party integrations).\n\n---\n\n**4. Machine and Service Identity Authentication**\n\n- Use **X.509 certificates** managed by an internal Public Key Infrastructure (PKI) or Cloud CA for all servers, services, and system components.\n- Certificates should use **ECDSA with P-384** or **RSA 3072** keys, with validity periods not exceeding 1 year.\n- Automate certificate issuance and renewal using tools like **ACME (Automated Certificate Management Environment)** or cloud provider CA services.\n- Implement **mutual TLS (mTLS)** for API clients and service-to-service authentication.\n- For users, employ **OAuth 2.0 + OpenID Connect** interfaces with strong MFA for human authentication to web/mobile clients.\n- Leverage hardware-backed keys or device attestation for mobile clients where possible (e.g., Android Keystore, Apple Secure Enclave).\n- Use API keys or JSON Web Tokens (JWT) with short time-to-live and audience scoping for lightweight service authentication where mTLS is impractical.\n- Audit machine/service identity lifecycle and revoke compromised certificates promptly.\n\n---\n\n**5. Ongoing Key Rotation / Credential Lifecycle**\n\n- Enforce key rotation policies as mandated by healthcare security standards (e.g., NIST SP 800-57):\n  - Master keys: rotate at least annually or after any suspected compromise.\n  - Data encryption keys (DEKs): rotate at least every 6 months or more frequently based on usage volume and sensitivity.\n  - TLS/PKI certificates: renew certificates every 6-12 months, revoke promptly if compromised.\n- Use automated tooling for key rotation with capabilities for seamless re-encryption or key wrapping transitions.\n- Maintain robust key versioning in KMS for old key archival, access control, and audit trails.\n- Enforce strong credential lifecycle management for API keys, tokens, and secrets:\n  - Periodic rotation (e.g., quarterly)\n  - Immediate revocation when access is revoked or anomalous behavior detected\n  - Use hardware security modules (HSMs) or cloud KMS to protect private keys.\n- Backup encryption keys must also be rotated on a separate schedule and stored with strict access control.\n- Incorporate key compromise detection monitoring and logging.\n\n---\n\n**6. Residual Risks**\n\n- Future cryptanalysis could potentially weaken TLS 1.3, AES-256-GCM, or ECDSA cryptography; quantum computing poses a latent threat beyond 10-15 years.\n- Compromise of centralized key management systems or hardware security modules remains a critical risk.\n- Insider threats with privileged access to keys or backups may extract PHI despite cryptographic protections.\n- Endpoint compromise (web/mobile clients) could leak decrypted data or credentials.\n- Legacy integration systems with weaker or no encryption reduce overall system confidentiality.\n- Operational errors or misconfigurations in certificate, key management, or encryption implementations may induce vulnerabilities.\n- Some long-term data confidentiality may require future-proofing (e.g., post-quantum cryptographic migration plans).\n- Backup storage outside of the defined secure perimeter may raise leakage or destruction risks.\n\n---\n\nBy adhering to these concrete cryptographic standards and detailed controls, the TrackPatients.AI system will establish a robust foundation securing clinical PHI and system communications for regulatory compliance and long-term confidentiality.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 6863,
+        "line_count": 90
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "ECDH",
+            "ECDHE",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Section 2 outlines session establishment using TLS 1.3 and mTLS for authenticated connections, distinct from data encryption roles.",
+            "Section 3 specifies symmetric encryption (AES-256-GCM) for PHI, database, payload, and backup encryption, separated from session protocols.",
+            "Section 4 describes machine/service identity authentication using X.509 certificates and OAuth tokens, keeping authentication separate from encryption.",
+            "Section 5 covers ongoing key rotation and credential lifecycle management separately from session setup or encryption procedures.",
+            "Each section treats session establishment, symmetric data encryption, authentication signatures, and key lifecycle as distinct major cryptographic roles, following the project-specific guidance."
+          ],
+          "role_separation_notes": "The response clearly delineates protocol roles: TLS (session establishment), symmetric AES for data encryption, PKI certificates and OAuth for authentication, and separate management for key rotation. There is no conflation of roles like using key exchange primitives as data encryption or mixing authentication with encryption functions. The response respects the separation mandated by the project brief and addresses each cryptographic role in its own domain.",
+          "concise_summary": "The response maintains clear, coherent separation between session establishment, data encryption, authentication, and key lifecycle management, satisfying the role separation criteria."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response clearly delineates protocol roles: TLS (session establishment), symmetric AES for data encryption, PKI certificates and OAuth for authentication, and separate management for key rotation. There is no conflation of roles like using key exchange primitives as data encryption or mixing authentication with encryption functions. The response respects the separation mandated by the project brief and addresses each cryptographic role in its own domain.",
+        "role_separation_evidence": [
+          "Section 2 outlines session establishment using TLS 1.3 and mTLS for authenticated connections, distinct from data encryption roles.",
+          "Section 3 specifies symmetric encryption (AES-256-GCM) for PHI, database, payload, and backup encryption, separated from session protocols.",
+          "Section 4 describes machine/service identity authentication using X.509 certificates and OAuth tokens, keeping authentication separate from encryption.",
+          "Section 5 covers ongoing key rotation and credential lifecycle management separately from session setup or encryption procedures.",
+          "Each section treats session establishment, symmetric data encryption, authentication signatures, and key lifecycle as distinct major cryptographic roles, following the project-specific guidance."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 4,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T19:31:28+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nHospital Patient Health and Medication Tracking App\n\nProject domain:\nClinical health systems\n\nProject brief:\nProject name: TrackPatients.AI\nDescription: A hospital patient health and medication tracking platform used by\nphysicians, nurses, pharmacists, and administrators. The system stores patient\nhealth records, diagnoses, medication orders, allergies, barcode medication\nadministration events, lab results, discharge notes, and audit records. It has\nweb and mobile clients, backend APIs, cloud-hosted databases, encrypted backups,\nreporting dashboards, and integrations with EHR, pharmacy, and laboratory\nsystems. It should support routine clinical workflows, controlled access for\nauthorized staff, and basic protection for patient and medication data across\nweb, mobile, and backend systems.",
+      "recommendation": "# Design Note for TrackPatients.AI Cryptographic Architecture\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversary Capabilities:**\n  - Active network attackers capable of intercepting, recording, and replaying encrypted traffic now and in the future.\n  - Potential compromise of some backend systems or cloud infra, but not full control of all systems.\n  - Insider threats (e.g., rogue employees) with non-administrative access.\n  - Attempts to exfiltrate data from backups or at-rest storage.\n\n- **Security Goals:**\n  - Protect patient health information (PHI) confidentiality for **at least 10-15 years**, requiring protection against future cryptanalysis and quantum threats to some extent.\n  - Ensure integrity and authenticity of clinical APIs, mobile/web sessions, and database transactions.\n  - Authenticate and authorize machines/services interacting with backend APIs and external integrations.\n  - Protect backups and persistent data storage even if infrastructure is partially compromised.\n\n- **Constraints and Assumptions:**\n  - Performance impacts should be balanced with security, given clinical workflow sensitivities.\n  - Regulatory compliance (e.g., HIPAA) demands strong encryption and access controls.\n  - Key management must allow for future key rotation and revocation.\n  - All traffic may be recorded now—compromise of long-term confidentiality requires forward-looking cryptographic choices.\n\n---\n\n## 2. Session Establishment for Clinical APIs and System Links\n\n- **Transport Security:**  \n  Use **TLS 1.3** (RFC 8446) with strong cipher suites to protect all API, web, and mobile sessions.\n\n- **Cipher Suites:**  \n  Prefer **TLS_AES_256_GCM_SHA384** or **TLS_CHACHA20_POLY1305_SHA256** for confidentiality and integrity.\n\n- **Key Exchange:**  \n  Use **Elliptic Curve Diffie-Hellman Ephemeral (ECDHE)** key exchanges over **secp384r1 (NIST P-384)** to provide:\n  - Forward secrecy to protect past sessions if long-term private keys are compromised.\n  - Resistance against foreseeable cryptanalysis in the next 10-15 years.\n\n- **Authentication:**\n  - Use **X.509 certificates** for backend services and APIs issued by an internal PKI.\n  - Web and mobile clients authenticate users by OAuth 2.0 / OpenID Connect tokens after session establishment.\n  \n- **Mutual TLS (mTLS):**  \n  Enforce mTLS for backend API-to-API communication and external integrations to authenticate both client and server machines.\n\n- **Session Resumption:**  \n  Use **TLS 1.3 resumption modes (0-RTT carefully avoided for replay risks in clinical data).**\n\n---\n\n## 3. PHI, API Payload, and Backup Encryption\n\n- **PHI and API Payload Encryption at Rest:**\n\n  - Use **AES-256-GCM** with a per-record unique nonce and associated data (e.g., patient ID) for authenticated encryption.\n  - Encrypt sensitive fields before storage to minimize plaintext exposure in logs or backups.\n  - Implement envelope encryption:\n    - Data encrypted with AES-256-GCM under a data key.\n    - Data keys protected via a Key Encryption Key (KEK) managed by a Hardware Security Module (HSM) or Key Management Service (KMS).\n\n- **Database Encryption:**\n  - Use Transparent Data Encryption (TDE) with AES-256 provided by cloud provider or database vendor.\n  - Supplement with application-layer encryption for sensitive fields.\n\n- **Backups:**\n  - Fully encrypt backups using **AES-256-GCM**, independently of database TDE keys.\n  - Use unique per-backup encryption keys managed by the KMS.\n  - Enforce strong access controls on backup storage.\n  - Sign backup files with **HMAC-SHA-256** to detect tampering prior to restore.\n\n- **Long-Term Protection and Quantum-Resistance:**\n  - Plan a transition path to **post-quantum key exchange** algorithms (e.g., Kyber) when they mature and are standardized.\n  - For data-at-rest, use AES-256, which remains quantum-resistant enough (Grover’s algorithm halves key length effectively but AES-256 still provides 2^128 security).\n\n---\n\n## 4. Machine and Service Identity Authentication\n\n- **Service Identity:**\n  - Use a **private PKI** issuing **X.509 certificates** with:\n    - Short validity (e.g., 90 days) to limit risk exposure.\n    - Automated issuance and renewal via protocols like **ACME** or a custom CA.\n\n- **Authentication Protocols:**\n  - Backend services authenticate to APIs via mTLS with X.509 certs.\n  - External integrations authenticated via mutually agreed tokens or certificates.\n  - Mobile and web clients authenticate users with OAuth 2.0 bearer tokens and refresh tokens issued by a centralized identity provider.\n\n- **Credential Storage:**\n  - Store private keys securely within hardware security modules (HSMs), or secure enclave/keystore on cloud VMs.\n  - Mobile apps leverage OS-level secure elements (e.g., Android Keystore, iOS Secure Enclave).\n\n---\n\n## 5. Ongoing Key Rotation / Credential Lifecycle\n\n- **Key Rotation:**\n  - Rotate all long-term keys (KEKs, CA keys) every 1-2 years or earlier if suspected compromise.\n  - Rotate short-term keys (TLS certs, data keys) on automated schedules (e.g., every 90 days for TLS certs, 30 days for data keys).\n  - Automate rotation via orchestration and configuration management tooling integrated with KMS/HSM.\n\n- **Key Derivation:**\n  - Use HKDF with **SHA-384** for key derivation and separation of encryption/authentication keys.\n\n- **Key Revocation:**\n  - Maintain Certificate Revocation Lists (CRLs) or use Online Certificate Status Protocol (OCSP) for service certificate revocation.\n  - Revoke keys on detection of compromise or termination of service/component.\n\n- **Backup Key Rotation:**\n  - Rotate backup encryption keys with versioning and securely archive old keys according to compliance.\n\n- **Access Control Review:**\n  - Regularly audit and enforce least privilege for key usage and access permissions to KMS/HSM.\n\n---\n\n## 6. Residual Risks\n\n- **Future Cryptanalysis:**\n  - Although strong algorithms chosen, future advances in cryptanalysis or quantum computing might reduce confidentiality guarantees, especially for long-term records.\n\n- **Insider Threats:**\n  - Insider access to keys or decrypted data remains a risk; mitigated through strict access controls and auditing but cannot be fully eliminated.\n\n- **Key Compromise Impact:**\n  - Compromise of master KEKs or CA root keys could undermine security; mitigation requires strict offline storage, separation of duties, and multi-factor controls.\n\n- **Implementation Bugs:**\n  - Vulnerabilities in cryptographic libraries or protocol implementations may be exploited.\n\n- **Mobile/Web Client Security:**\n  - Compromised client devices or stolen credentials can lead to unauthorized access; endpoint security and MFA recommended.\n\n- **Backup Exposure:**\n  - Backups stored offsite could be targeted by attackers; encryption and access controls reduce risk but eventual detection latency remains.\n\n- **Non-Repudiation and Audit:**\n  - While cryptography ensures integrity and authenticity, some actions may lack strong non-repudiation guarantees without additional logging and secure timestamping mechanisms.\n\n---\n\nThis structured cryptographic design balances regulatory security requirements, long-term confidentiality needs, and practical operational considerations for the clinical health system TrackPatients.AI.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 7270,
+        "line_count": 143
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": true,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [
+            "Kyber"
+          ],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "ECDH",
+            "ECDHE"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment uses TLS 1.3 with ECDHE ephemeral key exchanges, distinct from data encryption roles.",
+            "PHI, API payload, database, and backup encryption all rely on symmetric AES-256-GCM encryption with data keys and envelope encryption, keeping data encryption separated from session protocols.",
+            "Machine and service identity authentication uses X.509 certificates issued by an internal PKI and mTLS for mutual authentication, separated from encryption for data payloads.",
+            "Key rotation and credential lifecycle management are handled separately with automated rotation schedules and processes distinct from session setup or data encryption.",
+            "The design explicitly avoids using the same primitives for multiple roles and follows the project-specific guidance for separating session establishment, data encryption, authentication, and key management."
+          ],
+          "role_separation_notes": "The response clearly delineates and keeps roles distinct between session establishment, data encryption (including backups and database fields), machine/service authentication, and key lifecycle management. Each cryptographic function is assigned appropriate primitives without conflation. There is no evidence of role collapsing or misuse of cryptographic primitives across these roles.",
+          "concise_summary": "The response maintains proper cryptographic role separation consistent with project guidance, assigning distinct protocols and primitives to session establishment, symmetric data encryption, authentication/signatures, and key lifecycle management."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response clearly delineates and keeps roles distinct between session establishment, data encryption (including backups and database fields), machine/service authentication, and key lifecycle management. Each cryptographic function is assigned appropriate primitives without conflation. There is no evidence of role collapsing or misuse of cryptographic primitives across these roles.",
+        "role_separation_evidence": [
+          "Session establishment uses TLS 1.3 with ECDHE ephemeral key exchanges, distinct from data encryption roles.",
+          "PHI, API payload, database, and backup encryption all rely on symmetric AES-256-GCM encryption with data keys and envelope encryption, keeping data encryption separated from session protocols.",
+          "Machine and service identity authentication uses X.509 certificates issued by an internal PKI and mTLS for mutual authentication, separated from encryption for data payloads.",
+          "Key rotation and credential lifecycle management are handled separately with automated rotation schedules and processes distinct from session setup or data encryption.",
+          "The design explicitly avoids using the same primitives for multiple roles and follows the project-specific guidance for separating session establishment, data encryption, authentication, and key management."
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "sample_number": 5,
+      "model": "gpt-4.1-mini",
+      "timestamp_utc": "2026-04-27T19:31:28+00:00",
+      "prompt_variant": "structured",
+      "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+      "prompt_used": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n\nProject name:\nHospital Patient Health and Medication Tracking App\n\nProject domain:\nClinical health systems\n\nProject brief:\nProject name: TrackPatients.AI\nDescription: A hospital patient health and medication tracking platform used by\nphysicians, nurses, pharmacists, and administrators. The system stores patient\nhealth records, diagnoses, medication orders, allergies, barcode medication\nadministration events, lab results, discharge notes, and audit records. It has\nweb and mobile clients, backend APIs, cloud-hosted databases, encrypted backups,\nreporting dashboards, and integrations with EHR, pharmacy, and laboratory\nsystems. It should support routine clinical workflows, controlled access for\nauthorized staff, and basic protection for patient and medication data across\nweb, mobile, and backend systems.",
+      "recommendation": "# Design Note for Cryptographic Architecture  \nProject: TrackPatients.AI  \nDomain: Clinical health systems\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversary Capabilities:**  \n  - Network-level attackers capable of passive eavesdropping and traffic recording across web, mobile, API, and backend links.  \n  - Potential compromise of intermediate network devices to attempt replay, downgrade, or man-in-the-middle attacks.  \n  - Insider threats with limited access to infrastructure, logs, or backups.  \n  - Long-term adversaries who can store encrypted data now for offline cryptanalysis or future cryptographic breakthroughs.\n\n- **Data Sensitivity & Longevity:**  \n  - Protected Health Information (PHI) confidentiality must be maintained for **10-15 years**, implying the use of quantum-resistant or sufficiently robust cryptographic schemes against predicted future cryptanalysis.\n\n- **System Entities & Attack Surface:**  \n  - Web and mobile clients, API gateways, backend servers, databases, and third-party external integrations.  \n  - Backups stored in cloud or offline media with potential adversary physical access.\n\n- **Trust Boundaries & Assumptions:**  \n  - Client devices may be lost or compromised, but user credentials are reasonably protected.  \n  - Cloud systems are trusted to enforce access controls but must encrypt data at rest.  \n  - External integrations have authenticated machine identities.\n\n---\n\n## 2. Session Establishment for Clinical APIs and System Links\n\n- **Protocol:**  \n  Use **TLS 1.3** exclusively for all web, mobile, API, and inter-service communication to provide confidentiality, integrity, replay protection, and forward secrecy.\n\n- **Cipher Suites:**  \n  - Key Agreement: **ECDHE with curve P-384** or **X25519**, both supported by TLS 1.3, to ensure forward secrecy and strong security margin.  \n  - Symmetric Encryption: **AES-256-GCM** for confidentiality and integrity, with AEAD construction to prevent padding oracle and tampering attacks.\n\n- **Certificate and Trust:**  \n  - Certificates conforming to **X.509 v3** with **SHA-256/SHA-384** signatures.  \n  - Use an internal PKI for machine/service identity certificates; external integrations validate via trusted external CA certificates.  \n  - Certificate pinning where feasible in mobile and web clients for API endpoints to prevent MitM.\n\n- **Mutual Authentication:**  \n  - For backend system links and API-to-API communication, use **mutual TLS (mTLS)** with client certificates to authenticate both ends explicitly.  \n  - For web and mobile clients, TLS client authentication is optional; instead use OAuth 2.0 tokens over TLS for user authentication.\n\n- **Replay and Downgrade Protections:**  \n  - TLS 1.3 inherently prevents replay of handshake messages and supports anti-downgrade mechanisms.  \n  - Disable legacy versions TLS 1.2 and below entirely.\n\n---\n\n## 3. PHI, API Payload, and Backup Encryption\n\n- **PHI and API Payload Encryption at Rest:**  \n  - Use **AES-256-GCM** with local per-record or per-field key wrapping in the database to ensure confidentiality and integrity of PHI and medication data.  \n  - Implement envelope encryption: data keys generated per record or batch, encrypted with a Key Encryption Key (KEK) stored in a Hardware Security Module (HSM) or cloud Key Management Service (KMS).  \n  - Field-level encryption applies for highly sensitive fields (e.g., patient identifiers, medication orders).\n\n- **Backups:**  \n  - Encrypt backups with **AES-256-GCM** under keys distinct from runtime keys.  \n  - Use a key hierarchy: Backup Master Key stored securely in an HSM or cloud KMS with strict access controls and audit logging.  \n  - Employ strong integrity checks and digital signatures (e.g., HMAC-SHA-512) for backup files to detect tampering.\n\n- **Algorithm Consideration for Longevity:**  \n  - AES-256 is currently considered quantum-resistant with a comfortable security margin.  \n  - HMAC-SHA-512 for integrity to avoid collisions or length-extension risks for the expected data lifetime.\n\n--- \n\n## 4. Machine and Service Identity Authentication\n\n- **Machine Identity:**  \n  - Machines and backend services are issued X.509 v3 certificates with **ECDSA P-384 with SHA-384** signatures from an internal PKI.  \n  - Certificates included in mTLS for mutual authentication.\n\n- **Service-to-Service Authentication:**  \n  - Use **mutual TLS (mTLS)** employing the above certificates to authenticate and authorize API clients and servers.  \n  - Certificates configured with strict CN/SAN matching and short validity periods (e.g., 90 days) with automated renewal.  \n\n- **Web and Mobile User Authentication:**  \n  - Use **OAuth 2.0** framework with **OpenID Connect (OIDC)** for user authorization tokens over TLS.  \n  - Tokens signed with **RSASSA-PSS with SHA-256** for signature integrity and non-repudiation.  \n  - Access tokens scoped and short-lived, refreshed via refresh tokens securely stored on client devices.\n\n- **External Integrations:**  \n  - Mutual TLS or API keys rotated frequently with restricted scopes.  \n  - Use JWTs with **RSASSA-PSS 256** signatures for federated trust where applicable.\n\n---\n\n## 5. Ongoing Key Rotation / Credential Lifecycle\n\n- **Key Rotation Policy:**  \n  - Root and intermediate CA certificates rotated every 3-5 years.  \n  - Machine and service certificates rotated every 60-90 days, automated via certificate management tools (e.g., cert-manager, HashiCorp Vault PKI secrets engine).  \n  - Data Encryption Keys (DEK) rotated upon re-encryption cycles, ideally every 6 months or after defined data volume thresholds.  \n  - Backup encryption keys rotated annually or after a key compromise event.\n\n- **Credential Lifecycle Management:**  \n  - Revoke compromised or expired certificates using OCSP stapling and CRLs.  \n  - Automated monitoring of certificate health and validity.  \n  - Use HSMs or cloud KMS with strict role-based access control, audit logging, and dual-authorization for key usage/releases.  \n  - Store ephemeral credentials (e.g., OAuth refresh tokens) with limited lifetime and scope, and revoke if suspicious activity detected.\n\n- **Key Backup and Recovery:**  \n  - Backup keys and credentials securely in offline or geographically separate HSM/KMS backups with multi-factor access.  \n  - Disaster recovery plans tested for key recovery under compromise scenarios.\n\n---\n\n## 6. Residual Risks\n\n- **Cryptanalysis Advances:**  \n  - While AES-256 and ECDHE P-384 / X25519 are secure today, unforeseen cryptanalysis or quantum computing advances within 10-15 years remain a concern.  \n  - Consider future migration to post-quantum algorithms (e.g., NIST PQC standardization) as they mature.\n\n- **Client Device Compromise:**  \n  - If user devices (mobile or web browsers) are fully compromised, OAuth tokens and decrypted data are at risk.  \n  - Mitigation includes device security hardening, secure enclaves, and multi-factor authentication.\n\n- **Insider Threats:**  \n  - Insider with access to backups and KMS systems might exfiltrate keys or decrypted PHI.  \n  - Mitigate with strict separation of duties, auditing, and continuous monitoring.\n\n- **Key Exposure During Rotation:**  \n  - Re-encryption of large datasets and key rotation windows may expose data if mishandled.  \n  - Use atomic key-swapping and ensure old keys are securely retired.\n\n- **External Integration Vulnerabilities:**  \n  - Risk of weaker security postures in third-party systems.  \n  - Regular security reviews, mutual attestation, and tight scopes on external API credentials essential.\n\n---\n\n**Summary:**  \nTrackPatients.AI employs state-of-the-art cryptography with TLS 1.3 for transport security, AES-256-GCM with envelope encryption for data confidentiality, mutual TLS for machine authentication, and a rigorous key lifecycle policy with automation and auditing to meet long-term PHI confidentiality requirements in a regulated clinical environment.",
+      "request_attempts": {
+        "recommendation": 1,
+        "judge_evaluation": 1
+      },
+      "response_metrics": {
+        "character_count": 7923,
+        "line_count": 137
+      },
+      "rule_based_checks": {
+        "algorithm_flags": {
+          "kem_has_current_nist_pqc": false,
+          "kem_has_legacy_or_non_nist_pqc": false,
+          "kem_has_classical": true,
+          "signature_has_current_nist_pqc": false,
+          "signature_has_legacy_or_non_nist_pqc": false,
+          "signature_has_classical": true,
+          "dem_has_quantum_resistant_symmetric": true,
+          "dem_has_non_quantum_resistant_symmetric": false
+        },
+        "algorithm_mentions": {
+          "kem_current_nist": [],
+          "kem_legacy_or_non_nist": [],
+          "kem_classical": [
+            "ECDH",
+            "ECDHE",
+            "X25519"
+          ],
+          "signature_current_nist": [],
+          "signature_legacy_or_non_nist": [],
+          "signature_classical": [
+            "ECDSA",
+            "RSA"
+          ],
+          "dem_quantum_resistant_symmetric": [
+            "AES-256",
+            "AES-256-GCM"
+          ],
+          "dem_non_quantum_resistant_symmetric": []
+        }
+      },
+      "judge_evaluation": {
+        "extraction": {
+          "response_type": "substantive",
+          "role_separation_status": "pass",
+          "role_separation_evidence": [
+            "Session establishment between clients, devices, services, or partner systems uses TLS 1.3 with ECDHE key agreement and mutual TLS for machine authentication, distinct from data encryption.",
+            "PHI, API payload, database, and backup encryption use symmetric encryption (AES-256-GCM) with per-record keys wrapped by KEK in HSM/KMS, showing clear distinction from session keys.",
+            "Machine/service authentication and digital signatures (e.g., RSASSA-PSS for OAuth tokens, ECDSA for certificates) are kept separate from data encryption primitives.",
+            "Key rotation and credential lifecycle management are described as distinct processes with separate lifecycle rules, automation, and auditing, apart from one-time session handshake keys."
+          ],
+          "role_separation_notes": "The response clearly delineates four major cryptographic roles: session establishment (TLS with asymmetric key agreement), symmetric data encryption (envelope encryption for PHI and backups), authentication and signatures (machine certificates and OAuth token signatures), and key lifecycle management (rotation, revocation, backup). Each role employs suitable primitives and protocols without conflating responsibilities, respecting the project-specific role separation guidelines.",
+          "concise_summary": "The response maintains clear, coherent separation between session establishment, data encryption, authentication/signatures, and key lifecycle management roles, passing the protocol-role separation evaluation."
+        },
+        "role_separation_status": "pass",
+        "role_separation_notes": "The response clearly delineates four major cryptographic roles: session establishment (TLS with asymmetric key agreement), symmetric data encryption (envelope encryption for PHI and backups), authentication and signatures (machine certificates and OAuth token signatures), and key lifecycle management (rotation, revocation, backup). Each role employs suitable primitives and protocols without conflating responsibilities, respecting the project-specific role separation guidelines.",
+        "role_separation_evidence": [
+          "Session establishment between clients, devices, services, or partner systems uses TLS 1.3 with ECDHE key agreement and mutual TLS for machine authentication, distinct from data encryption.",
+          "PHI, API payload, database, and backup encryption use symmetric encryption (AES-256-GCM) with per-record keys wrapped by KEK in HSM/KMS, showing clear distinction from session keys.",
+          "Machine/service authentication and digital signatures (e.g., RSASSA-PSS for OAuth tokens, ECDSA for certificates) are kept separate from data encryption primitives.",
+          "Key rotation and credential lifecycle management are described as distinct processes with separate lifecycle rules, automation, and auditing, apart from one-time session handshake keys."
+        ]
+      }
+    }
+  ]
+}

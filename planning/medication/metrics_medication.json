@@ -1,0 +1,473 @@
+{
+  "metrics_generated_at_utc": "2026-04-30T11:52:44+00:00",
+  "study_metadata": {
+    "study_id": "nist-pqc-application-recommendation-benchmark",
+    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "prompt_version": "2026-04-29-a",
+    "rubric_version": "nist-pqc-benchmark-v5",
+    "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "prompt_variants": [
+      {
+        "prompt_id": "simple",
+        "query_name": "MEDICATION_ROLE_MAP_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this clinical health system. Briefly explain what should be used and why."
+      },
+      {
+        "prompt_id": "structured",
+        "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution."
+      },
+      {
+        "prompt_id": "pqc_simple",
+        "query_name": "MEDICATION_ROLE_MAP_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this clinical health system. Briefly explain what should be used and why. Consider post-quantum risks where relevant."
+      },
+      {
+        "prompt_id": "pqc_structured",
+        "query_name": "MEDICATION_ROLE_MAP_PQC_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any post-quantum cryptography considerations or future PQC requirements relevant to long-term patient-data confidentiality."
+      },
+      {
+        "prompt_id": "nist_pqc_simple",
+        "query_name": "MEDICATION_ROLE_MAP_NIST_PQC_SIMPLE",
+        "query_text": "Recommend a cryptographic architecture for this clinical health system. Briefly explain what should be used and why. Prefer NIST-approved post-quantum approaches where relevant."
+      },
+      {
+        "prompt_id": "nist_pqc_structured",
+        "query_name": "MEDICATION_ROLE_MAP_NIST_PQC_STRUCTURED",
+        "query_text": "You are designing the cryptographic architecture for a regulated clinical health system with web, mobile, APIs, databases, backups, and external integrations.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment for Clinical APIs and System Links\n3. PHI, API Payload, and Backup Encryption\n4. Machine and Service Identity Authentication\n5. Ongoing Key Rotation / Credential Lifecycle\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some patient-data confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term patient-data confidentiality, but do not let that replace the main role-specific architecture."
+      }
+    ],
+    "num_samples_per_model": 5,
+    "models_under_test": [
+      "gpt-4.1-mini"
+    ],
+    "evaluator_model": "gpt-4.1-mini",
+    "python_version": "3.10.12 (main, Nov 18 2025, 00:58:32) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "openai_package_version": "2.32.0",
+    "nist_pqc_baseline": {
+      "last_reviewed": "2026-04-19",
+      "references": [
+        {
+          "standard": "FIPS 203",
+          "algorithm": "ML-KEM",
+          "role": "key establishment / KEM",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 204",
+          "algorithm": "ML-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "standard": "FIPS 205",
+          "algorithm": "SLH-DSA",
+          "role": "digital signatures",
+          "published": "2024-08-13"
+        },
+        {
+          "publication": "SP 800-227",
+          "role": "KEM usage guidance",
+          "published": "2025-09"
+        }
+      ]
+    }
+  },
+  "project_metadata": {
+    "project_id": "hospital_patient_medication_tracking_app",
+    "project_name": "Hospital Patient Health and Medication Tracking App",
+    "domain": "Clinical health systems",
+    "metrics_filename": "metrics_medication.json",
+    "evaluation_mode": "role_separation_algorithm_flags",
+    "algorithm_flag_definitions": [
+      {
+        "flag_id": "kem_has_current_nist_pqc",
+        "label": "Approved PQC KEM Family",
+        "description": "Whether the response names the approved NIST PQC KEM family for key establishment, including ML-KEM / FIPS 203 and Kyber family aliases."
+      },
+      {
+        "flag_id": "kem_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe KEM Family",
+        "description": "Whether the response names other PQC-safe KEM families such as HQC, BIKE, Classic McEliece, or NTRU."
+      },
+      {
+        "flag_id": "kem_has_classical",
+        "label": "Classical KEM",
+        "description": "Whether the response names classical key-establishment choices such as X3DH, X25519, ECDH, or RSA key exchange."
+      },
+      {
+        "flag_id": "signature_has_current_nist_pqc",
+        "label": "Approved PQC Signature Family",
+        "description": "Whether the response names approved NIST PQC signature families, including ML-DSA / FIPS 204 / Dilithium and SLH-DSA / FIPS 205 / SPHINCS+."
+      },
+      {
+        "flag_id": "signature_has_legacy_or_non_nist_pqc",
+        "label": "Other PQC-Safe Signature Family",
+        "description": "Whether the response names other PQC-safe signature families such as Falcon / FN-DSA."
+      },
+      {
+        "flag_id": "signature_has_classical",
+        "label": "Classical Signature",
+        "description": "Whether the response names classical signature choices such as Ed25519, ECDSA, or RSA-PSS."
+      },
+      {
+        "flag_id": "dem_has_quantum_resistant_symmetric",
+        "label": "Strong Symmetric DEM",
+        "description": "Whether the response names strong symmetric bulk-encryption or content-encryption choices such as AES-256-GCM or ChaCha20-Poly1305."
+      },
+      {
+        "flag_id": "dem_has_non_quantum_resistant_symmetric",
+        "label": "Weak / Short-Key Symmetric DEM",
+        "description": "Whether the response names weaker or shorter-key symmetric bulk-encryption or content-encryption choices such as AES-128-GCM."
+      }
+    ],
+    "role_separation_statuses": [
+      "pass",
+      "fail",
+      "unclear"
+    ]
+  },
+  "coverage": {
+    "expected_report_count": 6,
+    "available_report_count": 2,
+    "expected_report_filenames": [
+      "simple_medication_tracking_app.json",
+      "structured_medication_tracking_app.json",
+      "pqc_simple_medication_tracking_app.json",
+      "pqc_structured_medication_tracking_app.json",
+      "nist_pqc_simple_medication_tracking_app.json",
+      "nist_pqc_structured_medication_tracking_app.json"
+    ],
+    "available_report_filenames": [
+      "simple_medication_tracking_app.json",
+      "structured_medication_tracking_app.json"
+    ],
+    "missing_report_filenames": [
+      "nist_pqc_simple_medication_tracking_app.json",
+      "nist_pqc_structured_medication_tracking_app.json",
+      "pqc_simple_medication_tracking_app.json",
+      "pqc_structured_medication_tracking_app.json"
+    ]
+  },
+  "overall_summary": {
+    "group_label": "overall",
+    "group_value": "hospital_patient_medication_tracking_app",
+    "trial_ids": [
+      "hospital_patient_medication_tracking_app::simple",
+      "hospital_patient_medication_tracking_app::structured"
+    ],
+    "trial_labels": [
+      "Standard Simple",
+      "Standard Structured"
+    ],
+    "status_counts": {
+      "sample_count": 10,
+      "complete_sample_count": 10,
+      "partial_sample_count": 0,
+      "error_sample_count": 0
+    },
+    "role_separation_sample_count": 10,
+    "role_separation_counts": {
+      "pass": 10,
+      "fail": 0,
+      "unclear": 0
+    },
+    "role_separation_rates": {
+      "pass": 1.0,
+      "fail": 0.0,
+      "unclear": 0.0
+    },
+    "algorithm_flag_sample_count": 10,
+    "algorithm_flag_rates": {
+      "kem_has_current_nist_pqc": 0.1,
+      "kem_has_legacy_or_non_nist_pqc": 0.1,
+      "kem_has_classical": 0.7,
+      "signature_has_current_nist_pqc": 0.0,
+      "signature_has_legacy_or_non_nist_pqc": 0.0,
+      "signature_has_classical": 0.8,
+      "dem_has_quantum_resistant_symmetric": 1.0,
+      "dem_has_non_quantum_resistant_symmetric": 0.0
+    },
+    "named_algorithm_frequency_by_category": {
+      "dem_non_quantum_resistant_symmetric": {},
+      "dem_quantum_resistant_symmetric": {
+        "AES-256": 10,
+        "AES-256-GCM": 10,
+        "ChaCha20-Poly1305": 4
+      },
+      "kem_classical": {
+        "Curve25519": 2,
+        "ECDH": 6,
+        "ECDHE": 6,
+        "P-256": 3,
+        "X25519": 3
+      },
+      "kem_current_nist": {
+        "Kyber": 1
+      },
+      "kem_legacy_or_non_nist": {
+        "NTRU": 1
+      },
+      "signature_classical": {
+        "ECDSA": 6,
+        "RSA": 8,
+        "RSA-PSS": 1
+      },
+      "signature_current_nist": {},
+      "signature_legacy_or_non_nist": {}
+    }
+  },
+  "trial_metrics": [
+    {
+      "trial_id": "hospital_patient_medication_tracking_app::simple",
+      "trial_label": "Standard Simple",
+      "project_id": "hospital_patient_medication_tracking_app",
+      "project_name": "Hospital Patient Health and Medication Tracking App",
+      "prompt_variant": "simple",
+      "query_name": "MEDICATION_ROLE_MAP_SIMPLE",
+      "output_filename": "simple_medication_tracking_app.json",
+      "sample_count": 5,
+      "complete_sample_count": 5,
+      "partial_sample_count": 0,
+      "error_sample_count": 0,
+      "role_separation_sample_count": 5,
+      "role_separation_counts": {
+        "pass": 5,
+        "fail": 0,
+        "unclear": 0
+      },
+      "role_separation_rates": {
+        "pass": 1.0,
+        "fail": 0.0,
+        "unclear": 0.0
+      },
+      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_rates": {
+        "kem_has_current_nist_pqc": 0.0,
+        "kem_has_legacy_or_non_nist_pqc": 0.0,
+        "kem_has_classical": 0.4,
+        "signature_has_current_nist_pqc": 0.0,
+        "signature_has_legacy_or_non_nist_pqc": 0.0,
+        "signature_has_classical": 0.6,
+        "dem_has_quantum_resistant_symmetric": 1.0,
+        "dem_has_non_quantum_resistant_symmetric": 0.0
+      },
+      "named_algorithm_frequency_by_category": {
+        "dem_non_quantum_resistant_symmetric": {},
+        "dem_quantum_resistant_symmetric": {
+          "AES-256": 5,
+          "AES-256-GCM": 5,
+          "ChaCha20-Poly1305": 2
+        },
+        "kem_classical": {
+          "Curve25519": 1,
+          "ECDH": 2,
+          "ECDHE": 2,
+          "P-256": 2
+        },
+        "kem_current_nist": {},
+        "kem_legacy_or_non_nist": {},
+        "signature_classical": {
+          "ECDSA": 2,
+          "RSA": 3,
+          "RSA-PSS": 1
+        },
+        "signature_current_nist": {},
+        "signature_legacy_or_non_nist": {}
+      }
+    },
+    {
+      "trial_id": "hospital_patient_medication_tracking_app::structured",
+      "trial_label": "Standard Structured",
+      "project_id": "hospital_patient_medication_tracking_app",
+      "project_name": "Hospital Patient Health and Medication Tracking App",
+      "prompt_variant": "structured",
+      "query_name": "MEDICATION_ROLE_MAP_STRUCTURED",
+      "output_filename": "structured_medication_tracking_app.json",
+      "sample_count": 5,
+      "complete_sample_count": 5,
+      "partial_sample_count": 0,
+      "error_sample_count": 0,
+      "role_separation_sample_count": 5,
+      "role_separation_counts": {
+        "pass": 5,
+        "fail": 0,
+        "unclear": 0
+      },
+      "role_separation_rates": {
+        "pass": 1.0,
+        "fail": 0.0,
+        "unclear": 0.0
+      },
+      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_rates": {
+        "kem_has_current_nist_pqc": 0.2,
+        "kem_has_legacy_or_non_nist_pqc": 0.2,
+        "kem_has_classical": 1.0,
+        "signature_has_current_nist_pqc": 0.0,
+        "signature_has_legacy_or_non_nist_pqc": 0.0,
+        "signature_has_classical": 1.0,
+        "dem_has_quantum_resistant_symmetric": 1.0,
+        "dem_has_non_quantum_resistant_symmetric": 0.0
+      },
+      "named_algorithm_frequency_by_category": {
+        "dem_non_quantum_resistant_symmetric": {},
+        "dem_quantum_resistant_symmetric": {
+          "AES-256": 5,
+          "AES-256-GCM": 5,
+          "ChaCha20-Poly1305": 2
+        },
+        "kem_classical": {
+          "Curve25519": 1,
+          "ECDH": 4,
+          "ECDHE": 4,
+          "P-256": 1,
+          "X25519": 3
+        },
+        "kem_current_nist": {
+          "Kyber": 1
+        },
+        "kem_legacy_or_non_nist": {
+          "NTRU": 1
+        },
+        "signature_classical": {
+          "ECDSA": 4,
+          "RSA": 5
+        },
+        "signature_current_nist": {},
+        "signature_legacy_or_non_nist": {}
+      }
+    }
+  ],
+  "aggregate_by_prompt_variant": [
+    {
+      "group_label": "prompt_variant",
+      "group_value": "simple",
+      "trial_ids": [
+        "hospital_patient_medication_tracking_app::simple"
+      ],
+      "trial_labels": [
+        "Standard Simple"
+      ],
+      "status_counts": {
+        "sample_count": 5,
+        "complete_sample_count": 5,
+        "partial_sample_count": 0,
+        "error_sample_count": 0
+      },
+      "role_separation_sample_count": 5,
+      "role_separation_counts": {
+        "pass": 5,
+        "fail": 0,
+        "unclear": 0
+      },
+      "role_separation_rates": {
+        "pass": 1.0,
+        "fail": 0.0,
+        "unclear": 0.0
+      },
+      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_rates": {
+        "kem_has_current_nist_pqc": 0.0,
+        "kem_has_legacy_or_non_nist_pqc": 0.0,
+        "kem_has_classical": 0.4,
+        "signature_has_current_nist_pqc": 0.0,
+        "signature_has_legacy_or_non_nist_pqc": 0.0,
+        "signature_has_classical": 0.6,
+        "dem_has_quantum_resistant_symmetric": 1.0,
+        "dem_has_non_quantum_resistant_symmetric": 0.0
+      },
+      "named_algorithm_frequency_by_category": {
+        "dem_non_quantum_resistant_symmetric": {},
+        "dem_quantum_resistant_symmetric": {
+          "AES-256": 5,
+          "AES-256-GCM": 5,
+          "ChaCha20-Poly1305": 2
+        },
+        "kem_classical": {
+          "Curve25519": 1,
+          "ECDH": 2,
+          "ECDHE": 2,
+          "P-256": 2
+        },
+        "kem_current_nist": {},
+        "kem_legacy_or_non_nist": {},
+        "signature_classical": {
+          "ECDSA": 2,
+          "RSA": 3,
+          "RSA-PSS": 1
+        },
+        "signature_current_nist": {},
+        "signature_legacy_or_non_nist": {}
+      }
+    },
+    {
+      "group_label": "prompt_variant",
+      "group_value": "structured",
+      "trial_ids": [
+        "hospital_patient_medication_tracking_app::structured"
+      ],
+      "trial_labels": [
+        "Standard Structured"
+      ],
+      "status_counts": {
+        "sample_count": 5,
+        "complete_sample_count": 5,
+        "partial_sample_count": 0,
+        "error_sample_count": 0
+      },
+      "role_separation_sample_count": 5,
+      "role_separation_counts": {
+        "pass": 5,
+        "fail": 0,
+        "unclear": 0
+      },
+      "role_separation_rates": {
+        "pass": 1.0,
+        "fail": 0.0,
+        "unclear": 0.0
+      },
+      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_rates": {
+        "kem_has_current_nist_pqc": 0.2,
+        "kem_has_legacy_or_non_nist_pqc": 0.2,
+        "kem_has_classical": 1.0,
+        "signature_has_current_nist_pqc": 0.0,
+        "signature_has_legacy_or_non_nist_pqc": 0.0,
+        "signature_has_classical": 1.0,
+        "dem_has_quantum_resistant_symmetric": 1.0,
+        "dem_has_non_quantum_resistant_symmetric": 0.0
+      },
+      "named_algorithm_frequency_by_category": {
+        "dem_non_quantum_resistant_symmetric": {},
+        "dem_quantum_resistant_symmetric": {
+          "AES-256": 5,
+          "AES-256-GCM": 5,
+          "ChaCha20-Poly1305": 2
+        },
+        "kem_classical": {
+          "Curve25519": 1,
+          "ECDH": 4,
+          "ECDHE": 4,
+          "P-256": 1,
+          "X25519": 3
+        },
+        "kem_current_nist": {
+          "Kyber": 1
+        },
+        "kem_legacy_or_non_nist": {
+          "NTRU": 1
+        },
+        "signature_classical": {
+          "ECDSA": 4,
+          "RSA": 5
+        },
+        "signature_current_nist": {},
+        "signature_legacy_or_non_nist": {}
+      }
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
-  "metrics_generated_at_utc": "2026-04-30T11:54:09+00:00",
+  "metrics_generated_at_utc": "2026-05-04T23:42:19+00:00",
   "study_metadata": {
     "study_id": "nist-pqc-application-recommendation-benchmark",
-    "generated_at_utc": "2026-04-30T11:54:09+00:00",
+    "generated_at_utc": "2026-05-04T23:42:19+00:00",
     "prompt_version": "2026-04-29-a",
     "rubric_version": "nist-pqc-benchmark-v5",
     "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
@@ -172,67 +172,35 @@
     ],
     "status_counts": {
       "sample_count": 30,
-      "complete_sample_count": 30,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0
+      "error_sample_count": 30
     },
-    "role_separation_sample_count": 30,
+    "role_separation_sample_count": 0,
     "role_separation_counts": {
-      "pass": 30,
+      "pass": 0,
       "fail": 0,
       "unclear": 0
     },
     "role_separation_rates": {
-      "pass": 1.0,
-      "fail": 0.0,
-      "unclear": 0.0
+      "pass": null,
+      "fail": null,
+      "unclear": null
     },
-    "algorithm_flag_sample_count": 30,
+    "algorithm_flag_sample_count": 0,
     "algorithm_flag_rates": {
-      "kem_has_current_nist_pqc": 0.7,
-      "kem_has_legacy_or_non_nist_pqc": 0.2,
-      "kem_has_classical": 0.933,
-      "signature_has_current_nist_pqc": 0.333,
-      "signature_has_legacy_or_non_nist_pqc": 0.1,
-      "signature_has_classical": 0.8,
-      "dem_has_quantum_resistant_symmetric": 0.9,
-      "dem_has_non_quantum_resistant_symmetric": 0.033
+      "kem_has_current_nist_pqc": null,
+      "kem_has_legacy_or_non_nist_pqc": null,
+      "kem_has_classical": null,
+      "signature_has_current_nist_pqc": null,
+      "signature_has_legacy_or_non_nist_pqc": null,
+      "signature_has_classical": null,
+      "dem_has_quantum_resistant_symmetric": null,
+      "dem_has_non_quantum_resistant_symmetric": null
     },
-    "named_algorithm_frequency_by_category": {
-      "dem_non_quantum_resistant_symmetric": {
-        "AES-128": 1,
-        "AES-128-GCM": 1
-      },
-      "dem_quantum_resistant_symmetric": {
-        "AES-256": 24,
-        "AES-256-GCM": 24,
-        "ChaCha20-Poly1305": 13
-      },
-      "kem_classical": {
-        "Curve25519": 11,
-        "ECDH": 10,
-        "ECDHE": 1,
-        "X25519": 22,
-        "X3DH": 23
-      },
-      "kem_current_nist": {
-        "Kyber": 21
-      },
-      "kem_legacy_or_non_nist": {
-        "NTRU": 6
-      },
-      "signature_classical": {
-        "ECDSA": 1,
-        "Ed25519": 17,
-        "RSA": 21
-      },
-      "signature_current_nist": {
-        "Dilithium": 10
-      },
-      "signature_legacy_or_non_nist": {
-        "Falcon": 3
-      }
-    }
+    "complete_role_algorithm_coverage_count": 0,
+    "complete_role_algorithm_coverage_rate": null,
+    "named_algorithm_frequency_by_category": {}
   },
   "trial_metrics": [
     {
@@ -244,49 +212,17 @@
       "query_name": "MESSAGING_ROLE_MAP_SIMPLE",
       "output_filename": "simple_prompt_messaging_app.json",
       "sample_count": 5,
-      "complete_sample_count": 5,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0,
-      "role_separation_sample_count": 5,
-      "role_separation_counts": {
-        "pass": 5,
-        "fail": 0,
-        "unclear": 0
-      },
-      "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
-      },
-      "algorithm_flag_sample_count": 5,
-      "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 0.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.0,
-        "kem_has_classical": 0.6,
-        "signature_has_current_nist_pqc": 0.0,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 0.2,
-        "dem_has_quantum_resistant_symmetric": 0.4,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
-      },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 1,
-          "AES-256-GCM": 1,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "X3DH": 3
-        },
-        "kem_current_nist": {},
-        "kem_legacy_or_non_nist": {},
-        "signature_classical": {
-          "Ed25519": 1
-        },
-        "signature_current_nist": {},
-        "signature_legacy_or_non_nist": {}
-      }
+      "error_sample_count": 5,
+      "role_separation_sample_count": 0,
+      "role_separation_counts": {},
+      "role_separation_rates": {},
+      "algorithm_flag_sample_count": 0,
+      "algorithm_flag_rates": {},
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": 0.0,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "trial_id": "secure_messaging_app::structured",
@@ -297,59 +233,17 @@
       "query_name": "MESSAGING_ROLE_MAP_STRUCTURED",
       "output_filename": "structured_prompt_messaging_app.json",
       "sample_count": 5,
-      "complete_sample_count": 5,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0,
-      "role_separation_sample_count": 5,
-      "role_separation_counts": {
-        "pass": 5,
-        "fail": 0,
-        "unclear": 0
-      },
-      "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
-      },
-      "algorithm_flag_sample_count": 5,
-      "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 0.4,
-        "kem_has_legacy_or_non_nist_pqc": 0.2,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.0,
-        "signature_has_legacy_or_non_nist_pqc": 0.2,
-        "signature_has_classical": 1.0,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
-      },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 5,
-          "AES-256-GCM": 5,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "Curve25519": 3,
-          "ECDH": 1,
-          "X25519": 5,
-          "X3DH": 5
-        },
-        "kem_current_nist": {
-          "Kyber": 2
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 1
-        },
-        "signature_classical": {
-          "Ed25519": 4,
-          "RSA": 5
-        },
-        "signature_current_nist": {},
-        "signature_legacy_or_non_nist": {
-          "Falcon": 1
-        }
-      }
+      "error_sample_count": 5,
+      "role_separation_sample_count": 0,
+      "role_separation_counts": {},
+      "role_separation_rates": {},
+      "algorithm_flag_sample_count": 0,
+      "algorithm_flag_rates": {},
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": 0.0,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "trial_id": "secure_messaging_app::pqc_simple",
@@ -360,60 +254,17 @@
       "query_name": "MESSAGING_ROLE_MAP_PQC_SIMPLE",
       "output_filename": "pqc_simple_prompt_messaging_app.json",
       "sample_count": 5,
-      "complete_sample_count": 5,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0,
-      "role_separation_sample_count": 5,
-      "role_separation_counts": {
-        "pass": 5,
-        "fail": 0,
-        "unclear": 0
-      },
-      "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
-      },
-      "algorithm_flag_sample_count": 5,
-      "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 1.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.4,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.6,
-        "signature_has_legacy_or_non_nist_pqc": 0.4,
-        "signature_has_classical": 0.8,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
-      },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 4,
-          "AES-256-GCM": 4,
-          "ChaCha20-Poly1305": 5
-        },
-        "kem_classical": {
-          "ECDH": 1,
-          "X25519": 3,
-          "X3DH": 4
-        },
-        "kem_current_nist": {
-          "Kyber": 5
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 2
-        },
-        "signature_classical": {
-          "Ed25519": 2,
-          "RSA": 4
-        },
-        "signature_current_nist": {
-          "Dilithium": 3
-        },
-        "signature_legacy_or_non_nist": {
-          "Falcon": 2
-        }
-      }
+      "error_sample_count": 5,
+      "role_separation_sample_count": 0,
+      "role_separation_counts": {},
+      "role_separation_rates": {},
+      "algorithm_flag_sample_count": 0,
+      "algorithm_flag_rates": {},
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": 0.0,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "trial_id": "secure_messaging_app::pqc_structured",
@@ -424,59 +275,17 @@
       "query_name": "MESSAGING_ROLE_MAP_PQC_STRUCTURED",
       "output_filename": "pqc_structured_prompt_messaging_app.json",
       "sample_count": 5,
-      "complete_sample_count": 5,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0,
-      "role_separation_sample_count": 5,
-      "role_separation_counts": {
-        "pass": 5,
-        "fail": 0,
-        "unclear": 0
-      },
-      "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
-      },
-      "algorithm_flag_sample_count": 5,
-      "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 1.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.4,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.4,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 1.0,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
-      },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 5,
-          "AES-256-GCM": 5,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "Curve25519": 4,
-          "ECDH": 3,
-          "X25519": 5,
-          "X3DH": 5
-        },
-        "kem_current_nist": {
-          "Kyber": 5
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 2
-        },
-        "signature_classical": {
-          "Ed25519": 5,
-          "RSA": 5
-        },
-        "signature_current_nist": {
-          "Dilithium": 2
-        },
-        "signature_legacy_or_non_nist": {}
-      }
+      "error_sample_count": 5,
+      "role_separation_sample_count": 0,
+      "role_separation_counts": {},
+      "role_separation_rates": {},
+      "algorithm_flag_sample_count": 0,
+      "algorithm_flag_rates": {},
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": 0.0,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "trial_id": "secure_messaging_app::nist_pqc_simple",
@@ -487,60 +296,17 @@
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_SIMPLE",
       "output_filename": "nist_pqc_simple_prompt_messaging_app.json",
       "sample_count": 5,
-      "complete_sample_count": 5,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0,
-      "role_separation_sample_count": 5,
-      "role_separation_counts": {
-        "pass": 5,
-        "fail": 0,
-        "unclear": 0
-      },
-      "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
-      },
-      "algorithm_flag_sample_count": 5,
-      "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 1.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.0,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.8,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 0.8,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.2
-      },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {
-          "AES-128": 1,
-          "AES-128-GCM": 1
-        },
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 4,
-          "AES-256-GCM": 4,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "ECDH": 2,
-          "X25519": 4,
-          "X3DH": 1
-        },
-        "kem_current_nist": {
-          "Kyber": 5
-        },
-        "kem_legacy_or_non_nist": {},
-        "signature_classical": {
-          "ECDSA": 1,
-          "Ed25519": 2,
-          "RSA": 2
-        },
-        "signature_current_nist": {
-          "Dilithium": 4
-        },
-        "signature_legacy_or_non_nist": {}
-      }
+      "error_sample_count": 5,
+      "role_separation_sample_count": 0,
+      "role_separation_counts": {},
+      "role_separation_rates": {},
+      "algorithm_flag_sample_count": 0,
+      "algorithm_flag_rates": {},
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": 0.0,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "trial_id": "secure_messaging_app::nist_pqc_structured",
@@ -551,59 +317,17 @@
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
       "output_filename": "nist_pqc_structured_prompt_messaging_app.json",
       "sample_count": 5,
-      "complete_sample_count": 5,
+      "complete_sample_count": 0,
       "partial_sample_count": 0,
-      "error_sample_count": 0,
-      "role_separation_sample_count": 5,
-      "role_separation_counts": {
-        "pass": 5,
-        "fail": 0,
-        "unclear": 0
-      },
-      "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
-      },
-      "algorithm_flag_sample_count": 5,
-      "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 0.8,
-        "kem_has_legacy_or_non_nist_pqc": 0.2,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.2,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 1.0,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
-      },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 5,
-          "AES-256-GCM": 5
-        },
-        "kem_classical": {
-          "Curve25519": 4,
-          "ECDH": 3,
-          "ECDHE": 1,
-          "X25519": 5,
-          "X3DH": 5
-        },
-        "kem_current_nist": {
-          "Kyber": 4
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 1
-        },
-        "signature_classical": {
-          "Ed25519": 3,
-          "RSA": 5
-        },
-        "signature_current_nist": {
-          "Dilithium": 1
-        },
-        "signature_legacy_or_non_nist": {}
-      }
+      "error_sample_count": 5,
+      "role_separation_sample_count": 0,
+      "role_separation_counts": {},
+      "role_separation_rates": {},
+      "algorithm_flag_sample_count": 0,
+      "algorithm_flag_rates": {},
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": 0.0,
+      "named_algorithm_frequency_by_category": {}
     }
   ],
   "aggregate_by_prompt_variant": [
@@ -618,50 +342,35 @@
       ],
       "status_counts": {
         "sample_count": 5,
-        "complete_sample_count": 5,
+        "complete_sample_count": 0,
         "partial_sample_count": 0,
-        "error_sample_count": 0
+        "error_sample_count": 5
       },
-      "role_separation_sample_count": 5,
+      "role_separation_sample_count": 0,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 0,
         "fail": 0,
         "unclear": 0
       },
       "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
+        "pass": null,
+        "fail": null,
+        "unclear": null
       },
-      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_sample_count": 0,
       "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 0.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.0,
-        "kem_has_classical": 0.6,
-        "signature_has_current_nist_pqc": 0.0,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 0.2,
-        "dem_has_quantum_resistant_symmetric": 0.4,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
+        "kem_has_current_nist_pqc": null,
+        "kem_has_legacy_or_non_nist_pqc": null,
+        "kem_has_classical": null,
+        "signature_has_current_nist_pqc": null,
+        "signature_has_legacy_or_non_nist_pqc": null,
+        "signature_has_classical": null,
+        "dem_has_quantum_resistant_symmetric": null,
+        "dem_has_non_quantum_resistant_symmetric": null
       },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 1,
-          "AES-256-GCM": 1,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "X3DH": 3
-        },
-        "kem_current_nist": {},
-        "kem_legacy_or_non_nist": {},
-        "signature_classical": {
-          "Ed25519": 1
-        },
-        "signature_current_nist": {},
-        "signature_legacy_or_non_nist": {}
-      }
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": null,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "group_label": "prompt_variant",
@@ -674,60 +383,35 @@
       ],
       "status_counts": {
         "sample_count": 5,
-        "complete_sample_count": 5,
+        "complete_sample_count": 0,
         "partial_sample_count": 0,
-        "error_sample_count": 0
+        "error_sample_count": 5
       },
-      "role_separation_sample_count": 5,
+      "role_separation_sample_count": 0,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 0,
         "fail": 0,
         "unclear": 0
       },
       "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
+        "pass": null,
+        "fail": null,
+        "unclear": null
       },
-      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_sample_count": 0,
       "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 0.4,
-        "kem_has_legacy_or_non_nist_pqc": 0.2,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.0,
-        "signature_has_legacy_or_non_nist_pqc": 0.2,
-        "signature_has_classical": 1.0,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
+        "kem_has_current_nist_pqc": null,
+        "kem_has_legacy_or_non_nist_pqc": null,
+        "kem_has_classical": null,
+        "signature_has_current_nist_pqc": null,
+        "signature_has_legacy_or_non_nist_pqc": null,
+        "signature_has_classical": null,
+        "dem_has_quantum_resistant_symmetric": null,
+        "dem_has_non_quantum_resistant_symmetric": null
       },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 5,
-          "AES-256-GCM": 5,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "Curve25519": 3,
-          "ECDH": 1,
-          "X25519": 5,
-          "X3DH": 5
-        },
-        "kem_current_nist": {
-          "Kyber": 2
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 1
-        },
-        "signature_classical": {
-          "Ed25519": 4,
-          "RSA": 5
-        },
-        "signature_current_nist": {},
-        "signature_legacy_or_non_nist": {
-          "Falcon": 1
-        }
-      }
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": null,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "group_label": "prompt_variant",
@@ -740,61 +424,35 @@
       ],
       "status_counts": {
         "sample_count": 5,
-        "complete_sample_count": 5,
+        "complete_sample_count": 0,
         "partial_sample_count": 0,
-        "error_sample_count": 0
+        "error_sample_count": 5
       },
-      "role_separation_sample_count": 5,
+      "role_separation_sample_count": 0,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 0,
         "fail": 0,
         "unclear": 0
       },
       "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
+        "pass": null,
+        "fail": null,
+        "unclear": null
       },
-      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_sample_count": 0,
       "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 1.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.4,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.6,
-        "signature_has_legacy_or_non_nist_pqc": 0.4,
-        "signature_has_classical": 0.8,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
+        "kem_has_current_nist_pqc": null,
+        "kem_has_legacy_or_non_nist_pqc": null,
+        "kem_has_classical": null,
+        "signature_has_current_nist_pqc": null,
+        "signature_has_legacy_or_non_nist_pqc": null,
+        "signature_has_classical": null,
+        "dem_has_quantum_resistant_symmetric": null,
+        "dem_has_non_quantum_resistant_symmetric": null
       },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 4,
-          "AES-256-GCM": 4,
-          "ChaCha20-Poly1305": 5
-        },
-        "kem_classical": {
-          "ECDH": 1,
-          "X25519": 3,
-          "X3DH": 4
-        },
-        "kem_current_nist": {
-          "Kyber": 5
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 2
-        },
-        "signature_classical": {
-          "Ed25519": 2,
-          "RSA": 4
-        },
-        "signature_current_nist": {
-          "Dilithium": 3
-        },
-        "signature_legacy_or_non_nist": {
-          "Falcon": 2
-        }
-      }
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": null,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "group_label": "prompt_variant",
@@ -807,60 +465,35 @@
       ],
       "status_counts": {
         "sample_count": 5,
-        "complete_sample_count": 5,
+        "complete_sample_count": 0,
         "partial_sample_count": 0,
-        "error_sample_count": 0
+        "error_sample_count": 5
       },
-      "role_separation_sample_count": 5,
+      "role_separation_sample_count": 0,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 0,
         "fail": 0,
         "unclear": 0
       },
       "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
+        "pass": null,
+        "fail": null,
+        "unclear": null
       },
-      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_sample_count": 0,
       "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 1.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.4,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.4,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 1.0,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
+        "kem_has_current_nist_pqc": null,
+        "kem_has_legacy_or_non_nist_pqc": null,
+        "kem_has_classical": null,
+        "signature_has_current_nist_pqc": null,
+        "signature_has_legacy_or_non_nist_pqc": null,
+        "signature_has_classical": null,
+        "dem_has_quantum_resistant_symmetric": null,
+        "dem_has_non_quantum_resistant_symmetric": null
       },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 5,
-          "AES-256-GCM": 5,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "Curve25519": 4,
-          "ECDH": 3,
-          "X25519": 5,
-          "X3DH": 5
-        },
-        "kem_current_nist": {
-          "Kyber": 5
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 2
-        },
-        "signature_classical": {
-          "Ed25519": 5,
-          "RSA": 5
-        },
-        "signature_current_nist": {
-          "Dilithium": 2
-        },
-        "signature_legacy_or_non_nist": {}
-      }
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": null,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "group_label": "prompt_variant",
@@ -873,61 +506,35 @@
       ],
       "status_counts": {
         "sample_count": 5,
-        "complete_sample_count": 5,
+        "complete_sample_count": 0,
         "partial_sample_count": 0,
-        "error_sample_count": 0
+        "error_sample_count": 5
       },
-      "role_separation_sample_count": 5,
+      "role_separation_sample_count": 0,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 0,
         "fail": 0,
         "unclear": 0
       },
       "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
+        "pass": null,
+        "fail": null,
+        "unclear": null
       },
-      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_sample_count": 0,
       "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 1.0,
-        "kem_has_legacy_or_non_nist_pqc": 0.0,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.8,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 0.8,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.2
+        "kem_has_current_nist_pqc": null,
+        "kem_has_legacy_or_non_nist_pqc": null,
+        "kem_has_classical": null,
+        "signature_has_current_nist_pqc": null,
+        "signature_has_legacy_or_non_nist_pqc": null,
+        "signature_has_classical": null,
+        "dem_has_quantum_resistant_symmetric": null,
+        "dem_has_non_quantum_resistant_symmetric": null
       },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {
-          "AES-128": 1,
-          "AES-128-GCM": 1
-        },
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 4,
-          "AES-256-GCM": 4,
-          "ChaCha20-Poly1305": 2
-        },
-        "kem_classical": {
-          "ECDH": 2,
-          "X25519": 4,
-          "X3DH": 1
-        },
-        "kem_current_nist": {
-          "Kyber": 5
-        },
-        "kem_legacy_or_non_nist": {},
-        "signature_classical": {
-          "ECDSA": 1,
-          "Ed25519": 2,
-          "RSA": 2
-        },
-        "signature_current_nist": {
-          "Dilithium": 4
-        },
-        "signature_legacy_or_non_nist": {}
-      }
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": null,
+      "named_algorithm_frequency_by_category": {}
     },
     {
       "group_label": "prompt_variant",
@@ -940,60 +547,35 @@
       ],
       "status_counts": {
         "sample_count": 5,
-        "complete_sample_count": 5,
+        "complete_sample_count": 0,
         "partial_sample_count": 0,
-        "error_sample_count": 0
+        "error_sample_count": 5
       },
-      "role_separation_sample_count": 5,
+      "role_separation_sample_count": 0,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 0,
         "fail": 0,
         "unclear": 0
       },
       "role_separation_rates": {
-        "pass": 1.0,
-        "fail": 0.0,
-        "unclear": 0.0
+        "pass": null,
+        "fail": null,
+        "unclear": null
       },
-      "algorithm_flag_sample_count": 5,
+      "algorithm_flag_sample_count": 0,
       "algorithm_flag_rates": {
-        "kem_has_current_nist_pqc": 0.8,
-        "kem_has_legacy_or_non_nist_pqc": 0.2,
-        "kem_has_classical": 1.0,
-        "signature_has_current_nist_pqc": 0.2,
-        "signature_has_legacy_or_non_nist_pqc": 0.0,
-        "signature_has_classical": 1.0,
-        "dem_has_quantum_resistant_symmetric": 1.0,
-        "dem_has_non_quantum_resistant_symmetric": 0.0
+        "kem_has_current_nist_pqc": null,
+        "kem_has_legacy_or_non_nist_pqc": null,
+        "kem_has_classical": null,
+        "signature_has_current_nist_pqc": null,
+        "signature_has_legacy_or_non_nist_pqc": null,
+        "signature_has_classical": null,
+        "dem_has_quantum_resistant_symmetric": null,
+        "dem_has_non_quantum_resistant_symmetric": null
       },
-      "named_algorithm_frequency_by_category": {
-        "dem_non_quantum_resistant_symmetric": {},
-        "dem_quantum_resistant_symmetric": {
-          "AES-256": 5,
-          "AES-256-GCM": 5
-        },
-        "kem_classical": {
-          "Curve25519": 4,
-          "ECDH": 3,
-          "ECDHE": 1,
-          "X25519": 5,
-          "X3DH": 5
-        },
-        "kem_current_nist": {
-          "Kyber": 4
-        },
-        "kem_legacy_or_non_nist": {
-          "NTRU": 1
-        },
-        "signature_classical": {
-          "Ed25519": 3,
-          "RSA": 5
-        },
-        "signature_current_nist": {
-          "Dilithium": 1
-        },
-        "signature_legacy_or_non_nist": {}
-      }
+      "complete_role_algorithm_coverage_count": 0,
+      "complete_role_algorithm_coverage_rate": null,
+      "named_algorithm_frequency_by_category": {}
     }
   ]
 }

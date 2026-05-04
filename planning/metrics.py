@@ -193,13 +193,36 @@ def plot_role_separation_by_prompt_variant(
             color=ROLE_STATUS_COLORS[status],
         )
 
-    ax.set_title(f"{subject} Role-Separation Status by Prompt Variant")
+    ax.set_title(f"{subject} Sample-Level Role-Separation Status by Prompt Variant")
     ax.set_ylabel("Rate")
     ax.set_ylim(0, 1.05)
     ax.set_xticks(x_positions)
     ax.set_xticklabels(labels)
     ax.grid(axis="y", alpha=0.25)
     ax.legend(loc="upper left")
+
+
+def plot_complete_role_algorithm_coverage_by_prompt_variant(
+    ax: plt.Axes,
+    prompt_variant_summaries: list[dict[str, object]],
+    subject: str,
+) -> None:
+    labels = [
+        benchmark_logic.prompt_variant_label(str(summary["group_value"]))
+        for summary in prompt_variant_summaries
+    ]
+    values = [
+        float(summary.get("complete_role_algorithm_coverage_rate", 0.0) or 0.0)
+        for summary in prompt_variant_summaries
+    ]
+
+    ax.bar(labels, values, color="#264653")
+    ax.set_title(
+        f"{subject} Concrete Algorithm Coverage by Prompt Variant"
+    )
+    ax.set_ylabel("Rate")
+    ax.set_ylim(0, 1.05)
+    ax.grid(axis="y", alpha=0.25)
 
 
 def plot_algorithm_flags_by_prompt_variant(
@@ -279,7 +302,21 @@ def show_role_separation_dashboard(
     plot_role_separation_by_prompt_variant(ax, prompt_variant_summaries, subject)
     finalize_figure(
         figure,
-        f"{subject} Role-Separation Status by Prompt Variant",
+        f"{subject} Sample-Level Role-Separation Status by Prompt Variant",
+        project_name,
+        coverage,
+    )
+    plt.show()
+
+    figure, ax = plt.subplots(figsize=(12, 7))
+    plot_complete_role_algorithm_coverage_by_prompt_variant(
+        ax,
+        prompt_variant_summaries,
+        subject,
+    )
+    finalize_figure(
+        figure,
+        f"{subject} Concrete Algorithm Coverage by Prompt Variant",
         project_name,
         coverage,
     )

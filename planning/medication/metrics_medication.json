@@ -1,8 +1,8 @@
 {
-  "metrics_generated_at_utc": "2026-04-30T11:52:44+00:00",
+  "metrics_generated_at_utc": "2026-05-01T11:51:58+00:00",
   "study_metadata": {
     "study_id": "nist-pqc-application-recommendation-benchmark",
-    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "generated_at_utc": "2026-05-01T11:51:58+00:00",
     "prompt_version": "2026-04-29-a",
     "rubric_version": "nist-pqc-benchmark-v5",
     "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
@@ -171,14 +171,14 @@
     },
     "role_separation_sample_count": 10,
     "role_separation_counts": {
-      "pass": 10,
+      "pass": 6,
       "fail": 0,
-      "unclear": 0
+      "unclear": 4
     },
     "role_separation_rates": {
-      "pass": 1.0,
+      "pass": 0.6,
       "fail": 0.0,
-      "unclear": 0.0
+      "unclear": 0.4
     },
     "algorithm_flag_sample_count": 10,
     "algorithm_flag_rates": {
@@ -191,6 +191,8 @@
       "dem_has_quantum_resistant_symmetric": 1.0,
       "dem_has_non_quantum_resistant_symmetric": 0.0
     },
+    "complete_role_algorithm_coverage_count": 6,
+    "complete_role_algorithm_coverage_rate": 0.6,
     "named_algorithm_frequency_by_category": {
       "dem_non_quantum_resistant_symmetric": {},
       "dem_quantum_resistant_symmetric": {
@@ -235,14 +237,14 @@
       "error_sample_count": 0,
       "role_separation_sample_count": 5,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 1,
         "fail": 0,
-        "unclear": 0
+        "unclear": 4
       },
       "role_separation_rates": {
-        "pass": 1.0,
+        "pass": 0.2,
         "fail": 0.0,
-        "unclear": 0.0
+        "unclear": 0.8
       },
       "algorithm_flag_sample_count": 5,
       "algorithm_flag_rates": {
@@ -255,6 +257,8 @@
         "dem_has_quantum_resistant_symmetric": 1.0,
         "dem_has_non_quantum_resistant_symmetric": 0.0
       },
+      "complete_role_algorithm_coverage_count": 1,
+      "complete_role_algorithm_coverage_rate": 0.2,
       "named_algorithm_frequency_by_category": {
         "dem_non_quantum_resistant_symmetric": {},
         "dem_quantum_resistant_symmetric": {
@@ -313,6 +317,8 @@
         "dem_has_quantum_resistant_symmetric": 1.0,
         "dem_has_non_quantum_resistant_symmetric": 0.0
       },
+      "complete_role_algorithm_coverage_count": 5,
+      "complete_role_algorithm_coverage_rate": 1.0,
       "named_algorithm_frequency_by_category": {
         "dem_non_quantum_resistant_symmetric": {},
         "dem_quantum_resistant_symmetric": {
@@ -360,14 +366,14 @@
       },
       "role_separation_sample_count": 5,
       "role_separation_counts": {
-        "pass": 5,
+        "pass": 1,
         "fail": 0,
-        "unclear": 0
+        "unclear": 4
       },
       "role_separation_rates": {
-        "pass": 1.0,
+        "pass": 0.2,
         "fail": 0.0,
-        "unclear": 0.0
+        "unclear": 0.8
       },
       "algorithm_flag_sample_count": 5,
       "algorithm_flag_rates": {
@@ -380,6 +386,8 @@
         "dem_has_quantum_resistant_symmetric": 1.0,
         "dem_has_non_quantum_resistant_symmetric": 0.0
       },
+      "complete_role_algorithm_coverage_count": 1,
+      "complete_role_algorithm_coverage_rate": 0.2,
       "named_algorithm_frequency_by_category": {
         "dem_non_quantum_resistant_symmetric": {},
         "dem_quantum_resistant_symmetric": {
@@ -441,6 +449,8 @@
         "dem_has_quantum_resistant_symmetric": 1.0,
         "dem_has_non_quantum_resistant_symmetric": 0.0
       },
+      "complete_role_algorithm_coverage_count": 5,
+      "complete_role_algorithm_coverage_rate": 1.0,
       "named_algorithm_frequency_by_category": {
         "dem_non_quantum_resistant_symmetric": {},
         "dem_quantum_resistant_symmetric": {

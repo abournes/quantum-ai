@@ -315,6 +315,23 @@ ROLE_SEPARATION_ALGORITHM_FLAG_IDS = tuple(
     entry["flag_id"] for entry in ROLE_SEPARATION_ALGORITHM_FLAG_DEFINITIONS
 )
 
+ROLE_SEPARATION_REQUIRED_ALGORITHM_GROUPS: dict[str, tuple[str, ...]] = {
+    "key establishment": (
+        "kem_has_current_nist_pqc",
+        "kem_has_legacy_or_non_nist_pqc",
+        "kem_has_classical",
+    ),
+    "content encryption": (
+        "dem_has_quantum_resistant_symmetric",
+        "dem_has_non_quantum_resistant_symmetric",
+    ),
+    "authentication or signatures": (
+        "signature_has_current_nist_pqc",
+        "signature_has_legacy_or_non_nist_pqc",
+        "signature_has_classical",
+    ),
+}
+
 NIST_PQC_BASELINE = """
 Use this baseline when evaluating the model response.
 
@@ -1052,6 +1069,9 @@ Judging rules:
   content/data encryption, signatures as encryption, or treating one primitive
   as the whole system.
 - Use "unclear" when the answer is too vague to determine role separation.
+- Use "unclear" instead of "pass" when the answer sounds plausible but does not
+  name at least one concrete algorithm or standard for key establishment,
+  content encryption, and authentication or signatures.
 - Using classical algorithms is not automatically a failure if the roles are
   still separated correctly.
 - Do not evaluate broad architecture quality beyond those role-separation rules.
@@ -1110,6 +1130,68 @@ def normalize_role_separation_extracted_details(
     return normalized_details
 
 
+def missing_role_separation_algorithm_groups(
+    rule_based_checks: dict[str, Any],
+) -> list[str]:
+    algorithm_flags = rule_based_checks.get("algorithm_flags", {})
+    if not isinstance(algorithm_flags, dict):
+        return list(ROLE_SEPARATION_REQUIRED_ALGORITHM_GROUPS)
+
+    missing_groups: list[str] = []
+    for group_label, flag_ids in ROLE_SEPARATION_REQUIRED_ALGORITHM_GROUPS.items():
+        if not any(bool(algorithm_flags.get(flag_id)) for flag_id in flag_ids):
+            missing_groups.append(group_label)
+    return missing_groups
+
+
+def has_complete_role_separation_algorithm_coverage(
+    rule_based_checks: dict[str, Any],
+) -> bool:
+    return not missing_role_separation_algorithm_groups(rule_based_checks)
+
+
+def apply_role_separation_coverage_guardrail(
+    extracted_details: dict[str, Any],
+    rule_based_checks: dict[str, Any],
+) -> dict[str, Any]:
+    normalized_details = normalize_role_separation_extracted_details(extracted_details)
+    if normalized_details["response_type"] != "substantive":
+        return normalized_details
+    if normalized_details["role_separation_status"] != "pass":
+        return normalized_details
+
+    missing_groups = missing_role_separation_algorithm_groups(rule_based_checks)
+    if not missing_groups:
+        return normalized_details
+
+    evidence = list(normalized_details.get("role_separation_evidence", []))
+    evidence.append(
+        "The response does not name a concrete algorithm or standard for: "
+        + ", ".join(missing_groups)
+        + "."
+    )
+
+    notes = str(normalized_details.get("role_separation_notes", "")).strip()
+    guardrail_note = (
+        "Downgraded to unclear because the response lacks concrete algorithm or "
+        "standard examples for one or more required role categories: "
+        + ", ".join(missing_groups)
+        + "."
+    )
+    normalized_details["role_separation_status"] = "unclear"
+    normalized_details["role_separation_evidence"] = evidence
+    normalized_details["role_separation_notes"] = (
+        f"{notes} {guardrail_note}".strip() if notes else guardrail_note
+    )
+    normalized_details["concise_summary"] = (
+        "The response keeps roles conceptually separate but is too underspecified "
+        "to pass because it omits concrete algorithm or standard examples for "
+        + ", ".join(missing_groups)
+        + "."
+    )
+    return normalized_details
+
+
 def extract_recommendation_details(
     client: OpenAI,
     project: dict[str, Any],
@@ -1124,7 +1206,10 @@ def extract_recommendation_details(
     )
     extracted_details = parse_json_object(get_text_response(response))
     if is_role_separation_project(project):
-        return normalize_role_separation_extracted_details(extracted_details)
+        return apply_role_separation_coverage_guardrail(
+            extracted_details,
+            rule_based_checks,
+        )
     return enrich_extracted_details(
         recommendation=recommendation,
         extracted_details=extracted_details,
@@ -1569,8 +1654,10 @@ def normalize_sample_scoring(
         normalized_sample["rule_based_checks"] = rule_based_checks
 
     if is_role_separation_project(project):
-        extracted_details = normalize_role_separation_extracted_details(
+        extracted_details = apply_role_separation_coverage_guardrail(
             dict(judge_evaluation.get("extraction", judge_evaluation))
+            ,
+            rule_based_checks,
         )
         normalized_sample["judge_evaluation"] = {
             "extraction": extracted_details,
@@ -1930,6 +2017,19 @@ def summarize_role_separation_samples(
                 named_algorithm_frequency_by_category.items()
             )
         }
+        coverage_complete_count = sum(
+            1
+            for sample in analyzable_samples
+            if has_complete_role_separation_algorithm_coverage(
+                sample.get("rule_based_checks", {})
+            )
+        )
+        total_algorithm_samples = len(algorithm_flag_sets)
+        summary["complete_role_algorithm_coverage_count"] = coverage_complete_count
+        summary["complete_role_algorithm_coverage_rate"] = round(
+            coverage_complete_count / total_algorithm_samples,
+            3,
+        ) if total_algorithm_samples else 0.0
 
     if role_evaluated_samples:
         role_counts = {
@@ -2014,6 +2114,14 @@ def build_role_separation_trial_metrics(
         "role_separation_rates": summary.get("role_separation_rates", {}),
         "algorithm_flag_sample_count": summary.get("algorithm_flag_sample_count", 0),
         "algorithm_flag_rates": summary.get("algorithm_flag_rates", {}),
+        "complete_role_algorithm_coverage_count": summary.get(
+            "complete_role_algorithm_coverage_count",
+            0,
+        ),
+        "complete_role_algorithm_coverage_rate": summary.get(
+            "complete_role_algorithm_coverage_rate",
+            0.0,
+        ),
         "named_algorithm_frequency_by_category": summary.get(
             "named_algorithm_frequency_by_category",
             {},
@@ -2159,6 +2267,19 @@ def summarize_role_separation_trial_group(
             for trial in trial_metrics
         ),
         "algorithm_flag_rates": algorithm_flag_rates,
+        "complete_role_algorithm_coverage_count": sum(
+            int(trial.get("complete_role_algorithm_coverage_count", 0) or 0)
+            for trial in trial_metrics
+        ),
+        "complete_role_algorithm_coverage_rate": safe_weighted_average(
+            [
+                (
+                    trial.get("complete_role_algorithm_coverage_rate"),
+                    trial.get("algorithm_flag_sample_count", 0),
+                )
+                for trial in trial_metrics
+            ]
+        ),
         "named_algorithm_frequency_by_category": merge_nested_frequency_maps(
             [
                 trial.get("named_algorithm_frequency_by_category", {})
@@ -2211,6 +2332,8 @@ def empty_trial_group_summary(
                 "role_separation_rates": {},
                 "algorithm_flag_sample_count": 0,
                 "algorithm_flag_rates": {},
+                "complete_role_algorithm_coverage_count": 0,
+                "complete_role_algorithm_coverage_rate": 0.0,
                 "named_algorithm_frequency_by_category": {},
             }
         )

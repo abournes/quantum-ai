@@ -1,7 +1,7 @@
 {
   "study_metadata": {
     "study_id": "nist-pqc-application-recommendation-benchmark",
-    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "generated_at_utc": "2026-05-01T11:51:58+00:00",
     "prompt_version": "2026-04-29-a",
     "rubric_version": "nist-pqc-benchmark-v5",
     "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
@@ -180,6 +180,8 @@
       "signature_current_nist": {},
       "signature_legacy_or_non_nist": {}
     },
+    "complete_role_algorithm_coverage_count": 5,
+    "complete_role_algorithm_coverage_rate": 1.0,
     "role_separation_sample_count": 5,
     "role_separation_counts": {
       "pass": 5,

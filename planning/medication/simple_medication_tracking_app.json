@@ -1,7 +1,7 @@
 {
   "study_metadata": {
     "study_id": "nist-pqc-application-recommendation-benchmark",
-    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "generated_at_utc": "2026-05-01T11:51:58+00:00",
     "prompt_version": "2026-04-29-a",
     "rubric_version": "nist-pqc-benchmark-v5",
     "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
@@ -176,16 +176,18 @@
       "signature_current_nist": {},
       "signature_legacy_or_non_nist": {}
     },
+    "complete_role_algorithm_coverage_count": 1,
+    "complete_role_algorithm_coverage_rate": 0.2,
     "role_separation_sample_count": 5,
     "role_separation_counts": {
-      "pass": 5,
+      "pass": 1,
       "fail": 0,
-      "unclear": 0
+      "unclear": 4
     },
     "role_separation_rates": {
-      "pass": 1.0,
+      "pass": 0.2,
       "fail": 0.0,
-      "unclear": 0.0
+      "unclear": 0.8
     }
   },
   "samples": [
@@ -237,23 +239,25 @@
       "judge_evaluation": {
         "extraction": {
           "response_type": "substantive",
-          "role_separation_status": "pass",
+          "role_separation_status": "unclear",
           "role_separation_evidence": [
             "Session establishment uses TLS 1.3 with OAuth 2.0 / OIDC JWT tokens for authentication, distinct from data encryption.",
             "PHI, API payload, database, and backup encryption are handled with symmetric AES-256-GCM and key wrapping, separate from session/authentication cryptography.",
             "Machine and service authentication is based on X.509 certificates issued by internal PKI, distinct from encryption roles.",
-            "Key rotation, credential lifecycle, and certificate management are treated as independent ongoing processes, separate from one-time session setup."
+            "Key rotation, credential lifecycle, and certificate management are treated as independent ongoing processes, separate from one-time session setup.",
+            "The response does not name a concrete algorithm or standard for: key establishment."
           ],
-          "role_separation_notes": "The response clearly defines and maintains separation among the four major cryptographic roles: session establishment and authentication (TLS, OAuth/OIDC), data encryption (symmetric AES with key wrapping), machine/service identity authentication (X.509 certificates), and ongoing key/credential lifecycle management. Each role is assigned distinct protocols and primitives with no conflation or overlap, consistent with the project-specific guidance.",
-          "concise_summary": "The response cleanly separates session establishment, data encryption, machine authentication, and key lifecycle roles, meeting the role-separation requirements."
+          "role_separation_notes": "The response clearly defines and maintains separation among the four major cryptographic roles: session establishment and authentication (TLS, OAuth/OIDC), data encryption (symmetric AES with key wrapping), machine/service identity authentication (X.509 certificates), and ongoing key/credential lifecycle management. Each role is assigned distinct protocols and primitives with no conflation or overlap, consistent with the project-specific guidance. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: key establishment.",
+          "concise_summary": "The response keeps roles conceptually separate but is too underspecified to pass because it omits concrete algorithm or standard examples for key establishment."
         },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response clearly defines and maintains separation among the four major cryptographic roles: session establishment and authentication (TLS, OAuth/OIDC), data encryption (symmetric AES with key wrapping), machine/service identity authentication (X.509 certificates), and ongoing key/credential lifecycle management. Each role is assigned distinct protocols and primitives with no conflation or overlap, consistent with the project-specific guidance.",
+        "role_separation_status": "unclear",
+        "role_separation_notes": "The response clearly defines and maintains separation among the four major cryptographic roles: session establishment and authentication (TLS, OAuth/OIDC), data encryption (symmetric AES with key wrapping), machine/service identity authentication (X.509 certificates), and ongoing key/credential lifecycle management. Each role is assigned distinct protocols and primitives with no conflation or overlap, consistent with the project-specific guidance. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: key establishment.",
         "role_separation_evidence": [
           "Session establishment uses TLS 1.3 with OAuth 2.0 / OIDC JWT tokens for authentication, distinct from data encryption.",
           "PHI, API payload, database, and backup encryption are handled with symmetric AES-256-GCM and key wrapping, separate from session/authentication cryptography.",
           "Machine and service authentication is based on X.509 certificates issued by internal PKI, distinct from encryption roles.",
-          "Key rotation, credential lifecycle, and certificate management are treated as independent ongoing processes, separate from one-time session setup."
+          "Key rotation, credential lifecycle, and certificate management are treated as independent ongoing processes, separate from one-time session setup.",
+          "The response does not name a concrete algorithm or standard for: key establishment."
         ]
       }
     },
@@ -378,23 +382,25 @@
       "judge_evaluation": {
         "extraction": {
           "response_type": "substantive",
-          "role_separation_status": "pass",
+          "role_separation_status": "unclear",
           "role_separation_evidence": [
             "Session establishment is separated into TLS 1.3 with OAuth 2.0/OIDC and mTLS for authentication and session management.",
             "PHI, API payload, and backup encryption are clearly handled with symmetric authenticated encryption (AES-256-GCM), distinct from session and authentication mechanisms.",
             "Machine, device, and service authentication uses X.509 certificates, mTLS, and device attestation, kept distinct from data encryption.",
-            "Key rotation and credential lifecycle management are separated as ongoing processes distinct from one-time session setup, using KMS with automated rotation and revocation."
+            "Key rotation and credential lifecycle management are separated as ongoing processes distinct from one-time session setup, using KMS with automated rotation and revocation.",
+            "The response does not name a concrete algorithm or standard for: key establishment, authentication or signatures."
           ],
-          "role_separation_notes": "Each major cryptographic role—session establishment, data encryption, identity authentication, and credential lifecycle management—is clearly delineated and handled with distinct primitives and processes. The response follows the project-specific guidance by not collapsing these roles or mixing encryption with authentication/signature operations.",
-          "concise_summary": "The response maintains clear and coherent separation of cryptographic roles consistent with the project guidance, so role separation passes."
+          "role_separation_notes": "Each major cryptographic role—session establishment, data encryption, identity authentication, and credential lifecycle management—is clearly delineated and handled with distinct primitives and processes. The response follows the project-specific guidance by not collapsing these roles or mixing encryption with authentication/signature operations. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: key establishment, authentication or signatures.",
+          "concise_summary": "The response keeps roles conceptually separate but is too underspecified to pass because it omits concrete algorithm or standard examples for key establishment, authentication or signatures."
         },
-        "role_separation_status": "pass",
-        "role_separation_notes": "Each major cryptographic role—session establishment, data encryption, identity authentication, and credential lifecycle management—is clearly delineated and handled with distinct primitives and processes. The response follows the project-specific guidance by not collapsing these roles or mixing encryption with authentication/signature operations.",
+        "role_separation_status": "unclear",
+        "role_separation_notes": "Each major cryptographic role—session establishment, data encryption, identity authentication, and credential lifecycle management—is clearly delineated and handled with distinct primitives and processes. The response follows the project-specific guidance by not collapsing these roles or mixing encryption with authentication/signature operations. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: key establishment, authentication or signatures.",
         "role_separation_evidence": [
           "Session establishment is separated into TLS 1.3 with OAuth 2.0/OIDC and mTLS for authentication and session management.",
           "PHI, API payload, and backup encryption are clearly handled with symmetric authenticated encryption (AES-256-GCM), distinct from session and authentication mechanisms.",
           "Machine, device, and service authentication uses X.509 certificates, mTLS, and device attestation, kept distinct from data encryption.",
-          "Key rotation and credential lifecycle management are separated as ongoing processes distinct from one-time session setup, using KMS with automated rotation and revocation."
+          "Key rotation and credential lifecycle management are separated as ongoing processes distinct from one-time session setup, using KMS with automated rotation and revocation.",
+          "The response does not name a concrete algorithm or standard for: key establishment, authentication or signatures."
         ]
       }
     },
@@ -447,23 +453,25 @@
       "judge_evaluation": {
         "extraction": {
           "response_type": "substantive",
-          "role_separation_status": "pass",
+          "role_separation_status": "unclear",
           "role_separation_evidence": [
             "Session establishment is clearly separated from data encryption, using TLS 1.3, OAuth 2.0/OIDC with signed JWTs, and mTLS for service-to-service authentication.",
             "Data encryption roles (PHI, API payloads, backups) are consistently performed using symmetric AES-256-GCM keys managed by cloud KMS, distinct from authentication or signature roles.",
             "Machine and service identities are handled via X.509 certificates issued by an internal PKI, kept separate from data encryption keys and session setup, with automated lifecycle management.",
-            "Key rotation and credential lifecycle management are treated separately from one-time session establishment and data encryption, with explicit policies and automation described."
+            "Key rotation and credential lifecycle management are treated separately from one-time session establishment and data encryption, with explicit policies and automation described.",
+            "The response does not name a concrete algorithm or standard for: key establishment."
           ],
-          "role_separation_notes": "The response keeps the major cryptographic roles distinct and coherent according to the project-specific guidance. Session establishment, symmetric encryption of sensitive data, authentication/signature duties, and credential lifecycle management are clearly delineated without overlap or conflation.",
-          "concise_summary": "The model response effectively maintains clear and proper separation of cryptographic roles throughout the system design."
+          "role_separation_notes": "The response keeps the major cryptographic roles distinct and coherent according to the project-specific guidance. Session establishment, symmetric encryption of sensitive data, authentication/signature duties, and credential lifecycle management are clearly delineated without overlap or conflation. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: key establishment.",
+          "concise_summary": "The response keeps roles conceptually separate but is too underspecified to pass because it omits concrete algorithm or standard examples for key establishment."
         },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response keeps the major cryptographic roles distinct and coherent according to the project-specific guidance. Session establishment, symmetric encryption of sensitive data, authentication/signature duties, and credential lifecycle management are clearly delineated without overlap or conflation.",
+        "role_separation_status": "unclear",
+        "role_separation_notes": "The response keeps the major cryptographic roles distinct and coherent according to the project-specific guidance. Session establishment, symmetric encryption of sensitive data, authentication/signature duties, and credential lifecycle management are clearly delineated without overlap or conflation. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: key establishment.",
         "role_separation_evidence": [
           "Session establishment is clearly separated from data encryption, using TLS 1.3, OAuth 2.0/OIDC with signed JWTs, and mTLS for service-to-service authentication.",
           "Data encryption roles (PHI, API payloads, backups) are consistently performed using symmetric AES-256-GCM keys managed by cloud KMS, distinct from authentication or signature roles.",
           "Machine and service identities are handled via X.509 certificates issued by an internal PKI, kept separate from data encryption keys and session setup, with automated lifecycle management.",
-          "Key rotation and credential lifecycle management are treated separately from one-time session establishment and data encryption, with explicit policies and automation described."
+          "Key rotation and credential lifecycle management are treated separately from one-time session establishment and data encryption, with explicit policies and automation described.",
+          "The response does not name a concrete algorithm or standard for: key establishment."
         ]
       }
     },
@@ -516,25 +524,27 @@
       "judge_evaluation": {
         "extraction": {
           "response_type": "substantive",
-          "role_separation_status": "pass",
+          "role_separation_status": "unclear",
           "role_separation_evidence": [
             "Session establishment uses TLS 1.3 and mTLS or OAuth 2.0 tokens for user sessions, separating transport-level session/authentication from data encryption.",
             "PHI, API payload, database, and backups are encrypted symmetrically with AES-256-GCM and envelope encryption, clearly distinct from session protocols.",
             "Machine and service identity authentication uses X.509 certificates provisioned by PKI or service mesh with mTLS and OAuth 2.0 client credentials flow, clearly distinct from data encryption roles.",
             "Ongoing key rotation, certificate lifecycle, and credential management are handled separately with automated rotation, revocation mechanisms, and distinct audit monitoring processes.",
-            "Session establishment, data encryption, identity authentication, and credential lifecycle are all described as distinct functional roles consistent with the project-specific guidance."
+            "Session establishment, data encryption, identity authentication, and credential lifecycle are all described as distinct functional roles consistent with the project-specific guidance.",
+            "The response does not name a concrete algorithm or standard for: authentication or signatures."
           ],
-          "role_separation_notes": "The response maintains clear and coherent separation of cryptographic roles across session establishment, symmetric data encryption, machine/service authentication, and key/credential lifecycle management. Each role uses distinct cryptographic mechanisms with no conflation or overlap. This matches the project-specific guidance well.",
-          "concise_summary": "The response appropriately separates session setup, data encryption, identity authentication, and credential lifecycle roles, passing the role-separation evaluation."
+          "role_separation_notes": "The response maintains clear and coherent separation of cryptographic roles across session establishment, symmetric data encryption, machine/service authentication, and key/credential lifecycle management. Each role uses distinct cryptographic mechanisms with no conflation or overlap. This matches the project-specific guidance well. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: authentication or signatures.",
+          "concise_summary": "The response keeps roles conceptually separate but is too underspecified to pass because it omits concrete algorithm or standard examples for authentication or signatures."
         },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response maintains clear and coherent separation of cryptographic roles across session establishment, symmetric data encryption, machine/service authentication, and key/credential lifecycle management. Each role uses distinct cryptographic mechanisms with no conflation or overlap. This matches the project-specific guidance well.",
+        "role_separation_status": "unclear",
+        "role_separation_notes": "The response maintains clear and coherent separation of cryptographic roles across session establishment, symmetric data encryption, machine/service authentication, and key/credential lifecycle management. Each role uses distinct cryptographic mechanisms with no conflation or overlap. This matches the project-specific guidance well. Downgraded to unclear because the response lacks concrete algorithm or standard examples for one or more required role categories: authentication or signatures.",
         "role_separation_evidence": [
           "Session establishment uses TLS 1.3 and mTLS or OAuth 2.0 tokens for user sessions, separating transport-level session/authentication from data encryption.",
           "PHI, API payload, database, and backups are encrypted symmetrically with AES-256-GCM and envelope encryption, clearly distinct from session protocols.",
           "Machine and service identity authentication uses X.509 certificates provisioned by PKI or service mesh with mTLS and OAuth 2.0 client credentials flow, clearly distinct from data encryption roles.",
           "Ongoing key rotation, certificate lifecycle, and credential management are handled separately with automated rotation, revocation mechanisms, and distinct audit monitoring processes.",
-          "Session establishment, data encryption, identity authentication, and credential lifecycle are all described as distinct functional roles consistent with the project-specific guidance."
+          "Session establishment, data encryption, identity authentication, and credential lifecycle are all described as distinct functional roles consistent with the project-specific guidance.",
+          "The response does not name a concrete algorithm or standard for: authentication or signatures."
         ]
       }
     }

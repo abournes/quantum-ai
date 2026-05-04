@@ -1,7 +1,7 @@
 {
   "study_metadata": {
     "study_id": "nist-pqc-application-recommendation-benchmark",
-    "generated_at_utc": "2026-04-30T11:52:44+00:00",
+    "generated_at_utc": "2026-05-04T23:42:19+00:00",
     "prompt_version": "2026-04-29-a",
     "rubric_version": "nist-pqc-benchmark-v5",
     "rubric_scope": "Role separation plus algorithm-selection flags under the NIST PQC baseline",
@@ -136,454 +136,73 @@
   },
   "summary": {
     "total_runs": 5,
-    "complete_runs": 5,
+    "complete_runs": 0,
     "partial_runs": 0,
-    "error_runs": 0,
+    "error_runs": 5,
     "models_tested": [
       "gpt-4.1-mini"
-    ],
-    "algorithm_flag_sample_count": 5,
-    "algorithm_flag_rates": {
-      "kem_has_current_nist_pqc": 0.8,
-      "kem_has_legacy_or_non_nist_pqc": 0.2,
-      "kem_has_classical": 1.0,
-      "signature_has_current_nist_pqc": 0.2,
-      "signature_has_legacy_or_non_nist_pqc": 0.0,
-      "signature_has_classical": 1.0,
-      "dem_has_quantum_resistant_symmetric": 1.0,
-      "dem_has_non_quantum_resistant_symmetric": 0.0
-    },
-    "named_algorithm_frequency_by_category": {
-      "dem_non_quantum_resistant_symmetric": {},
-      "dem_quantum_resistant_symmetric": {
-        "AES-256": 5,
-        "AES-256-GCM": 5
-      },
-      "kem_classical": {
-        "Curve25519": 4,
-        "ECDH": 3,
-        "ECDHE": 1,
-        "X25519": 5,
-        "X3DH": 5
-      },
-      "kem_current_nist": {
-        "Kyber": 4
-      },
-      "kem_legacy_or_non_nist": {
-        "NTRU": 1
-      },
-      "signature_classical": {
-        "Ed25519": 3,
-        "RSA": 5
-      },
-      "signature_current_nist": {
-        "Dilithium": 1
-      },
-      "signature_legacy_or_non_nist": {}
-    },
-    "role_separation_sample_count": 5,
-    "role_separation_counts": {
-      "pass": 5,
-      "fail": 0,
-      "unclear": 0
-    },
-    "role_separation_rates": {
-      "pass": 1.0,
-      "fail": 0.0,
-      "unclear": 0.0
-    }
+    ]
   },
   "samples": [
     {
-      "status": "complete",
+      "status": "error",
       "sample_number": 1,
       "model": "gpt-4.1-mini",
-      "timestamp_utc": "2026-04-30T11:46:49+00:00",
+      "timestamp_utc": "2026-05-04T23:42:04+00:00",
       "prompt_variant": "nist_pqc_structured",
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
-      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
-      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversaries**: Highly capable passive and active attackers who can record encrypted traffic starting now and attempt cryptanalysis over the next 10-15 years.\n- **Capabilities**: Network eavesdropping, message injection, replay attacks, device compromise (partial), server compromise (metadata exposure), and malicious client impersonation.\n- **Goals**: Confidentiality of message and attachment content, forward and future secrecy to protect past and future messages if a key is compromised, authentication of users and devices, and protection of integrity and authenticity of messages.\n- **Limitations**: \n  - Physical control over user devices is outside scope (e.g., stolen unlocked devices).\n  - Endpoint malware is out of scope.\n- **Long-Term Confidentiality**: Must resist future cryptanalysis including potential post-quantum threats over message lifespan of 10-15 years.\n\n---\n\n## 2. Session Establishment\n\n- **Identity Keys (Long-Term Keys)**  \n  - Use X25519 (Curve25519) for long-term identity key pairs per device for key agreement.  \n  - Additionally, maintain Ed25519 signatures for authentication of identity keys.  \n\n- **Initial Key Agreement**  \n  - Leverage the **X3DH (Extended Triple Diffie-Hellman)** protocol (used in Signal Protocol) for initial session establishment, combining:  \n    - Device’s identity key (X25519)  \n    - Signed prekeys (ephemeral-ish medium-term X25519 keys)  \n    - One-time prekeys (X25519 one-time use keys)  \n  - Signature validation over signed prekeys using Ed25519 identities ensures authentication of keys.\n\n- **Post-Quantum Guidance**  \n  - NIST PQC standardization recommends hybrid key exchange combining classical (X25519) with post-quantum schemes such as **NTRUEncrypt** or **FrodoKEM** to hedge against future quantum attacks.  \n  - Snapstabook should design session establishment to support hybrid ECDH + PQC KEM key agreement, negotiating and combining shared secrets from both classical and PQC layers (e.g., concatenating or hashing shared secrets), enabling gradual migration without disruption.\n\n- **Multi-Device & Group Handling**  \n  - Each device maintains its own identity key pair.  \n  - Session keys are established independently per device pair via X3DH.  \n  - Group chats are handled by creating pairwise sessions between devices or using pairwise sessions combined with server-side group management (refer group ratcheting below).\n\n---\n\n## 3. Message and Attachment Encryption\n\n- **Message Encryption**  \n  - Use **Double Ratchet Algorithm** as per Signal Protocol for symmetric-key ratcheting providing forward secrecy and post-compromise security.  \n  - Symmetric encryption primitive: **AES-256-GCM** for authenticated encryption.  \n  - Message authentication is built into AES-GCM to ensure integrity and authenticity.\n\n- **Attachment Encryption**  \n  - Generate a fresh **256-bit AES-GCM key** per attachment.  \n  - Encrypt attachments client-side with AES-256-GCM.  \n  - Encrypt the attachment key with the current ratchet-derived symmetric message key (or a shared session key), ensuring only intended recipient devices can decrypt attachments.  \n  - Use cryptographic hash (SHA-256) of the ciphertext to validate integrity after download.\n\n- **Offline Delivery & Push Notifications**  \n  - Messages stored encrypted on the server using keys derived from Double Ratchet, so server cannot decrypt content.  \n  - For push notifications, send minimal metadata and encrypted previews, if any, using secure mechanisms to avoid sensitive data leaks.\n\n- **NIST PQC Considerations**  \n  - Attaching large files requires efficient symmetric encryption; AES-256-GCM remains quantum-resistant in key length but vulnerable to Grover's algorithm with quadratic speed-up.  \n  - Given large size of attachments, apply increased key length securely, i.e., AES-256 remains acceptable until PQC symmetric primitives standardize; consider monitoring development of lightweight PQC symmetric ciphers or enhanced key sizes.\n\n---\n\n## 4. Identity Authentication\n\n- **Device Identity**  \n  - Each device has a long-term Ed25519 key pair for signing its public identity keys.  \n\n- **User Identity Verification**  \n  - Use out-of-band verification methods such as QR code scanning (which encodes the identity key fingerprint, e.g., SHA-256 hash of concatenated X25519 public identity keys) or secure numerical codes exchanged verbally (similar to Signal’s safety numbers).  \n\n- **Trust-on-First-Use (TOFU)**  \n  - On first contact, register keys implicitly but notify users of new devices and allow manual verification and key comparison.  \n\n- **Contact Discovery**  \n  - Hash contacts locally with a keyed hash or use private set intersection with server to avoid revealing raw contact lists; no identity keys transmitted in clear on discovery.\n\n- **Revocation & Key Change Notifications**  \n  - Notify users when a contact adds or removes devices with new identity keys; allow manual re-verification.\n\n---\n\n## 5. Ongoing Key Update / Ratcheting\n\n- **Double Ratchet Protocol**  \n  - Perform Diffie-Hellman ratchets on each message exchanged: Use X25519 ephemeral keys for ECDH updates combined with HKDF (HKDF-SHA256) to derive new message keys.  \n  - Symmetric ratchets move forward with every message sent or received.\n\n- **Post-quantum Updates**  \n  - Monitor NIST finalized PQC signatures and KEMs for integration into ratchet steps or as hybrid ratchets replacing or complementing X25519.  \n  - Possibly store PQC public keys and enable fallback ratcheting with PQC keys as they mature.\n\n- **Group Messaging Ratcheting**  \n  - For efficient group ratcheting, use **Sender Keys** protocol (derived from Double Ratchet) per device per group:  \n    - One device generates a symmetric group sender key per cluster, encrypts this key to each participant’s device session key, and rotates keys regularly.  \n    - Combine with pairwise ratchet for direct message confidentiality.\n\n- **Key Expiry and Device Key Rotation**  \n  - Devices should rotate identity and signed prekeys periodically (e.g., monthly).  \n  - Sessions expire after inactivity or time limits to reduce long-term risk.\n\n---\n\n## 6. Residual Risks\n\n- **Endpoint Compromise**:  \n  - If attacker obtains user device keys or passphrase-protected credentials, confidentiality and integrity are compromised locally.\n\n- **Metadata Leakage**:  \n  - Server sees metadata such as sender and receiver identifiers, timing, and message size; advanced metadata correlation attacks remain possible.\n\n- **Compromise of Long-Term Keys**:  \n  - Past session keys remain safe due to forward secrecy but future messages may be compromised if device keys are lost. Hybrid PQC mitigations reduce risk long-term.\n\n- **Post-Quantum Unknowns**:  \n  - PQC is evolving and some standards are immature; thus partial cryptanalysis resistance, especially for symmetric keys, is assumed with monitoring for updates.\n\n- **Usability vs Security Trade-offs**:  \n  - Multi-device handling introduces complexity; potential for mis-synchronization or device spoofing if users do not actively verify new devices.\n\n---\n\n**Summary**: The Snapstabook architecture leverages well-established, proven cryptographic standards from the Signal protocol ecosystem (X3DH, Double Ratchet, AES-256-GCM, Ed25519) with a forward-looking approach to post-quantum cryptography via hybrid schemes. This ensures long-term confidentiality, authenticity, and usability for a multi-device, multi-platform secure messaging application that supports diverse message types and offline delivery while balancing usability and security.",
-      "request_attempts": {
-        "recommendation": 1,
-        "judge_evaluation": 1
-      },
-      "response_metrics": {
-        "character_count": 7689,
-        "line_count": 123
-      },
-      "rule_based_checks": {
-        "algorithm_flags": {
-          "kem_has_current_nist_pqc": false,
-          "kem_has_legacy_or_non_nist_pqc": true,
-          "kem_has_classical": true,
-          "signature_has_current_nist_pqc": false,
-          "signature_has_legacy_or_non_nist_pqc": false,
-          "signature_has_classical": true,
-          "dem_has_quantum_resistant_symmetric": true,
-          "dem_has_non_quantum_resistant_symmetric": false
-        },
-        "algorithm_mentions": {
-          "kem_current_nist": [],
-          "kem_legacy_or_non_nist": [
-            "NTRU"
-          ],
-          "kem_classical": [
-            "Curve25519",
-            "ECDH",
-            "X25519",
-            "X3DH"
-          ],
-          "signature_current_nist": [],
-          "signature_legacy_or_non_nist": [],
-          "signature_classical": [
-            "Ed25519",
-            "RSA"
-          ],
-          "dem_quantum_resistant_symmetric": [
-            "AES-256",
-            "AES-256-GCM"
-          ],
-          "dem_non_quantum_resistant_symmetric": []
-        }
-      },
-      "judge_evaluation": {
-        "extraction": {
-          "response_type": "substantive",
-          "role_separation_status": "pass",
-          "role_separation_evidence": [
-            "Section 2 'Session Establishment' clearly separates key agreement (X3DH) and identity authentication (Ed25519 signatures) from content encryption.",
-            "Section 3 'Message and Attachment Encryption' explicitly uses Double Ratchet for symmetric key ratcheting and AES-256-GCM for encrypting messages and attachments, distinct from session key establishment.",
-            "Identity authentication is handled separately with Ed25519 for signatures and out-of-band user verification, not conflated with message encryption.",
-            "Ongoing ratcheting in Section 5 operates as a continuous symmetric key update distinct from initial session establishment in Section 2.",
-            "Attachment encryption uses ephemeral symmetric keys encrypted under ratchet-derived keys, maintaining clear boundaries between key establishment, symmetric encryption, and authentication.",
-            "Summary and throughout the response maintain distinct roles for session setup, authentication, message encryption, and ratcheting."
-          ],
-          "role_separation_notes": "The response adheres well to the project-specific guidance by maintaining distinct cryptographic roles: initial session establishment (X3DH and hybrid PQC KEM), ongoing symmetric key ratcheting (Double Ratchet), identity authentication (Ed25519 signatures and verification), and content encryption (AES-GCM for messages and attachments). There is no conflation of signature keys as encryption keys or collapse of key agreement into encryption. The design cleanly separates long-term keys, ephemeral keys, symmetric ratchets, and identity authentication mechanisms.",
-          "concise_summary": "The response cleanly separates key establishment, message encryption, identity authentication, and ongoing ratcheting, meeting the project-specific role separation requirements."
-        },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response adheres well to the project-specific guidance by maintaining distinct cryptographic roles: initial session establishment (X3DH and hybrid PQC KEM), ongoing symmetric key ratcheting (Double Ratchet), identity authentication (Ed25519 signatures and verification), and content encryption (AES-GCM for messages and attachments). There is no conflation of signature keys as encryption keys or collapse of key agreement into encryption. The design cleanly separates long-term keys, ephemeral keys, symmetric ratchets, and identity authentication mechanisms.",
-        "role_separation_evidence": [
-          "Section 2 'Session Establishment' clearly separates key agreement (X3DH) and identity authentication (Ed25519 signatures) from content encryption.",
-          "Section 3 'Message and Attachment Encryption' explicitly uses Double Ratchet for symmetric key ratcheting and AES-256-GCM for encrypting messages and attachments, distinct from session key establishment.",
-          "Identity authentication is handled separately with Ed25519 for signatures and out-of-band user verification, not conflated with message encryption.",
-          "Ongoing ratcheting in Section 5 operates as a continuous symmetric key update distinct from initial session establishment in Section 2.",
-          "Attachment encryption uses ephemeral symmetric keys encrypted under ratchet-derived keys, maintaining clear boundaries between key establishment, symmetric encryption, and authentication.",
-          "Summary and throughout the response maintain distinct roles for session setup, authentication, message encryption, and ratcheting."
-        ]
-      }
+      "request_attempts": {},
+      "error_type": "APIConnectionError",
+      "error": "Connection error.",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 124, in _connect\n    stream = self._network_backend.connect_tcp(**kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_backends/sync.py\", line 207, in connect_tcp\n    with map_exceptions(exc_map):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1019, in request\n    response = self._send_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 400, in _send_request\n    return self._send_with_auth_retry(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 378, in _send_with_auth_retry\n    response = super()._send_request(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 947, in _send_request\n    return self._client.send(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1703, in run_single_sample\n    (recommendation, prompt_used), recommendation_attempts = call_with_retries(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 919, in call_with_retries\n    return operation(), attempt_number\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1704, in <lambda>\n    operation=lambda: get_recommendation(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 940, in get_recommendation\n    response = client.responses.create(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/resources/responses/responses.py\", line 917, in create\n    return self._post(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1314, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1054, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
     },
     {
-      "status": "complete",
+      "status": "error",
       "sample_number": 2,
       "model": "gpt-4.1-mini",
-      "timestamp_utc": "2026-04-30T11:46:49+00:00",
+      "timestamp_utc": "2026-05-04T23:42:04+00:00",
       "prompt_variant": "nist_pqc_structured",
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
-      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
-      "recommendation": "**Snapstabook Secure Messaging Cryptographic Architecture Design Note**\n\n---\n\n### 1. Threat Model Assumptions\n\n- **Adversary capabilities:**\n  - Passive network adversary capable of recording all encrypted traffic (record-and-store) indefinitely.\n  - Active network adversary capable of message injection, modification, replay, and blocking.\n  - Adversary can compromise servers, including metadata collection (but not user devices initially).\n  - Adversary can eventually compromise some user devices (typical forward secrecy assumptions apply).\n  - Adversary includes future quantum attackers; long-term confidentiality must consider post-quantum resistance.\n- **User behavior and environment:**\n  - Users may operate on multiple devices (mobile, desktop, web).\n  - Devices may be offline and later synchronize messages.\n  - Basic device security assumed; no assumption of physical device compromise except as noted.\n- **Security Goals:**\n  - End-to-end confidentiality and integrity for messages and attachments.\n  - Authentication of user identities and devices.\n  - Forward secrecy and break-in recovery.\n  - Message confidentiality should ideally hold for 10-15 years against cryptanalysis.\n  - Minimal metadata leakage; message contents must remain confidential even if servers are compromised.\n  - Usability on diverse client platforms without degrading security.\n\n---\n\n### 2. Session Establishment\n\n- **Identity key pairs:**\n  - Each user generates and stores a long-term identity key pair using **X25519** (Curve25519 ECDH) for efficient key agreement and forward secrecy.\n  - Public keys are registered with the server and distributed to contacts.\n- **Multi-device support:**\n  - Each device has a distinct identity key pair.\n  - Devices link to the same user account via a secure device provisioning protocol.\n- **Key agreement and initial handshake:**\n  - Use an extended **X3DH (Extended Triple Diffie-Hellman)** protocol (as in Signal protocol) for mutual authentication and initial shared secret derivation between devices.\n    - Includes ephemeral key pair from sender per session.\n  - This enables asynchronous session initiation and supports offline message delivery.\n- **Post-quantum migration:**\n  - In parallel, include hybrid key agreement combining **X25519** with a NIST Round 3 post-quantum KEM-like **CRYSTALS-Kyber** to protect against future quantum adversaries.\n  - For long-lived sessions, session keys can be post-quantum upgraded during key updates.\n- **Server trust:**\n  - Server only acts as a relay for public keys and message ciphertext; does not hold key material.\n\n---\n\n### 3. Message and Attachment Encryption\n\n- **Message encryption:**\n  - Each message is encrypted with a symmetric key derived from ongoing ratcheting (see Section 5).\n  - Use **AES-256-GCM** for authenticated encryption (confidentiality and integrity).\n- **Attachment encryption:**\n  - Attachments (voice notes, images, files) are encrypted with **AES-256-GCM**, using a separate symmetric key derived from the sender's session ratchet.\n  - Attachments are chunked and encrypted to support partial retrieval and efficient offline access.\n- **Key wrapping and distribution:**\n  - Symmetric message/attachment keys are derived per-message and never reused.\n  - Keys are managed via the ratcheting protocol and not transmitted explicitly.\n- **Message authentication:**\n  - Integrity and authenticity ensured via AES-GCM’s built-in authentication tag.\n  - Additional HMAC with **HMAC-SHA-512/256** may be used if layering or external verification needed.\n- **Nonce management:**\n  - Nonces for AES-GCM must be unique per message; generated per the ratchet design to avoid reuse.\n- **Offline and multi-device delivery:**\n  - Encrypted messages and attachments are stored by the server for delivery when devices come online.\n  - Devices fetch and decrypt messages locally.\n\n---\n\n### 4. Identity Authentication\n\n- **User identity proof:**\n  - Users verify identity keys out-of-band at first contact (e.g., QR code scanning, manual fingerprint comparison).\n- **Device authentication and trust:**\n  - Each device generates its own identity key pair and is linked to the user’s account via a secure onboarding/provisioning protocol (e.g., Scan QR + shared secret).\n  - Device public keys are published to contacts.\n- **Key transparency and verification:**\n  - Employ a **key transparency log (e.g., CONIKS or similar)** on the server side to detect and prevent key substitution attacks.\n- **Push notification authentication:**\n  - Use authenticated push notification tokens encrypted and bound to user/device session keys.\n- **Revocation and trust update:**\n  - Users can revoke devices, which propagates key updates to contacts.\n  - Devices verify that the identity of peers has not changed unexpectedly.\n\n---\n\n### 5. Ongoing Key Update / Ratcheting\n\n- **Double Ratchet Algorithm:**\n  - Implement the **Double Ratchet** protocol (originally from Signal) combining a Diffie-Hellman ratchet and a symmetric-key ratchet to provide forward secrecy and post-compromise security.\n  - For Diffie-Hellman steps, continue using **X25519** keys.\n- **Per-message keys:**\n  - Each message is encrypted with a unique message key derived via the ratchet.\n- **Post-quantum considerations:**\n  - Include periodic hybrid key updates combining X25519 and Kyber KEM keys to increase resistance to quantum attacks.\n- **Group chat ratcheting:**\n  - For group chats, implement **MLS (Message Layer Security) v1.0** standard for group key management and ratcheting, which supports efficient multi-device groups with forward secrecy.\n- **Device sync:**\n  - Maintain per-device session state.\n  - Use secure cross-device session synchronization mechanisms to allow devices to catch up on ratchet state securely and to handle offline scenarios.\n- **Key erasure:**\n  - Securely delete old keys after ratchet steps to minimize key exposure.\n- **Replay protection:**\n  - Use message counters and cryptographic binding to prevent replay attacks.\n\n---\n\n### 6. Residual Risks\n\n- **Metadata leakage:**\n  - Although messages are encrypted end-to-end, server-side metadata such as sender, receiver, timestamps, and sizes may leak communication patterns.\n- **Device compromise:**\n  - If a user device is compromised, its stored keys and chat history may be exposed.\n  - Forward secrecy limits exposure of past messages, but the attacker gains access to messages stored or received on compromised devices.\n- **Post-quantum uncertainty:**\n  - While hybrid schemes protect against current and near-term quantum adversaries, unknown future cryptanalytic advances may weaken the proposed PQC algorithms.\n- **Denial of service and availability:**\n  - Attackers can attempt to disrupt message delivery or key exchange, but encryption itself remains intact.\n- **User errors:**\n  - Trusting unverified keys/devices may introduce risks of man-in-the-middle attacks.\n- **Backup security:**\n  - Backup of keys and messages is outside the scope but must be handled securely to avoid undermining end-to-end confidentiality.\n\n---\n\nThis cryptographic architecture balances current best practices with long-term confidentiality goals, multi-device usability, and emerging post-quantum considerations essential for the security and usability of Snapstabook.",
-      "request_attempts": {
-        "recommendation": 1,
-        "judge_evaluation": 1
-      },
-      "response_metrics": {
-        "character_count": 7304,
-        "line_count": 125
-      },
-      "rule_based_checks": {
-        "algorithm_flags": {
-          "kem_has_current_nist_pqc": true,
-          "kem_has_legacy_or_non_nist_pqc": false,
-          "kem_has_classical": true,
-          "signature_has_current_nist_pqc": false,
-          "signature_has_legacy_or_non_nist_pqc": false,
-          "signature_has_classical": true,
-          "dem_has_quantum_resistant_symmetric": true,
-          "dem_has_non_quantum_resistant_symmetric": false
-        },
-        "algorithm_mentions": {
-          "kem_current_nist": [
-            "Kyber"
-          ],
-          "kem_legacy_or_non_nist": [],
-          "kem_classical": [
-            "Curve25519",
-            "ECDH",
-            "X25519",
-            "X3DH"
-          ],
-          "signature_current_nist": [],
-          "signature_legacy_or_non_nist": [],
-          "signature_classical": [
-            "RSA"
-          ],
-          "dem_quantum_resistant_symmetric": [
-            "AES-256",
-            "AES-256-GCM"
-          ],
-          "dem_non_quantum_resistant_symmetric": []
-        }
-      },
-      "judge_evaluation": {
-        "extraction": {
-          "response_type": "substantive",
-          "role_separation_status": "pass",
-          "role_separation_evidence": [
-            "Section 2 clearly separates session establishment using asymmetric key agreement (X3DH with X25519 and PQC Kyber) from message encryption.",
-            "Section 3 restricts message and attachment encryption to symmetric AES-256-GCM keys derived from ratcheting, explicitly stating keys are never reused and not transmitted directly.",
-            "Section 4 isolates identity authentication to key verification out-of-band, secure device onboarding, and key transparency logs, distinct from message encryption.",
-            "Section 5 defines ongoing key update via the Double Ratchet protocol separate from initial session setup, with hybrid PQC updates, and separates group chat ratcheting (MLS) for multi-device support.",
-            "There is no conflation of roles such as using signature mechanisms as encryption or mixing session setup keys with symmetric content encryption keys."
-          ],
-          "role_separation_notes": "The response respects the project-specific guidance: session establishment and identity authentication are distinct from symmetric message and attachment encryption. The ongoing ratcheting/rekeying is clearly separated from one-time session setup, and symmetric encryption is correctly used for content confidentiality and integrity. Identity proofs are handled out-of-band and by key transparency rather than incorporated within message encryption. The architecture cleanly delineates cryptographic roles.",
-          "concise_summary": "The response properly separates session establishment, identity authentication, symmetric message encryption, and ratcheting roles according to the project guidance, passing the role-separation evaluation."
-        },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response respects the project-specific guidance: session establishment and identity authentication are distinct from symmetric message and attachment encryption. The ongoing ratcheting/rekeying is clearly separated from one-time session setup, and symmetric encryption is correctly used for content confidentiality and integrity. Identity proofs are handled out-of-band and by key transparency rather than incorporated within message encryption. The architecture cleanly delineates cryptographic roles.",
-        "role_separation_evidence": [
-          "Section 2 clearly separates session establishment using asymmetric key agreement (X3DH with X25519 and PQC Kyber) from message encryption.",
-          "Section 3 restricts message and attachment encryption to symmetric AES-256-GCM keys derived from ratcheting, explicitly stating keys are never reused and not transmitted directly.",
-          "Section 4 isolates identity authentication to key verification out-of-band, secure device onboarding, and key transparency logs, distinct from message encryption.",
-          "Section 5 defines ongoing key update via the Double Ratchet protocol separate from initial session setup, with hybrid PQC updates, and separates group chat ratcheting (MLS) for multi-device support.",
-          "There is no conflation of roles such as using signature mechanisms as encryption or mixing session setup keys with symmetric content encryption keys."
-        ]
-      }
+      "request_attempts": {},
+      "error_type": "APIConnectionError",
+      "error": "Connection error.",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 124, in _connect\n    stream = self._network_backend.connect_tcp(**kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_backends/sync.py\", line 207, in connect_tcp\n    with map_exceptions(exc_map):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1019, in request\n    response = self._send_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 400, in _send_request\n    return self._send_with_auth_retry(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 378, in _send_with_auth_retry\n    response = super()._send_request(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 947, in _send_request\n    return self._client.send(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1703, in run_single_sample\n    (recommendation, prompt_used), recommendation_attempts = call_with_retries(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 919, in call_with_retries\n    return operation(), attempt_number\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1704, in <lambda>\n    operation=lambda: get_recommendation(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 940, in get_recommendation\n    response = client.responses.create(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/resources/responses/responses.py\", line 917, in create\n    return self._post(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1314, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1054, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
     },
     {
-      "status": "complete",
+      "status": "error",
       "sample_number": 3,
       "model": "gpt-4.1-mini",
-      "timestamp_utc": "2026-04-30T11:46:49+00:00",
+      "timestamp_utc": "2026-05-04T23:42:04+00:00",
       "prompt_variant": "nist_pqc_structured",
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
-      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
-      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n---\n\n## 1. Threat Model Assumptions\n\n- **Adversaries**:\n  - Passive and active network attackers capable of recording, modifying, and replaying all network traffic.\n  - Malicious insiders who may gain access to some backend infrastructure but not to user device secrets.\n  - Device theft or compromise of user endpoints.\n  - Cross-device correlation or user impersonation attempts.\n  - Long-term cryptanalysis and advances in computing power, including potential future quantum adversaries.\n\n- **Security Goals**:\n  - **Confidentiality** of messages and attachments must hold for 10–15 years.\n  - Strong **forward secrecy** and **future secrecy** to ensure compromise of current keys does not decrypt past or future messages.\n  - Support for **multi-device** usage with consistent identity binding.\n  - Resistance to offline brute-force attacks on stored data.\n  - Message **integrity** and **authenticity**.\n\n- **Assumptions**:\n  - User devices may be compromised but at limited scale (defense in depth).\n  - Secure channels are possible at initial setup (e.g., QR code scanning or out-of-band verification).\n  - Back-end servers are honest-but-curious but never hold long-term keys or plaintext.\n  - Users perform some level of identity verification to detect impersonation.\n\n---\n\n## 2. Session Establishment\n\n- **Identity Key Pair**:\n  - Each user generates a long-term identity key pair using **X25519** (for key agreement) and **Ed25519** (for signatures).\n  - Public identity keys are published in the server directory with tamper-evident protections.\n\n- **Device Keys and Registration**:\n  - Each device generates its own ephemeral device key pair (X25519, Ed25519).\n  - Devices register public keys with the server under the user’s account.\n  - Devices mutually authenticate during registration via signed assertions.\n\n- **Initial Session Setup**:\n  - Use the Extended Triple Diffie-Hellman (X3DH) protocol, as defined by the **Signal Protocol** specification.\n  - Key agreement incorporates identity keys, unsigned or signed pre-keys, and ephemeral keys for initial shared secret derivation.\n  - Hash algorithm: **SHA-512** for HKDF; Key derivation uses **HKDF-SHA512**.\n\n- **Post-Quantum Considerations**:\n  - Monitor NIST post-quantum cryptography standards for key agreement (e.g., **CRYSTALS-Kyber**).\n  - Design protocol to allow hybrid key agreements combining X25519 with post-quantum KEMs to protect long-term confidentiality.\n  - For now, use classical primitives but keep modularity for future PQ integration.\n\n---\n\n## 3. Message and Attachment Encryption\n\n- **Message Encryption**:\n  - Use **AES-256-GCM** for symmetric encryption of message payloads.\n  - Use **HKDF-SHA512** to derive unique message keys from ratchet secrets (see section 5).\n  - Every message includes an authentication tag to protect against tampering.\n  - Metadata minimization: encrypt as much metadata as feasible (e.g., sender, timestamp) using ephemeral session keys.\n\n- **Attachment Encryption**:\n  - Before uploading, encrypt attachments client-side using **AES-256-GCM**.\n  - Derive a symmetric key per attachment, derived from the ratchet or generated randomly and encrypted with session keys.\n  - Attachments are uploaded through the server with only ciphertext visible and link references included in messages.\n\n- **Key Wrapping**:\n  - Use **HKDF-SHA512** derived keys to wrap attachment keys securely.\n  - Use authenticated wrappers like **AES-KW (AES Key Wrap with Padding)** with 256-bit keys for key wrapping.\n\n---\n\n## 4. Identity Authentication\n\n- **Identity Binding**:\n  - Each user’s identity key is signed by out-of-band verification or via secure enrollment.\n  - Leverage mutual **Ed25519 signatures** on device keys and messages.\n  \n- **Contact Discovery**:\n  - Use privacy-preserving contact discovery, avoiding direct upload of contacts, e.g., through **private set intersection** (PSI) protocols.\n\n- **User Verification**:\n  - Allow users to verify identity keys via short authentication strings or QR code scanning based on cryptographic hashes of identity keys.\n  - Display key fingerprints in the UI for manual verification.\n\n- **Replay and Impersonation Protection**:\n  - Device keys and identity keys are pinned and checked regularly.\n  - Implement certificate transparency-like logs or user notifications on identity key changes.\n\n---\n\n## 5. Ongoing Key Update / Ratcheting\n\n- **Double Ratchet Protocol**:\n  - Implement the **Double Ratchet Algorithm** as specified by the Signal Protocol.\n  - Use **X25519** for Diffie-Hellman ratchet steps.\n  - Use **HKDF-SHA512** for chain key derivation.\n  - Use **AES-256-GCM** for message encryption keys derived from the ratchet.\n\n- **Multi-Device Synchronization**:\n  - Each device maintains a separate ratchet state with peers.\n  - Use a **server-facilitated secure session state sharing protocol** with identity authentication to sync ratchet states across devices.\n  - Optionally use an encrypted, synchronized secure key backup mechanism (e.g., end-to-end encrypted cloud backup).\n\n- **Post-Quantum Forward Security**:\n  - Ratchets can be extended with hybrid DH using both classical X25519 and NIST PQ-key encapsulation (e.g., Kyber) where supported.\n  - Design for graceful migration: maintain classic ratchet for compatibility while enabling future update.\n\n---\n\n## 6. Residual Risks\n\n- **Compromise of Endpoints**:\n  - If an attacker gains full access to a user’s device long-term keys, forward secrecy is lost until new keys are established.\n  - Users should be able to revoke compromised devices.\n\n- **Metadata Leakage**:\n  - Timing and message size metadata may leak usage patterns.\n  - Push notifications inherently leak some metadata.\n\n- **Quantum Risk**:\n  - Current cryptographic selections are not quantum-resistant.\n  - Patience required for PQ cryptography development and integration.\n  \n- **Server Compromise**:\n  - Servers do not hold plaintext or long-term keys but can affect message delivery and synchronization reliability.\n\n- **User Behavior and Social Engineering**:\n  - Users may fail at identity verification and be susceptible to impersonation.\n\n---\n\n### Summary:\n\nThe Snapstabook cryptographic architecture combines the mature, widely audited Signal Protocol approach (X3DH and Double Ratchet) with strong symmetric encryption standards (AES-256-GCM, HKDF-SHA512) for message and attachment confidentiality. Identity authentication and key distribution rely on Ed25519 signatures and secure out-of-band verification. The architecture is designed for multi-device support, offline delivery, and long-term confidentiality over 10–15 years, with a roadmap to gradually integrate post-quantum cryptographic primitives as standards mature.",
-      "request_attempts": {
-        "recommendation": 1,
-        "judge_evaluation": 1
-      },
-      "response_metrics": {
-        "character_count": 6781,
-        "line_count": 133
-      },
-      "rule_based_checks": {
-        "algorithm_flags": {
-          "kem_has_current_nist_pqc": true,
-          "kem_has_legacy_or_non_nist_pqc": false,
-          "kem_has_classical": true,
-          "signature_has_current_nist_pqc": false,
-          "signature_has_legacy_or_non_nist_pqc": false,
-          "signature_has_classical": true,
-          "dem_has_quantum_resistant_symmetric": true,
-          "dem_has_non_quantum_resistant_symmetric": false
-        },
-        "algorithm_mentions": {
-          "kem_current_nist": [
-            "Kyber"
-          ],
-          "kem_legacy_or_non_nist": [],
-          "kem_classical": [
-            "X25519",
-            "X3DH"
-          ],
-          "signature_current_nist": [],
-          "signature_legacy_or_non_nist": [],
-          "signature_classical": [
-            "Ed25519",
-            "RSA"
-          ],
-          "dem_quantum_resistant_symmetric": [
-            "AES-256",
-            "AES-256-GCM"
-          ],
-          "dem_non_quantum_resistant_symmetric": []
-        }
-      },
-      "judge_evaluation": {
-        "extraction": {
-          "response_type": "substantive",
-          "role_separation_status": "pass",
-          "role_separation_evidence": [
-            "Section 2 clearly separates session establishment (X3DH key agreement) from message encryption.",
-            "Message and attachment encryption use symmetric AES-256-GCM keys derived from ratchets, distinct from initial session setup.",
-            "Identity authentication is performed via Ed25519 signatures and out-of-band verification, not conflated with message encryption.",
-            "Ongoing ratcheting (Double Ratchet) is separately described from one-time session setup, maintaining distinct roles.",
-            "Key wrapping for attachments uses dedicated symmetric algorithms and keys distinct from identity keys or session establishment."
-          ],
-          "role_separation_notes": "The response explicitly distinguishes between key establishment (X3DH), identity authentication (Ed25519 signatures and verifications), symmetric content encryption for messages and attachments, and ongoing ratcheting for forward secrecy. It adheres closely to the project guidance by not mixing these roles and keeping each cryptographic function coherent and modular.",
-          "concise_summary": "The model response clearly maintains and documents a coherent separation between identity authentication, session key establishment, message/attachment encryption, and ongoing ratcheting, satisfying the project-specific role-separation requirements."
-        },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response explicitly distinguishes between key establishment (X3DH), identity authentication (Ed25519 signatures and verifications), symmetric content encryption for messages and attachments, and ongoing ratcheting for forward secrecy. It adheres closely to the project guidance by not mixing these roles and keeping each cryptographic function coherent and modular.",
-        "role_separation_evidence": [
-          "Section 2 clearly separates session establishment (X3DH key agreement) from message encryption.",
-          "Message and attachment encryption use symmetric AES-256-GCM keys derived from ratchets, distinct from initial session setup.",
-          "Identity authentication is performed via Ed25519 signatures and out-of-band verification, not conflated with message encryption.",
-          "Ongoing ratcheting (Double Ratchet) is separately described from one-time session setup, maintaining distinct roles.",
-          "Key wrapping for attachments uses dedicated symmetric algorithms and keys distinct from identity keys or session establishment."
-        ]
-      }
+      "request_attempts": {},
+      "error_type": "APIConnectionError",
+      "error": "Connection error.",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 124, in _connect\n    stream = self._network_backend.connect_tcp(**kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_backends/sync.py\", line 207, in connect_tcp\n    with map_exceptions(exc_map):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1019, in request\n    response = self._send_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 400, in _send_request\n    return self._send_with_auth_retry(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 378, in _send_with_auth_retry\n    response = super()._send_request(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 947, in _send_request\n    return self._client.send(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1703, in run_single_sample\n    (recommendation, prompt_used), recommendation_attempts = call_with_retries(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 919, in call_with_retries\n    return operation(), attempt_number\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1704, in <lambda>\n    operation=lambda: get_recommendation(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 940, in get_recommendation\n    response = client.responses.create(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/resources/responses/responses.py\", line 917, in create\n    return self._post(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1314, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1054, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
     },
     {
-      "status": "complete",
+      "status": "error",
       "sample_number": 4,
       "model": "gpt-4.1-mini",
-      "timestamp_utc": "2026-04-30T11:46:49+00:00",
+      "timestamp_utc": "2026-05-04T23:42:04+00:00",
       "prompt_variant": "nist_pqc_structured",
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
-      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
-      "recommendation": "# Snapstabook Cryptographic Architecture Design Note\n\n## 1. Threat Model Assumptions\n- **Adversaries:** Capable of passive network eavesdropping with long-term storage of encrypted traffic, active man-in-the-middle (MITM) attacks during session establishment, device compromise, and server compromise for metadata analytics.\n- **Long-term confidentiality:** Messages need to remain confidential for 10 to 15 years post-communication.\n- **Device diversity:** Users operate multiple devices (mobile, desktop, web) per account.\n- **Offline delivery:** Messages may be queued encrypted on servers before device retrieval; offline devices may receive pushed encrypted messages asynchronously.\n- **Metadata protection:** Limited; Snapstabook does not provide full metadata anonymity but limits data leakage to device and communication metadata.\n- **Quantum threat:** Forward confidentiality must consider emerging quantum threats; thus, guidance from NIST PQC efforts is factored into key establishment and long-term encryption strategies where feasible.\n\n## 2. Session Establishment\n- **Identity keys:** Each device generates a long-term Curve25519 key pair (X25519) for identity.\n- **Initial authentication:** Users verify each other's identity keys through OOB methods (QR codes, shared secrets).\n- **Session key agreement:** Use **Double Ratchet** with **X3DH (Extended Triple Diffie-Hellman)** for initial session establishment, based on Curve25519.\n- **Multi-device:** Use a \"sender key\" approach similar to Signal’s group messaging protocol to distribute ephemeral session keys to multiple devices securely.\n- **Post-quantum migration:** NIST recommends hybrid key agreement combining X25519 with a lattice-based algorithm such as **CRYSTALS-Kyber** for initial session key agreement to ensure future-proofing against quantum adversaries.\n- **Server role:** Servers facilitate delivery of ephemeral public keys and encrypted session messages but cannot derive shared secrets.\n- **Replay protection:** Use unique message identifiers and timestamps included in authenticated data.\n\n## 3. Message and Attachment Encryption\n- **Message encryption:** Use **AES-256-GCM** with keys derived from the Double Ratchet output to encrypt text messages and metadata integrity.\n- **Attachments encryption:** Encrypt voice notes, images, and files using **AES-256-GCM** with randomly generated one-time keys per attachment.\n- **Key wrapping:** Attachment encryption keys are encrypted with the current session message key and transmitted inline or alongside the message.\n- **Compression:** Compress attachments before encryption to reduce redundancy that might aid cryptanalysis.\n- **Offline delivery:** Fully encrypted messages/attachments are stored on the server until the device retrieves them.\n- **Long-term confidentiality:** Key rotation and ratcheting protect against key compromise, preventing adversaries from decrypting past messages if current keys are compromised.\n\n## 4. Identity Authentication\n- **User identities:** Represented by long-term X25519 public keys per device, combined under a \"user identity\" that aggregates multiple devices per user.\n- **Contact verification:** Users verify device public keys for their contacts via human-friendly QR codes or short authentication strings.\n- **Device linking:** Devices authenticate each other via trusted user authentication, with user confirmation required to add new devices.\n- **Server authentication:** TLS 1.3 with **ECDHE_AES_128_GCM_SHA256** or stronger cipher suites secures server-client communication; server certificates validated with standard public CA infrastructure.\n- **Push notification authentication:** Use per-device tokens securely registered and refreshed; notification payloads carry only opaque message identifiers and not sensitive content.\n- **MitM mitigation:** Authenticated key exchange (X3DH) and ratcheting prevent active MITM attack persistence beyond initial key compromise.\n\n## 5. Ongoing Key Update / Ratcheting\n- **Double Ratchet algorithm:** Employed on a per-sender-device pair basis for forward secrecy and post-compromise security.\n- **Key ratcheting:** \n  - **Diffie-Hellman ratchet** on every new key exchange message for new ephemeral DH keys.\n  - **Symmetric-key ratchet** for per-message keys derived from HKDF with SHA-256.\n- **Group messaging:** Sender keys rotated periodically; group changes trigger new sender key distributions encrypted with the Multi-Device session keys.\n- **Post-quantum considerations:** Investigate hybrid ratchets combining classical ratchets with PQC primitives (Kyber/Xmss) once standards mature.\n- **Long-term security:** Ratcheting ensures that compromise of current keys cannot retroactively decrypt past messages and limits future exposure.\n\n## 6. Residual Risks\n- **Metadata exposure:** Server can observe metadata such as sender, recipient, timestamps, message size, and approximate user online activity.\n- **Device compromise:** If a user device is compromised, keys and decrypted messages accessible; protection is limited by device security.\n- **Quantum cryptanalysis:** Present cryptographic primitives are not fully quantum-safe; hybrid key establishment mitigates but cannot eliminate future quantum risks.\n- **Usability tradeoffs:** Multi-device synchronization increases attack surface and complexity.\n- **Offline message storage:** Messages stored encrypted on the server could be intercepted, but remain confidential by design.\n- **Social engineering:** Identity verification relies on user diligence and secure out-of-band channels.\n- **Push notification leaks:** Metadata can leak via push infrastructure, although message content remains encrypted.\n\n---\n\nThis architecture balances end-to-end confidentiality and integrity across multiple devices while allowing usability and offline delivery. It leverages well-established modern cryptographic standards and integrates ongoing NIST PQC migration guidance to protect confidentiality for a 10–15 year horizon.",
-      "request_attempts": {
-        "recommendation": 1,
-        "judge_evaluation": 1
-      },
-      "response_metrics": {
-        "character_count": 6003,
-        "line_count": 56
-      },
-      "rule_based_checks": {
-        "algorithm_flags": {
-          "kem_has_current_nist_pqc": true,
-          "kem_has_legacy_or_non_nist_pqc": false,
-          "kem_has_classical": true,
-          "signature_has_current_nist_pqc": false,
-          "signature_has_legacy_or_non_nist_pqc": false,
-          "signature_has_classical": true,
-          "dem_has_quantum_resistant_symmetric": true,
-          "dem_has_non_quantum_resistant_symmetric": false
-        },
-        "algorithm_mentions": {
-          "kem_current_nist": [
-            "Kyber"
-          ],
-          "kem_legacy_or_non_nist": [],
-          "kem_classical": [
-            "Curve25519",
-            "ECDH",
-            "ECDHE",
-            "X25519",
-            "X3DH"
-          ],
-          "signature_current_nist": [],
-          "signature_legacy_or_non_nist": [],
-          "signature_classical": [
-            "RSA"
-          ],
-          "dem_quantum_resistant_symmetric": [
-            "AES-256",
-            "AES-256-GCM"
-          ],
-          "dem_non_quantum_resistant_symmetric": []
-        }
-      },
-      "judge_evaluation": {
-        "extraction": {
-          "response_type": "substantive",
-          "role_separation_status": "pass",
-          "role_separation_evidence": [
-            "Key establishment or session setup is handled by X3DH and Double Ratchet initial DH-based key agreements, with a clear boundary before message encryption.",
-            "Message and attachment encryption strictly use symmetric AES-256-GCM keys derived from the ratcheted session keys, clearly separating content encryption from key agreement.",
-            "Identity authentication roles rely on public key verification and human-verifiable QR codes, distinct from the message encryption mechanisms.",
-            "Ongoing ratcheting and key updates are described as separate continuous processes distinct from the one-time initial session setup.",
-            "Post-quantum migration efforts are layered onto initial key establishment, maintaining separation rather than collapsing roles."
-          ],
-          "role_separation_notes": "The response adheres closely to the project’s role-separation guidance by distinctly separating key establishment (X3DH, hybrid PQC), identity authentication (public key verification and OOB methods), symmetric content encryption (AES-256-GCM for messages and attachments), and ongoing ratcheting. There is no conflation of roles such as signatures serving as encryption or key agreement primitives used directly for bulk message encryption. Each major cryptographic role remains coherent and properly segmented.",
-          "concise_summary": "The response clearly maintains distinct and coherent cryptographic roles, passing the role-separation evaluation."
-        },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response adheres closely to the project’s role-separation guidance by distinctly separating key establishment (X3DH, hybrid PQC), identity authentication (public key verification and OOB methods), symmetric content encryption (AES-256-GCM for messages and attachments), and ongoing ratcheting. There is no conflation of roles such as signatures serving as encryption or key agreement primitives used directly for bulk message encryption. Each major cryptographic role remains coherent and properly segmented.",
-        "role_separation_evidence": [
-          "Key establishment or session setup is handled by X3DH and Double Ratchet initial DH-based key agreements, with a clear boundary before message encryption.",
-          "Message and attachment encryption strictly use symmetric AES-256-GCM keys derived from the ratcheted session keys, clearly separating content encryption from key agreement.",
-          "Identity authentication roles rely on public key verification and human-verifiable QR codes, distinct from the message encryption mechanisms.",
-          "Ongoing ratcheting and key updates are described as separate continuous processes distinct from the one-time initial session setup.",
-          "Post-quantum migration efforts are layered onto initial key establishment, maintaining separation rather than collapsing roles."
-        ]
-      }
+      "request_attempts": {},
+      "error_type": "APIConnectionError",
+      "error": "Connection error.",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 124, in _connect\n    stream = self._network_backend.connect_tcp(**kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_backends/sync.py\", line 207, in connect_tcp\n    with map_exceptions(exc_map):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1019, in request\n    response = self._send_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 400, in _send_request\n    return self._send_with_auth_retry(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 378, in _send_with_auth_retry\n    response = super()._send_request(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 947, in _send_request\n    return self._client.send(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1703, in run_single_sample\n    (recommendation, prompt_used), recommendation_attempts = call_with_retries(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 919, in call_with_retries\n    return operation(), attempt_number\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1704, in <lambda>\n    operation=lambda: get_recommendation(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 940, in get_recommendation\n    response = client.responses.create(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/resources/responses/responses.py\", line 917, in create\n    return self._post(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1314, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1054, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
     },
     {
-      "status": "complete",
+      "status": "error",
       "sample_number": 5,
       "model": "gpt-4.1-mini",
-      "timestamp_utc": "2026-04-30T11:46:49+00:00",
+      "timestamp_utc": "2026-05-04T23:42:04+00:00",
       "prompt_variant": "nist_pqc_structured",
       "query_name": "MESSAGING_ROLE_MAP_NIST_PQC_STRUCTURED",
-      "prompt_used": "You are designing the end-to-end cryptographic architecture for a multi-device messaging system.\n\nRead the project brief and produce a structured design note.\n\nYour answer must use the following headings:\n1. Threat Model Assumptions\n2. Session Establishment\n3. Message and Attachment Encryption\n4. Identity Authentication\n5. Ongoing Key Update / Ratcheting\n6. Residual Risks\n\nRequirements:\n- Assume attackers may record encrypted traffic today and that some message confidentiality must hold for 10 to 15 years.\n- Name concrete algorithms or standards for each role.\n- Do not use generic placeholders like 'public-key encryption' or 'symmetric encryption'.\n- Keep the roles separate instead of describing one primitive as the whole solution.\n- Briefly mention any relevant NIST post-quantum cryptography guidance or migration direction where it affects long-term confidentiality, but do not let that replace the main role-specific architecture.\n\nProject name:\nSnapstabook\n\nProject domain:\nSecure Messaging\n\nProject brief:\nDescription: A cross-platform secure messaging application with iOS, Android,\ndesktop, and web clients. The product supports one-to-one messaging, group chat,\nvoice notes, image and file attachments, multiple devices per user, offline\ndelivery, contact discovery, and push notifications. It should support private\nuser communication across devices, reliable message delivery, and basic account\nand device security while remaining usable on mobile and desktop platforms.",
-      "recommendation": "# Snapstabook: End-to-End Cryptographic Architecture Design Note\n\n---\n\n### 1. Threat Model Assumptions\n- **Adversary capabilities**\n  - Passive eavesdropping on all network traffic (including encrypted data).\n  - Active interception, message injection, replay, and modification.\n  - Compromise of some server infrastructure (messaging server compromised), but not client endpoints.\n  - Compromise or theft of certain user devices at any time.\n  - Long-term archival of captured encrypted messages by adversaries to attempt later cryptanalysis.\n- **Security goals**\n  - Maintain message confidentiality and integrity for 10 to 15 years post-transmission.\n  - Ensure strong forward secrecy even if long-term keys are compromised.\n  - Support multi-device synchronization with consistent confidentiality guarantees.\n  - Authenticate users and devices to prevent impersonation and MitM attacks.\n- **Assumptions**\n  - User devices have secure storage (e.g., Secure Enclave on iOS, Trusted Execution Environment on Android).\n  - The server is honest-but-curious or fully compromised from confidentiality perspective but trusted for delivery.\n  - Clients are regularly updated to patch vulnerabilities.\n  - Quantum adversaries are a factor in long-term confidentiality but immediate PQC deployments may degrade usability; migration strategy needed.\n\n---\n\n### 2. Session Establishment\n- **Identity key pairs (long-term)**\n  - Each device generates an **X25519** (Curve25519) key pair for Diffie-Hellman key agreement.\n- **User identity binding**\n  - Each user has a master identity signing key using **Ed25519**.\n  - Devices are registered under a user with signed device identity keys.\n- **Device-to-device key agreement**\n  - Use the **X3DH (Extended Triple Diffie-Hellman)** protocol (as per Signal protocol) for initial shared secret agreement between devices.\n    - Inputs: User identity keys, ephemeral keys, and signed prekeys.\n    - Output: Shared secret for ratcheting initialization.\n- **Group chat provisioning**\n  - Use a **Sender Key** approach:\n    - The sender generates a symmetric key for the group (sender key), which is distributed encrypted to devices using pairwise X3DH sessions.\n- **Post-quantum migration consideration**\n  - Follow NIST guidance to prepare for hybrid key agreement combining X25519 with a NIST Round 3 PQC KEM such as **Kyber**.\n  - Hybrid: Perform DH with X25519 and KEM encapsulation with Kyber, combine keys through concatenation and HKDF-SHA-512 to derive shared secret.\n  - Deploy hybrid after careful protocol testing to maintain UX, initially for new keys only.\n- **Key derivation**\n  - Apply **HKDF-SHA-512** on the shared secret with context-specific info to derive root keys for the ratchet.\n\n---\n\n### 3. Message and Attachment Encryption\n- **Message encryption (text and metadata)**\n  - Use **AES-256-GCM** for authenticated symmetric encryption of message payloads.\n  - Encryption keys derived from the ratchet state per message to ensure forward secrecy.\n- **Attachment encryption**\n  - Encrypt attachments with a separate **AES-256-GCM** symmetric key.\n  - The attachment key is encrypted with the same ratcheted message key material and included alongside the message.\n  - For large files, encrypt in chunks with unique nonces (AES-GCM-SIV or AES-GCM with careful nonce management).\n- **Integrity and authenticity**\n  - Use AES-GCM’s built-in authentication tag.\n  - Message headers and metadata integrity protected via signed or MAC-protected headers.\n- **Offline delivery and message storage**\n  - Store only ciphertext on the server.\n  - Use message authentication codes derived from ratchet keys to verify integrity on client.\n- **Post-quantum considerations**\n  - Since messages rely on symmetric primitives post-key-agreement, AES-256-GCM remains resistant to quantum attacks (Grover’s algorithm gives only quadratic speedup).\n  - Key size is sufficient for 10+ years.\n  - Monitor upcoming algorithms like **AES-GCM-SIV** and **Lightweight Post-Quantum symmetric algorithms** for future updates.\n\n---\n\n### 4. Identity Authentication\n- **Device and user authentication**\n  - Use **Ed25519** signatures on device registration and key updates:\n    - Devices sign their key bundles with the user master signing key.\n  - Device addition/removal events broadcast to all devices and require user confirmation.\n- **Contact discovery**\n  - Employ **private set intersection (PSI)** techniques with efficient cryptographic blinding to safely identify user contacts without exposing address books.\n- **Authentication flows**\n  - Out-of-band verification for initial identity trust establishment (QR code scanning, shared secret phrases).\n- **Push notification authentication**\n  - Use ephemeral tokens only; no sensitive data in notifications.\n- **Public key verification**\n  - Users can verify each other's identity keys or fingerprints.\n  - Provide cryptographic fingerprints (SHA-256 hashes truncated to 256 bits) for manual verification.\n- **Post-quantum authentication planning**\n  - Consider integrating PQC signature algorithms (e.g., **Dilithium**) alongside Ed25519 for hybrid signatures to future-proof identity authentication.\n\n---\n\n### 5. Ongoing Key Update / Ratcheting\n- **Double Ratchet algorithm**\n  - Use the **Double Ratchet algorithm (Signal protocol)** to provide forward and future secrecy.\n  - The root key is updated using DH ratchets on each sent/received message when new ephemeral keys are included.\n  - The chain keys evolve with every message, generating unique message keys.\n- **Multiple devices synchronization**\n  - Each device maintains independent ratchets per peer device.\n  - Devices synchronize keys and ratchet states securely over encrypted channels.\n- **Group ratcheting**\n  - Use **Sender Keys** with periodic rotation and updates via authenticated distribution and sender ratchets.\n- **Key storage**\n  - Secure storage of ratchet states with device-bound encryption.\n- **Post-quantum forward secrecy**\n  - Design ratchets to be upgradeable to support post-quantum DH (Kyber keys).\n  - Hybrid ratchet operation: update ratchets with both classical and PQ KEM material.\n\n---\n\n### 6. Residual Risks\n- **Compromise of multiple user devices**\n  - If all devices belonging to a user are compromised, confidentiality and authenticity can be broken.\n- **Server compromise**\n  - Does not expose plaintext but may affect metadata and availability.\n- **Metadata leakage**\n  - Message metadata (timestamps, sender/receiver identifiers) may leak even if message content is encrypted.\n- **Side-channel attacks**\n  - On devices or during cryptographic computations (risk mitigated by secure OS and hardware).\n- **Long-term cryptanalysis advances**\n  - Advances in cryptanalysis or large-scale quantum computing could weaken key agreement primitives before PQ migration.\n- **User mistakes**\n  - Insecure device backups, weak authentication, or social engineering can undermine security.\n- **Backward compatibility**\n  - Older devices or clients may not immediately support PQ hybrid updates, creating transitional vulnerabilities.\n\n---\n\nThis architecture prioritizes strong forward secrecy, long-term confidentiality through post-quantum preparation, multi-device support, and practical usability consistent with modern secure messaging systems.",
-      "request_attempts": {
-        "recommendation": 1,
-        "judge_evaluation": 1
-      },
-      "response_metrics": {
-        "character_count": 7313,
-        "line_count": 123
-      },
-      "rule_based_checks": {
-        "algorithm_flags": {
-          "kem_has_current_nist_pqc": true,
-          "kem_has_legacy_or_non_nist_pqc": false,
-          "kem_has_classical": true,
-          "signature_has_current_nist_pqc": true,
-          "signature_has_legacy_or_non_nist_pqc": false,
-          "signature_has_classical": true,
-          "dem_has_quantum_resistant_symmetric": true,
-          "dem_has_non_quantum_resistant_symmetric": false
-        },
-        "algorithm_mentions": {
-          "kem_current_nist": [
-            "Kyber"
-          ],
-          "kem_legacy_or_non_nist": [],
-          "kem_classical": [
-            "Curve25519",
-            "X25519",
-            "X3DH"
-          ],
-          "signature_current_nist": [
-            "Dilithium"
-          ],
-          "signature_legacy_or_non_nist": [],
-          "signature_classical": [
-            "Ed25519",
-            "RSA"
-          ],
-          "dem_quantum_resistant_symmetric": [
-            "AES-256",
-            "AES-256-GCM"
-          ],
-          "dem_non_quantum_resistant_symmetric": []
-        }
-      },
-      "judge_evaluation": {
-        "extraction": {
-          "response_type": "substantive",
-          "role_separation_status": "pass",
-          "role_separation_evidence": [
-            "Section 2 (Session Establishment) clearly separates key agreement using X3DH and hybrid PQC KEM protocols from message encryption.",
-            "Section 3 (Message and Attachment Encryption) uses symmetric AES-256-GCM encryption for payloads and attachments, distinct from key agreement and identity authentication.",
-            "Section 4 (Identity Authentication) uses Ed25519 signatures purely for authentication and device binding, not for message encryption.",
-            "Section 5 (Ongoing Key Update / Ratcheting) clearly defines the Double Ratchet algorithm for ratcheting independent from initial session establishment.",
-            "Message encryption keys are derived from ratchet states, maintaining clear separation from initial session keys and identity keys.",
-            "Attachment encryption keys are separate symmetric keys distinct from session keys and identity keys.",
-            "Authentication and signatures are not conflated with encryption mechanisms.",
-            "Each major cryptographic role (session setup, message encryption, ratcheting, identity authentication) is described distinctly and consistently."
-          ],
-          "role_separation_notes": "The response adheres well to project-specific guidance by maintaining clear boundaries between protocol roles: key establishment is separate from symmetric message encryption; identity authentication uses digital signatures only for identity binding and verification, not encryption; ratcheting is described as an ongoing key update mechanism distinct from initial session setup. The hybrid PQC considerations do not collapse roles but extend the key agreement step appropriately. There is no evidence of role conflation or collapsing of separate cryptographic functions.",
-          "concise_summary": "The response cleanly separates major cryptographic roles—session establishment, message encryption, ratcheting, and identity authentication—meeting the project’s role-separation requirements."
-        },
-        "role_separation_status": "pass",
-        "role_separation_notes": "The response adheres well to project-specific guidance by maintaining clear boundaries between protocol roles: key establishment is separate from symmetric message encryption; identity authentication uses digital signatures only for identity binding and verification, not encryption; ratcheting is described as an ongoing key update mechanism distinct from initial session setup. The hybrid PQC considerations do not collapse roles but extend the key agreement step appropriately. There is no evidence of role conflation or collapsing of separate cryptographic functions.",
-        "role_separation_evidence": [
-          "Section 2 (Session Establishment) clearly separates key agreement using X3DH and hybrid PQC KEM protocols from message encryption.",
-          "Section 3 (Message and Attachment Encryption) uses symmetric AES-256-GCM encryption for payloads and attachments, distinct from key agreement and identity authentication.",
-          "Section 4 (Identity Authentication) uses Ed25519 signatures purely for authentication and device binding, not for message encryption.",
-          "Section 5 (Ongoing Key Update / Ratcheting) clearly defines the Double Ratchet algorithm for ratcheting independent from initial session establishment.",
-          "Message encryption keys are derived from ratchet states, maintaining clear separation from initial session keys and identity keys.",
-          "Attachment encryption keys are separate symmetric keys distinct from session keys and identity keys.",
-          "Authentication and signatures are not conflated with encryption mechanisms.",
-          "Each major cryptographic role (session setup, message encryption, ratcheting, identity authentication) is described distinctly and consistently."
-        ]
-      }
+      "request_attempts": {},
+      "error_type": "APIConnectionError",
+      "error": "Connection error.",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_sync/connection.py\", line 124, in _connect\n    stream = self._network_backend.connect_tcp(**kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_backends/sync.py\", line 207, in connect_tcp\n    with map_exceptions(exc_map):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1019, in request\n    response = self._send_request(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 400, in _send_request\n    return self._send_with_auth_retry(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_client.py\", line 378, in _send_with_auth_retry\n    response = super()._send_request(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 947, in _send_request\n    return self._client.send(request, stream=stream, **kwargs)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 8] nodename nor servname provided, or not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1703, in run_single_sample\n    (recommendation, prompt_used), recommendation_attempts = call_with_retries(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 919, in call_with_retries\n    return operation(), attempt_number\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 1704, in <lambda>\n    operation=lambda: get_recommendation(\n  File \"/Users/adambournes/Desktop/Quantum AI/planning/benchmark_logic.py\", line 940, in get_recommendation\n    response = client.responses.create(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/resources/responses/responses.py\", line 917, in create\n    return self._post(\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1314, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"/Users/adambournes/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_base_client.py\", line 1054, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
     }
   ]
 }
